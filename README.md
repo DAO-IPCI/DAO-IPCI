@@ -4,10 +4,12 @@
 - **DAO curator** testnet address: `0x6EFBA8fb2AC5b6730729a972eC224426a287C3Ad`
 
 ## Workflow
-**Auditor** send transaction to `Issuer ledger builder` for creating personal carbon units ledger for each **Issuer**.
-> only **Auditor** can issue new carbon units.
-
-**Auditor** write **Issuer** account address in personal carbon units ledger. **Operator of the Program** approve new carbon ledger in DAO core ledger and approve **Issuer** address to access to DAO market. Only approved  **Issuer** and approved carbon units ledger tokens can trade on Market.
+1. **Auditor** send transaction to `Issuer ledger builder` for creating personal carbon units ledger for each **Issuer**. Only **Auditor** can issue new carbon units.
+2. **Auditor** write **Issuer** account address in personal carbon units ledger.
+3. **Operator of the Program**:
+  - approve new carbon ledger in DAO core  
+  - approve **Issuer** address to access to DAO market.
+4. Only approved  **Issuer** and approved carbon units ledger tokens can trade on Market.
 
 ## Initial modules
 - `DAO core`
