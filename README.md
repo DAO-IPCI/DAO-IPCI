@@ -2,9 +2,10 @@
 For creating carbon units trading platform.  
 Testnet founder address: `0x236EdcF07D0dF1C09E096719Eec3d7f53C8468F4`
 
-## Workflow
-**Auditor** send tx to `Token emission builder` for creating personal ledger for each **Issuer**, where he store all data about carbon units added on platform.
-**Operator of the Program** approves Auditor via adding Auditor’s carbon ledger in DAO core ledger. After that **Issuer** can add a lot on DAO market.
+**Auditor** send transaction to `Issuer ledger builder` for creating personal carbon units ledger for each **Issuer**.
+> only **Auditor** can issue new carbon units.
+
+**Auditor** write **Issuer** account address in personal carbon units ledger. **Operator of the Program** approve new carbon ledger in DAO core ledger and approve **Issuer** address to access to DAO market. Only approved  **Issuer** and approved carbon units ledger tokens can trade on Market.
 
 ## Initial modules
 - `DAO core`
@@ -30,8 +31,7 @@ Parameter | Description | Data
 `_shares_symbol` | Shares symbol | CUL
 `_shares_count` | Initial founder shares balance | 10000
 
-Aira BuilderDAO testnet address:
-
+Aira BuilderDAO testnet address: `0xa76422591378d14fb6d94c9da48a42498d8b51da`
 DAO Carbon units ledger core testnet adress: `0x97219C304cf8C32A15100BC26458890A9Ea5dade`
 DAO C.U.L. shares testnet adress: `0xc27FDeCd130eF31397f63b03024CdDFf3d121b13`
 
@@ -44,7 +44,3 @@ Total cost: 0.1 Ether to DAO factory, 0.085 Ether to gas
 ### Create test **Issuer** ledger
 
 Interact with **Issuer** ledger builder. Use function `Create` with next parameters:
-
-Parameter | Description | Data
----------|----------|-------
-`_name` | Token name | Carbon units ledger
