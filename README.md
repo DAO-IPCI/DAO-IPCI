@@ -1,10 +1,9 @@
-# DAO Carbon units ledger
-For creating carbon units trading platform.  
-**Operator of the Program** testnet address: `0x236EdcF07D0dF1C09E096719Eec3d7f53C8468F4`
-**DAO curator** testnet address: `0x6EFBA8fb2AC5b6730729a972eC224426a287C3Ad`
+# DAO «Issuance and transfer of Carbon Units»
+
+- **Operator of the Program** testnet address: `0x236EdcF07D0dF1C09E096719Eec3d7f53C8468F4`
+- **DAO curator** testnet address: `0x6EFBA8fb2AC5b6730729a972eC224426a287C3Ad`
 
 ## Workflow
-
 **Auditor** send transaction to `Issuer ledger builder` for creating personal carbon units ledger for each **Issuer**.
 > only **Auditor** can issue new carbon units.
 
@@ -22,23 +21,26 @@ For creating carbon units trading platform.
 - `Board of Directors`
 - `Voting token`
 
-## Initial process
+## Created modules
 
-### Create DAO core
+### DAO core
+DAO core testnet adress: `0x97219C304cf8C32A15100BC26458890A9Ea5dade`
 
 Parameter | Description | Data
 ---------|----------|-------
-`_dao_name` | DAO name | Carbon units ledger
+`_dao_name` | DAO name | DAO «Issuance and transfer of Carbon Units»
 `_dao_description` | Short desc| DAO for creating carbon units trading platform
 `_shares_name` | Shares name | DAO C.U.L. shares
 `_shares_symbol` | Shares symbol | CUL
 `_shares_count` | Initial founder shares balance | 10000
 
-Aira BuilderDAO testnet address: `0xa76422591378d14fb6d94c9da48a42498d8b51da`
-DAO Carbon units ledger core testnet adress: `0x97219C304cf8C32A15100BC26458890A9Ea5dade`
+
+
+
+### Shareholder token
+
 DAO C.U.L. shares testnet adress: `0xc27FDeCd130eF31397f63b03024CdDFf3d121b13`
 
-Total cost: 0.1 Ether to DAO factory, 0.085 Ether to gas
 
 ### Add `Token emission builder` in DAO core ledger
 
