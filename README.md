@@ -1,6 +1,9 @@
 # DAO Carbon units ledger
 For creating carbon units trading platform.  
-Testnet founder address: `0x236EdcF07D0dF1C09E096719Eec3d7f53C8468F4`
+**Operator of the Program** testnet address: `0x236EdcF07D0dF1C09E096719Eec3d7f53C8468F4`
+**DAO curator** testnet address: `0x6EFBA8fb2AC5b6730729a972eC224426a287C3Ad`
+
+## Workflow
 
 **Auditor** send transaction to `Issuer ledger builder` for creating personal carbon units ledger for each **Issuer**.
 > only **Auditor** can issue new carbon units.
