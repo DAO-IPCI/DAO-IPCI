@@ -4,36 +4,37 @@
 - **DAO curator** testnet address: `0x6EFBA8fb2AC5b6730729a972eC224426a287C3Ad`
 
 ## Workflow
-1. **Auditor** send transaction to `Issuer ledger builder` for creating personal carbon units ledger for each **Issuer**. Only **Auditor** can issue new carbon units.
-2. **Auditor** write **Issuer** account address in personal carbon units ledger.
+1. **Operator of the Program** create new **Auditor** Access Control List (ACL) for each Integrated Program Mitigation Units (IPMU) ledger.
+2. **Issuer** send transaction to `IPMU ledger builder` with name of selected **Auditor** Access Control List. Only **Auditor** from **Auditor** Access Control List can issue new IPMU tokens.
 3. **Operator of the Program**:
   - approve new carbon ledger in DAO core  
   - approve **Issuer** address to access to DAO market.
-4. Only approved  **Issuer** and approved carbon units ledger tokens can trade on Market.
+4. Only approved  **Issuer** and approved IPMU tokens can offering on Market.
 
 ## Initial modules
 - `DAO core`
+- `ACL storage`
 - `Shareholder token`
 - `USD balance ledger`
 - `DAO market`
 - `Market regulator`
 - `Market agent`
 - `Market agent builder`
-- `Token emission builder`
+- `Token Emission ACL builder`
 - `Board of Directors`
 - `Voting token`
 
 ## Created modules
 
 ### DAO core
-DAO core testnet adress: `0x97219C304cf8C32A15100BC26458890A9Ea5dade`
+DAO core testnet adress: ``
 
 Parameter | Description | Data
 ---------|----------|-------
-`_dao_name` | DAO name | DAO «Issuance and transfer of Carbon Units»
-`_dao_description` | Short desc| DAO for creating carbon units trading platform
-`_shares_name` | Shares name | DAO C.U.L. shares
-`_shares_symbol` | Shares symbol | CUL
+`_dao_name` | DAO name | DAO «IPCI»
+`_dao_description` | Short desc| Integrated Program for Climate Initiatives
+`_shares_name` | Shares name | IPCI shares
+`_shares_symbol` | Shares symbol | IPCI
 `_shares_count` | Initial founder shares balance | 10000
 
 
