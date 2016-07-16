@@ -1,4 +1,4 @@
-# DAO «Issuance and transfer of Carbon Units»
+# DAO «Integrated Program for Climate Initiatives»
 
 - **Operator of the Program** testnet address: `0x236EdcF07D0dF1C09E096719Eec3d7f53C8468F4`
 - **DAO curator** testnet address: `0x6EFBA8fb2AC5b6730729a972eC224426a287C3Ad`
