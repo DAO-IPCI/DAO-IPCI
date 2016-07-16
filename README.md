@@ -40,15 +40,13 @@ Parameter | Description | Data
 
 
 
-### Shareholder token
+#### DAO core «IPCI» :: [abi](https://raw.githubusercontent.com/airalab/core/master/abi/modules/Core.json)
+> 0x7ffC5d00F4F4ECA9Ce89644df75Ae4391D1f56e0
 
-DAO C.U.L. shares testnet adress: `0xc27FDeCd130eF31397f63b03024CdDFf3d121b13`
+#### IPCI shares :: [abi](https://raw.githubusercontent.com/airalab/core/master/abi/modules/TokenEmission.json)
+> 0xB3EA0235C4592dc281D66e9ed11f3656a7E955eF
+
+#### IPCI ACL Storage :: [abi](https://raw.githubusercontent.com/airalab/core/master/abi/modules/ACLStorage.json)
+> 0x952981d818e095368201ef6829736c35Ffb1a0fF
 
 
-### Add `Token emission builder` in DAO core ledger
-
-**Issuer** ledger builder testnet address: `0x30c92e56E648E80F69F1fcB580d86aE7CA5A2D3A` [abi](https://github.com/airalab/core/blob/master/abi/builder/BuilderTokenEmission.json)
-
-### Create test **Issuer** ledger
-
-Interact with **Issuer** ledger builder. Use function `Create` with next parameters:
