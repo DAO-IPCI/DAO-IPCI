@@ -61,6 +61,11 @@ Parameter | Description | Data
 #### IPCI market :: [abi](https://raw.githubusercontent.com/airalab/core/master/abi/modules/Market.json)
 > 0x352eE84f70d8902fABF44Cf3f954019a72b7d588
 
+#### Tihomovo ledger owner
+> 0xE2be48F05F9D6Ee1CcF4ee7ccc4Ca0fB20F039C5
+
+
+
 
 
 
