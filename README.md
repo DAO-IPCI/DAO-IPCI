@@ -58,6 +58,11 @@ Parameter | Description | Data
 #### IPCI market USD balances :: [abi](https://raw.githubusercontent.com/airalab/core/master/abi/modules/TokenEmission.json)
 > 0xC6BA1097fD5c7Ef9Bde0444662451e81231C2EC2
 
+#### IPCI market :: [abi](https://raw.githubusercontent.com/airalab/core/master/abi/modules/Market.json)
+> 0x352eE84f70d8902fABF44Cf3f954019a72b7d588
+
+
+
 
 
 
