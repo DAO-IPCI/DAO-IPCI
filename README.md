@@ -53,10 +53,8 @@ Parameter | Description | Data
 > 0xC1dB09b0962e432c6bd042E05eC83557014A344D
 
 #### Tihomovo IPMU ledger :: [abi](https://raw.githubusercontent.com/airalab/core/master/abi/modules/TokenEmissionACL.json)
-> 0x4A438561c2FA1A1801C283F7c3F69f0Db98E7192
+> 0x0a2262444fD4387B281b5C6515DEbb26CA10eD9e
 
-#### Tihomovo IPMU ledger 2 :: [abi](https://raw.githubusercontent.com/airalab/core/master/abi/modules/TokenEmissionACL.json)
-> 0x777051595451fe389970a734b0533c8e5d534e49
 
 
 
