@@ -55,6 +55,9 @@ Parameter | Description | Data
 #### Tihomovo IPMU ledger :: [abi](https://raw.githubusercontent.com/airalab/core/master/abi/modules/TokenEmissionACL.json)
 > 0x0a2262444fD4387B281b5C6515DEbb26CA10eD9e
 
+#### IPCI market USD balances :: [abi](https://raw.githubusercontent.com/airalab/core/master/abi/modules/TokenEmission.json)
+> 0xC6BA1097fD5c7Ef9Bde0444662451e81231C2EC2
+
 
 
 
