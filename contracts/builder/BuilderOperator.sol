@@ -14,6 +14,9 @@ contract BuilderOperator is Builder {
 
     /**
      * @dev Run script creation contract
+     * @param _dao_name is an operator DAO name
+     * @param _dao_description is an operator DAO description
+     * @param _operator_name is an operator name
      * @return address new contract
      */
     function create(string _dao_name,
