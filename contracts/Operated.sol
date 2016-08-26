@@ -1,6 +1,6 @@
-import 'common/Owned.sol';
+import 'common/Mortal.sol';
 
-contract Operated is Owned {
+contract Operated is Mortal {
     // Contract operator
     address public operator;
 

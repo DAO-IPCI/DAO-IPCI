@@ -1,7 +1,7 @@
-import 'common/Owned.sol';
+import 'common/Mortal.sol';
 import 'token/TokenEmission.sol';
 
-contract Complier is Owned {
+contract Complier is Mortal {
     // Total burned value
     mapping(address => uint) public burnedValueOf;
 

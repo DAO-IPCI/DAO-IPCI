@@ -1,10 +1,10 @@
 import 'creator/CreatorComplier.sol';
-import './BuilderBase.sol';
+import 'builder/Builder.sol';
 
 /**
  * @title BuilderComplier contract
  */
-contract BuilderComplier is BuilderBase {
+contract BuilderComplier is Builder {
     /**
      * @dev Run script creation contract
      * @return address new contract
@@ -12,8 +12,7 @@ contract BuilderComplier is BuilderBase {
     function create() returns (address) {
         var inst = CreatorComplier.create();
         Owned(inst).delegate(msg.sender);
-        getContractsOf[msg.sender].push(inst);
-        Builded(msg.sender, inst);
+        deal(inst);
         return inst;
     }
 }
