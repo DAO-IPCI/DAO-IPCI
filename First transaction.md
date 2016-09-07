@@ -50,7 +50,7 @@
 
 ### Добавление автономных контрактов
 
-Оферта, в качестве оплаты принимает внутренние токены `AIR`. Чтобы поменять Ether на Air, существует модуль `Market`. На нем ожно обменивать токены. Адрес `Market` хранится в DAO Core. Если вы не знаете как работать с DAO Core, привожу адрес `Market` ниже:
+Оферта, в качестве оплаты принимает внутренние токены Airalab DAO - `AIR`. Чтобы поменять Ether на Air, существует модуль `Market`. На нем ожно обменивать токены. Адрес `Market` хранится в DAO Core. Если вы не знаете как работать с DAO Core, привожу адрес `Market` ниже:
 `0xFE7D3D1b1749863F8a3F24c9ACC0AF282109F416`, [JSON interface](https://raw.githubusercontent.com/airalab/core/master/abi/modules/Market.json)
 
 Добавим автономный контракт `Market` в список наблюдаемых. Для этого нажмем кнопку `Watch contract` в разделе `Contracts`.
@@ -59,17 +59,17 @@
 
 Назовем его `Airalab Market`, вставим адрес и JSON interface, указанные выше. Контракт появится в списке наблюдаемых.
 
-Далее, нам необходимо добавить автономный контракт `Offer`, который и представляет из себя оферту и контракты токенв `Airalab Ether leger`, `Airalab Credits` он нам понадобится для взаимодествия с `Market`.  
+Далее, нам необходимо добавить автономный контракт `Offer`, который и представляет из себя оферту и контракты токенов `Airalab Ether leger`, `Airalab Credits` он нам понадобится для взаимодествия с `Market`.  
 Адреса и JSON interface:
 
 Address `Offer`: `ждем`  
-[JSON interface]((https://raw.githubusercontent.com/airalab/core/master/abi/modules/Offer.json)
+[JSON interface](https://raw.githubusercontent.com/airalab/core/master/abi/modules/Offer.json)
 
 Address `Airalab Ether leger`: `0x15d2b79ded1dd856070fc68e9ff4c1896934b14f`  
-[JSON interface]((https://raw.githubusercontent.com/airalab/core/master/abi/modules/TokenEther.json)
+[JSON interface](https://raw.githubusercontent.com/airalab/core/master/abi/modules/TokenEther.json)
 
 Address `Airalab Credits`: `0x4bc13752568B99036692bA8B1dB2c97d6Df457f4`  
-[JSON interface]((https://raw.githubusercontent.com/airalab/core/master/abi/modules/TokenEmission.json)
+[JSON interface](https://raw.githubusercontent.com/airalab/core/master/abi/modules/TokenEmission.json)
 
 Добавим эти автономные контракты в список наблюдаемых контрактов, таким же способом, что и `Market`.
 
@@ -84,7 +84,7 @@ Address `Airalab Credits`: `0x4bc13752568B99036692bA8B1dB2c97d6Df457f4`
 * First - адрес первого лота.
 * Size - кол-во лотов.
 
-Пока на рынке есть только один лот, он нам и нужен. Его адрес - `0xab15D337be4Bb066d5FA1bbA3805856983a3ef1F`. Лот, это тоже автономный контракт и чтобы с ним взаимодействовать, нужно добавить его в список наблюдаемых. Адрес указан выше, интерфейс - [JSON interface]((https://raw.githubusercontent.com/airalab/core/master/abi/modules/Lot.json)  
+Пока на рынке есть только один лот, он нам и нужен. Его адрес - `0xab15D337be4Bb066d5FA1bbA3805856983a3ef1F`. Лот, это тоже автономный контракт и чтобы с ним взаимодействовать, нужно добавить его в список наблюдаемых. Адрес указан выше, интерфейс - [JSON interface](https://raw.githubusercontent.com/airalab/core/master/abi/modules/Lot.json)  
 Добавим его в список наблюдаемых контрактов и откроем.
 
 ![Screenshot 8](/img/Screenshot_8.png)
@@ -142,7 +142,7 @@ Buy - адрес покупаемого токена
 * Hard offer - адрес для твердой оферты
 * Token - адрес принимаемого в качестве оплаты токена
 
-> Чтобы принять оферту, нужно сделать `Approve`, для нее в токене `Airalab Credits` тем же способом, что описывался для ETH. Не забудьте это сделать.
+> Чтобы принять оферту, нужно сделать `Approve`, для нее в контракте `Airalab Credits` тем же способом, что описывался для ETH. Не забудьте это сделать.
 
 В разделе `Write to contract`. Выберем в выпадающем списке функцию `Accept`. Исполняем контракт нажатием кнопки `Execute`.
 
