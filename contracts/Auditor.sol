@@ -54,15 +54,19 @@ contract Auditor is Operated {
      * @param _value is a emission value
      */
     function emission(uint _value) onlyOwner {
+        // Overflow check
+        if (emissionValue + _value < emissionValue) throw;
+
+        emissionValue += _value;
         // Limit checking
-        if (emissionValue + _value > emissionLimit) throw;
+        if (emissionValue > emissionLimit) throw;
 
         // Emission
-        emissionValue += _value;
         token.emission(_value);
 
         // Hold
-        var holdValue = _value * 100 / holdPercentage;
+        var holdValue = holdPercentage == 0 ? 0
+                      : _value * 100 / holdPercentage;
         token.approve(insuranceHolder, holdValue);
         if (holdValue != insuranceHolder.transfer()) throw;
     }
