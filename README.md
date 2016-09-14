@@ -38,7 +38,7 @@
 > 0x5f7a1f56d0badd35c0d48589ec90e886b5f6ea0c 
 
 ### BuilderIssuerLedger :: [abi](https://raw.githubusercontent.com/airalab/DAO-IPCI/master/abi/builder/BuilderIssuerLedger.json)
-> 0x0eab7640fe66e8481cd06b26467eab2c1a83275d 
+> 0x69f04032ae9e6777fa84eed82fed1a5c02a29881
 
 #### IPCI shares :: [abi](https://raw.githubusercontent.com/airalab/core/master/abi/modules/TokenEmission.json)
 > 0xB3EA0235C4592dc281D66e9ed11f3656a7E955eF
