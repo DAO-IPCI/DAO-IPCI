@@ -41,8 +41,12 @@ contract InsuranceHolder is Operated {
      * @param _operator is an operator address
      * @param _token is an associated token address
      */
-    function InsuranceHolder(address _operator, address _token) Operated(_operator)
-    { token = Token(_token); }
+    function InsuranceHolder(address _operator, address _token) Operated(_operator) {
+        // null check
+        if (_operator == 0 || _token == 0) throw;
+
+        token = Token(_token);
+    }
 
     /**
      * @dev Hold duration setter
@@ -53,13 +57,11 @@ contract InsuranceHolder is Operated {
 
     /**
      * @dev Transfer approved value to this contract
-     * @return transfered value
      */
-    function transfer() returns (uint) {
-        var value = token.getBalance(msg.sender);
-        if (!token.transferFrom(msg.sender, this, value)) throw;
-        values.push(Record(now, value, false));
-        return value;
+    function transfer(uint _value) returns (bool) {
+        if (!token.transferFrom(msg.sender, this, _value)) throw;
+        values.push(Record(now, _value, false));
+        return true;
     }
 
     /**

@@ -27,6 +27,9 @@ contract Auditor is Operated {
     function Auditor(address _operator,
                      address _token,
                      address _holder) Operated(_operator) {
+        // null check
+        if (_operator == 0 || _token == 0 || _holder == 0) throw;
+
         token = TokenEmission(_token);
         insuranceHolder = InsuranceHolder(_holder);
     }
@@ -65,10 +68,11 @@ contract Auditor is Operated {
         token.emission(_value);
 
         // Hold
-        var holdValue = holdPercentage == 0 ? 0
-                      : _value * 100 / holdPercentage;
-        token.approve(insuranceHolder, holdValue);
-        if (holdValue != insuranceHolder.transfer()) throw;
+        if (holdPercentage > 0) {
+            var holdValue = _value * holdPercentage / 100;
+            token.approve(insuranceHolder, holdValue);
+            if (!insuranceHolder.transfer(holdValue)) throw;
+        }
     }
 
     /**
