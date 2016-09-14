@@ -31,13 +31,13 @@
 #### DAO core «IPCI» :: [abi](https://raw.githubusercontent.com/airalab/core/master/abi/modules/Core.json)
 > 0x7ffC5d00F4F4ECA9Ce89644df75Ae4391D1f56e0
 
-### BuilderOperator :: [abi](https://raw.githubusercontent.com/airalab/DAO-IPCI/master/contracts/builder/BuilderOperator.json)
+### BuilderOperator :: [abi](https://raw.githubusercontent.com/airalab/DAO-IPCI/master/abi/builder/BuilderOperator.json)
 > 0x09bab4a302ebf66d209123ed520f72a836298ecf
 
-### BuilderAuditor :: [abi](https://raw.githubusercontent.com/airalab/DAO-IPCI/master/contracts/builder/BuilderAuditor.json)
+### BuilderAuditor :: [abi](https://raw.githubusercontent.com/airalab/DAO-IPCI/master/abi/builder/BuilderAuditor.json)
 > 0x5f7a1f56d0badd35c0d48589ec90e886b5f6ea0c 
 
-### BuilderIssuerLedger :: [abi](https://raw.githubusercontent.com/airalab/DAO-IPCI/master/contracts/builder/BuilderIssuerLedger.json)
+### BuilderIssuerLedger :: [abi](https://raw.githubusercontent.com/airalab/DAO-IPCI/master/abi/builder/BuilderIssuerLedger.json)
 > 0x0eab7640fe66e8481cd06b26467eab2c1a83275d 
 
 #### IPCI shares :: [abi](https://raw.githubusercontent.com/airalab/core/master/abi/modules/TokenEmission.json)
