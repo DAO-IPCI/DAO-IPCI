@@ -45,6 +45,7 @@ contract InsuranceHolder is Operated {
         // null check
         if (_operator == 0 || _token == 0) throw;
 
+        operator = _operator;
         token = Token(_token);
     }
 
