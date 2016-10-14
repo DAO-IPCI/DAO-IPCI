@@ -1,1 +1,0 @@
-export const LOAD_MODULE = 'AUDITOR_LOAD_MODULE'
