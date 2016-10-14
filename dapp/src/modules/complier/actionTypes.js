@@ -1,0 +1,1 @@
+export const LOAD_MODULE = 'COMPLIER_LOAD_MODULE'
