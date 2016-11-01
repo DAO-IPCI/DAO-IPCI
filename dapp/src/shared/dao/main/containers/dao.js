@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
 import { Dao } from '../components';
+import Spin from '../../../../shared/components/common/spin'
 import { load, removeModule } from '../../../../modules/dao/actions';
 
 class Container extends Component {
@@ -12,10 +13,13 @@ class Container extends Component {
     }
   }
   render() {
+    if (_.isEmpty(this.props.address)) {
+      return <p>не выбрано dao</p>
+    }
     if (this.props.isLoad) {
       return <Dao {...this.props} />
     }
-    return <p>...</p>
+    return <Spin />
   }
 }
 

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
 import { Main } from '../components'
+import Spin from '../../../../shared/components/common/spin'
 import { loadModule } from '../../../../modules/tokenAcl/actions';
 
 class Container extends Component {
@@ -13,7 +14,7 @@ class Container extends Component {
     if (this.props.isModule) {
       return <Main {...this.props} />
     }
-    return <p>...</p>
+    return <Spin />
   }
 }
 

@@ -1,35 +1,64 @@
 import _ from 'lodash'
 import { LOAD_MODULE } from './actionTypes'
-import { loadAbiByName, getContract } from '../../utils/web3'
+import { getContractByAbiName } from '../../utils/web3'
 import { submit as submitContract, send as sendContract } from '../dao/actions'
 
 export function loadModule(auditorAddress) {
   return (dispatch) => {
     let auditor
-    loadAbiByName('Auditor')
-      .then((abi) => {
-        auditor = getContract(abi, auditorAddress);
-        return loadAbiByName('TokenEmission')
+    let token
+    let decimals
+    let symbol
+    const payload = {
+      address: auditorAddress
+    }
+    getContractByAbiName('Auditor', auditorAddress)
+      .then((contract) => {
+        auditor = contract
+        return auditor.call('token')
       })
-      .then((tokenAbi) => {
-        const tokenAddr = auditor.token()
-        const token = getContract(tokenAbi, tokenAddr)
-        let decimals = 1
-        if (token.decimals() > 0) {
-          decimals = Math.pow(10, token.decimals())
+      .then((result) => {
+        payload.token = result
+        return getContractByAbiName('TokenEmission', payload.token)
+      })
+      .then((contract) => {
+        token = contract
+        return token.call('decimals')
+      })
+      .then((result) => {
+        decimals = result
+        if (decimals > 0) {
+          decimals = Math.pow(10, decimals)
+        } else {
+          decimals = 1
         }
-        const balance = _.toNumber(token.balanceOf(auditorAddress))
+        return token.call('symbol')
+      })
+      .then((result) => {
+        symbol = result
+        return token.call('balanceOf', [auditorAddress])
+      })
+      .then((result) => {
+        payload.balance = (_.toNumber(result) / decimals) + ' ' + symbol
+        return auditor.call('insuranceHolder')
+      })
+      .then((result) => {
+        payload.holder = result
+        return auditor.call('emissionValue')
+      })
+      .then((result) => {
+        payload.value = _.toNumber(result)
+        return auditor.call('emissionLimit')
+      })
+      .then((result) => {
+        payload.limit = _.toNumber(result)
+        return auditor.call('holdPercentage')
+      })
+      .then((result) => {
+        payload.percentage = _.toNumber(result)
         dispatch({
           type: LOAD_MODULE,
-          payload: {
-            address: auditorAddress,
-            token: tokenAddr,
-            holder: auditor.insuranceHolder(),
-            value: _.toNumber(auditor.emissionValue()),
-            limit: _.toNumber(auditor.emissionLimit()),
-            percentage: _.toNumber(auditor.holdPercentage()),
-            balance: (balance / decimals) + ' ' + token.symbol()
-          }
+          payload
         })
       })
   }

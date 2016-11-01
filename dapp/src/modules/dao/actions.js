@@ -2,7 +2,8 @@ import { startSubmit, stopSubmit, reset } from 'redux-form';
 import _ from 'lodash'
 import { hashHistory } from 'react-router';
 import { LOAD, ADD_MODULE } from './actionTypes'
-import { loadAbiByName, getContract, blockchain, getTransaction, createModule, createModuleWatch, tx, getModuleAddress } from '../../utils/web3'
+import { loadAbiByName, getContract, blockchain, getTransaction, createModule, createModuleWatch, getModuleAddress } from '../../utils/web3'
+import { promiseFor } from '../../utils/helper'
 import { flashMessage } from '../app/actions'
 import { loadModule as aclLoadModule } from '../acl/actions'
 // import { loadModule as tokenLoadModule } from '../token/actions'
@@ -88,47 +89,60 @@ export function load(daoAddress) {
             modules: []
           }
         ]
-        for (
-          let address = core.firstModule();
-          address !== '0x0000000000000000000000000000000000000000';
-          address = core.nextModule(address)
-        ) {
-          let type = core.interfaceOf(address)
-          if (type === 'https://github.com/airalab/core/blob/master/sol/acl/ACLStorage.sol') {
-            type = 'acl'
-          }
-          const block = _.find(blocks, ['type', type])
-          if (block) {
-            block.modules.push({
-              name: core.getModuleName(address),
-              address
+        core.call('firstModule')
+          .then(firstAddress => (
+            promiseFor(address => address !== '0x0000000000000000000000000000000000000000', (address) => {
+              core.call('interfaceOf', [address])
+                .then((type) => {
+                  if (type === 'https://github.com/airalab/core/blob/master/sol/acl/ACLStorage.sol') {
+                    return 'acl'
+                  }
+                  return type
+                })
+                .then((type) => {
+                  const block = _.find(blocks, ['type', type])
+                  if (block) {
+                    core.call('getModuleName', [address])
+                      .then((name) => {
+                        block.modules.push({
+                          name,
+                          address
+                        })
+                      })
+                  }
+                })
+              return core.call('nextModule', [address])
+            }, firstAddress)
+          ))
+          .then(() => core.call('name'))
+          .then((name) => {
+            dispatch({
+              type: LOAD,
+              payload: {
+                address: daoAddress,
+                name,
+                blocks
+              }
             })
-          }
-        }
-        dispatch({
-          type: LOAD,
-          payload: {
-            address: daoAddress,
-            name: core.name(),
-            blocks
-          }
-        })
+          });
         // dispatch(observeModules())
-        return blocks
       })
   }
 }
 
 export function create(dispatch, module, values) {
   let builderAddress
+  let builder
   return getModuleAddress(module)
     .then((address) => {
       builderAddress = address;
       return loadAbiByName(module)
     })
     .then((abi) => {
-      const builder = getContract(abi, builderAddress)
-      const txId = createModule(builder, values)
+      builder = getContract(abi, builderAddress)
+      return createModule(builder, values)
+    })
+    .then((txId) => {
       dispatch(flashMessage('txId: ' + txId))
       return createModuleWatch(builder)
     })
@@ -138,7 +152,7 @@ export function setModule(dispatch, daoAddress, name, address, type) {
   return loadAbiByName('Core')
     .then((abi) => {
       const core = getContract(abi, daoAddress);
-      return tx(core, 'setModule', [name, address, type, true])
+      return core.send('setModule', [name, address, type, true])
     })
     .then((txId) => {
       dispatch(flashMessage('txId: ' + txId))
@@ -217,7 +231,7 @@ function run(dispatch, address, abiName, action, values) {
   return loadAbiByName(abiName)
     .then((abi) => {
       const contract = getContract(abi, address);
-      return tx(contract, action, values)
+      return contract.send(action, values)
     })
     .then((txId) => {
       dispatch(flashMessage('txId: ' + txId))
@@ -246,17 +260,12 @@ export function send(dispatch, address, abiName, action, values) {
     })
 }
 
-export function call(dispatch, formName, address, abiName, action, form) {
+export function call(dispatch, formName, contract, action, form) {
   dispatch(startSubmit(formName));
-  let contract
-  return loadAbiByName(abiName)
-    .then((abi) => {
-      contract = getContract(abi, address);
-      return contract[action]([...(_.values(form))])
-    })
+  return contract.call(action, _.values(form))
     .then((result) => {
       dispatch(stopSubmit(formName))
-      return [contract, result]
+      return result
     })
     .catch(() => {
       dispatch(stopSubmit(formName))

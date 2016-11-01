@@ -1,9 +1,10 @@
-import { Promise } from 'es6-promise'
+import Promise from 'bluebird'
 import _ from 'lodash'
 import axios from 'axios'
 import Blockchain from './blockchain'
 import abis from './abi'
 import addresses from './address'
+import Contract from './contract'
 
 export function getWeb3() {
   if (typeof web3 !== 'undefined' && typeof Web3 !== 'undefined') {
@@ -41,12 +42,18 @@ export function isAccounts() {
 }
 
 export function transfer(from, to, value, isEther = true) {
-  return web3.eth.sendTransaction({
-    from,
-    to,
-    value: (isEther) ? web3.toWei(value, 'ether') : value,
-    gas: 3000000
-  })
+  return new Promise((resolve, reject) => {
+    web3.eth.sendTransaction({
+      from,
+      to,
+      value: (isEther) ? web3.toWei(value, 'ether') : value
+    }, (error, result) => {
+      if (error) {
+        reject(error);
+      }
+      resolve(result);
+    })
+  });
 }
 
 export function getTransaction(txId) {
@@ -54,16 +61,8 @@ export function getTransaction(txId) {
 }
 
 export function getContract(abi, address) {
-  return web3.eth.contract(abi).at(address)
+  return new Contract(abi, address)
 }
-
-// export function getUrlAbi(contract) {
-//   const contractNew = contract.split(' ').pop()
-//   if (/builder/i.test(contractNew)) {
-//     return 'https://raw.githubusercontent.com/airalab/DAO-IPCI/master/abi/builder/' + contractNew + '.json'
-//   }
-//   return 'https://raw.githubusercontent.com/airalab/DAO-IPCI/master/abi/modules/' + contractNew + '.json'
-// }
 
 export function getUrlAbi(contract) {
   const contractNew = contract.split(' ').pop()
@@ -87,31 +86,12 @@ export function loadAbiByName(name) {
   return loadAbi(getUrlAbi(name));
 }
 
+export function getContractByAbiName(name, address) {
+  return loadAbiByName(name)
+    .then(abi => getContract(abi, address))
+}
+
 export const blockchain = new Blockchain(getWeb3())
-
-export function tx(cotract, func, args, txArgs = {}) {
-  const params = args.concat([
-    _.merge({
-      from: coinbase(),
-      gas: 3000000
-    }, txArgs)
-  ]);
-  console.log('tx', func);
-  console.log(params);
-  return cotract[func](...params)
-}
-
-export function watch(cotract, func) {
-  return new Promise((resolve, reject) => {
-    const event = cotract[func]({}, '', (error, result) => {
-      if (error) {
-        reject(error);
-      }
-      event.stopWatching()
-      resolve(result.args);
-    })
-  });
-}
 
 export function getFactory() {
   return loadAbiByName('Core')
@@ -125,14 +105,15 @@ export function getModuleAddress(module) {
     });
   }
   return getFactory()
-    .then(factory => factory.getModule('Aira ' + module))
+    .then(factory => factory.call('getModule', ['Aira ' + module]))
 }
 
 export function createModule(cotract, args) {
-  return tx(cotract, 'create', args, { value: cotract.buildingCostWei() })
+  return cotract.call('buildingCostWei')
+    .then(result => cotract.send('create', args, { value: result }))
 }
 
 export function createModuleWatch(cotract) {
-  return watch(cotract, 'Builded')
+  return cotract.watch('Builded')
     .then(params => params.instance)
 }

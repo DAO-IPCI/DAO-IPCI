@@ -1,32 +1,52 @@
 import _ from 'lodash'
 import { LOAD_MODULE, CALL_FUNC } from './actionTypes'
-import { loadAbiByName, getContract } from '../../utils/web3'
+import { getContractByAbiName } from '../../utils/web3'
 import { submit as submitContract, send as sendContract, call as callContract } from '../dao/actions'
 
 export function loadModule(holderAddress) {
   return (dispatch) => {
     let holder
-    loadAbiByName('InsuranceHolder')
-      .then((abi) => {
-        holder = getContract(abi, holderAddress);
-        return loadAbiByName('TokenEmission')
+    let token
+    let decimals
+    let symbol
+    const payload = {
+      address: holderAddress
+    }
+    getContractByAbiName('InsuranceHolder', holderAddress)
+      .then((contract) => {
+        holder = contract
+        return holder.call('token')
       })
-      .then((tokenAbi) => {
-        const tokenAddr = holder.token()
-        const token = getContract(tokenAbi, tokenAddr)
-        let decimals = 1
-        if (token.decimals() > 0) {
-          decimals = Math.pow(10, token.decimals())
+      .then((result) => {
+        payload.token = result
+        return holder.call('holdDuration')
+      })
+      .then((result) => {
+        payload.holdDuration = _.toNumber(result)
+        return getContractByAbiName('TokenEmission', payload.token)
+      })
+      .then((contract) => {
+        token = contract
+        return token.call('decimals')
+      })
+      .then((result) => {
+        decimals = result
+        if (decimals > 0) {
+          decimals = Math.pow(10, decimals)
+        } else {
+          decimals = 1
         }
-        const balance = _.toNumber(token.balanceOf(holderAddress))
+        return token.call('symbol')
+      })
+      .then((result) => {
+        symbol = result
+        return token.call('balanceOf', [holderAddress])
+      })
+      .then((result) => {
+        payload.balance = (_.toNumber(result) / decimals) + ' ' + symbol
         dispatch({
           type: LOAD_MODULE,
-          payload: {
-            address: holderAddress,
-            token: tokenAddr,
-            holdDuration: _.toNumber(holder.holdDuration()),
-            balance: (balance / decimals) + ' ' + token.symbol()
-          }
+          payload
         })
       })
   }
@@ -63,15 +83,20 @@ function normalResultCall(contract, action, result) {
 
 export function call(address, action, form) {
   return (dispatch) => {
-    callContract(dispatch, 'FormHolderFunc', address, 'InsuranceHolder', action, form)
-      .then((ret) => {
+    let contract
+    getContractByAbiName('InsuranceHolder', address)
+      .then((result) => {
+        contract = result
+        return callContract(dispatch, 'FormHolderFunc', contract, action, form)
+      })
+      .then((result) => {
         dispatch({
           type: CALL_FUNC,
           payload: {
             address,
             action,
             input: form,
-            output: normalResultCall(ret[0], action, ret[1])
+            output: normalResultCall(contract, action, result)
           }
         })
       })

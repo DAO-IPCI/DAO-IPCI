@@ -1,17 +1,18 @@
-/* eslint no-constant-condition: 0 */
 import { startSubmit, stopSubmit, reset } from 'redux-form'
 import _ from 'lodash'
 import { LOAD_MODULE } from './actionTypes'
-import { loadAbiByName, getContract, blockchain, tx, coinbase } from '../../utils/web3'
+import { getContractByAbiName, loadAbiByName, getContract, blockchain, coinbase } from '../../utils/web3'
+import { promiseFor } from '../../utils/helper'
 import { flashMessage } from '../app/actions'
 
 export function loadModule(marketAddress) {
   return (dispatch) => {
     let market
     let tokenAbi
-    loadAbiByName('Market')
-      .then((abi) => {
-        market = getContract(abi, marketAddress);
+    let lotAbi
+    getContractByAbiName('Market', marketAddress)
+      .then((contract) => {
+        market = contract
         return loadAbiByName('TokenEmission')
       })
       .then((abi) => {
@@ -19,62 +20,104 @@ export function loadModule(marketAddress) {
         return loadAbiByName('Lot')
       })
       .then((abi) => {
+        lotAbi = abi
+      })
+      .then(() => {
         const lots = [];
-        for (
-          let address = market.first();
-          address !== '0x0000000000000000000000000000000000000000';
-          address = market.next(address)
-        ) {
-          const lot = getContract(abi, address)
-          if (!lot.closed()) {
-            const sale = lot.sale()
-            const buy = lot.buy()
-            const tokenSale = getContract(tokenAbi, sale)
-            const tokenBuy = getContract(tokenAbi, buy)
-            let saleApprove = _.toNumber(tokenSale.allowance(lot.seller(), address))
-            const saleBalance = _.toNumber(tokenSale.balanceOf(lot.seller()))
-            saleApprove = saleApprove > saleBalance ? saleBalance : saleApprove;
-            let buyApprove = _.toNumber(tokenBuy.allowance(coinbase(), address))
-            const buyBalance = _.toNumber(tokenBuy.balanceOf(coinbase()))
-            buyApprove = buyApprove > buyBalance ? buyBalance : buyApprove;
-            try {
-              lots.push({
-                address,
-                seller: lot.seller(),
-                buyer: lot.buyer(),
-                sale_address: sale,
-                buy_address: buy,
-                sale_name: tokenSale.name(),
-                buy_name: tokenBuy.name(),
-                sale_quantity: _.toNumber(lot.quantity_sale()),
-                buy_quantity: _.toNumber(lot.quantity_buy()),
-                approve_sale_quantity: saleApprove,
-                approve_buy_quantity: buyApprove,
-                my: (lot.seller() === coinbase())
-              })
-            } catch (e) {
-              console.log('load lot err token info', e);
-            }
-          }
-        }
-        dispatch({
-          type: LOAD_MODULE,
-          payload: {
-            address: marketAddress,
-            lots
-          }
-        })
+        market.call('first')
+          .then(firstAddress => (
+            promiseFor(address => address !== '0x0000000000000000000000000000000000000000', (address) => {
+              const lot = getContract(lotAbi, address)
+              lot.call('closed')
+                .then((closed) => {
+                  if (!closed) {
+                    const item = {
+                      address
+                    }
+                    let tokenSale
+                    let tokenBuy
+                    let saleApprove
+                    let buyApprove
+                    lot.call('seller')
+                      .then((result) => {
+                        item.seller = result
+                        item.my = (result === coinbase())
+                        return lot.call('buyer')
+                      })
+                      .then((result) => {
+                        item.buyer = result
+                        return lot.call('quantity_sale')
+                      })
+                      .then((result) => {
+                        item.sale_quantity = result
+                        return lot.call('quantity_buy')
+                      })
+                      .then((result) => {
+                        item.buy_quantity = result
+                        return lot.call('sale')
+                      })
+                      .then((result) => {
+                        item.sale_address = result
+                        tokenSale = getContract(tokenAbi, item.sale_address)
+                        return lot.call('buy')
+                      })
+                      .then((result) => {
+                        item.buy_address = result
+                        tokenBuy = getContract(tokenAbi, item.buy_address)
+                      })
+                      .then(() => tokenSale.call('name'))
+                      .then((result) => {
+                        item.sale_name = result
+                      })
+                      .then(() => tokenBuy.call('name'))
+                      .then((result) => {
+                        item.buy_name = result
+                      })
+                      .then(() => tokenSale.call('allowance', [item.seller, address]))
+                      .then((result) => {
+                        saleApprove = _.toNumber(result)
+                        return tokenSale.call('balanceOf', [item.seller])
+                      })
+                      .then((result) => {
+                        const saleBalance = _.toNumber(result)
+                        item.approve_sale_quantity = saleApprove > saleBalance ?
+                          saleBalance : saleApprove;
+                      })
+                      .then(() => tokenBuy.call('allowance', [coinbase(), address]))
+                      .then((result) => {
+                        buyApprove = _.toNumber(result)
+                        return tokenBuy.call('balanceOf', [coinbase()])
+                      })
+                      .then((result) => {
+                        const buyBalance = _.toNumber(result)
+                        item.approve_sale_quantity = buyApprove > buyBalance ?
+                          buyBalance : buyApprove;
+                      })
+                      .then(() => {
+                        lots.push(item)
+                      })
+                  }
+                })
+              return market.call('next', [address])
+            }, firstAddress)
+          ))
+          .then(() => {
+            dispatch({
+              type: LOAD_MODULE,
+              payload: {
+                address: marketAddress,
+                lots
+              }
+            })
+          });
       })
   }
 }
 
 export function dealLot(marketAddress, address) {
   return (dispatch) => {
-    loadAbiByName('Lot')
-      .then((abi) => {
-        const contract = getContract(abi, address);
-        return tx(contract, 'deal', [coinbase()])
-      })
+    getContractByAbiName('Lot', address)
+      .then(contract => contract.send('deal', [coinbase()]))
       .then((txId) => {
         dispatch(flashMessage('tx: ' + txId))
         return blockchain.subscribeTx(txId)
@@ -88,11 +131,8 @@ export function dealLot(marketAddress, address) {
 
 export function removeLot(marketAddress, address) {
   return (dispatch) => {
-    loadAbiByName('Market')
-      .then((abi) => {
-        const contract = getContract(abi, marketAddress);
-        return tx(contract, 'remove', [address])
-      })
+    getContractByAbiName('Market', marketAddress)
+      .then(contract => contract.send('remove', [address]))
       .then((txId) => {
         dispatch(flashMessage('tx: ' + txId))
         return blockchain.subscribeTx(txId)
@@ -106,11 +146,8 @@ export function removeLot(marketAddress, address) {
 
 export function approveLot(marketAddress, lot, token, value) {
   return (dispatch) => {
-    loadAbiByName('TokenEmission')
-      .then((abi) => {
-        const contract = getContract(abi, token);
-        return tx(contract, 'approve', [lot, value])
-      })
+    getContractByAbiName('TokenEmission', token)
+      .then(contract => contract.send('approve', [lot, value]))
       .then((txId) => {
         dispatch(flashMessage('tx: ' + txId))
         return blockchain.subscribeTx(txId)
@@ -123,11 +160,8 @@ export function approveLot(marketAddress, lot, token, value) {
 }
 
 function run(dispatch, address, func, values) {
-  return loadAbiByName('Market')
-    .then((abi) => {
-      const market = getContract(abi, address);
-      return tx(market, func, values)
-    })
+  return getContractByAbiName('Market', address)
+    .then(contract => contract.send(func, values))
     .then((txId) => {
       dispatch(flashMessage('txId: ' + txId))
       return blockchain.subscribeTx(txId)

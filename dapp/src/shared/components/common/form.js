@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import _ from 'lodash'
 import Auto from './auto'
+import Spin from './spin'
 
 const Form = (props) => {
   const {
@@ -52,12 +53,11 @@ const Form = (props) => {
       }
       <div className="form-group">
         <div className="text-center">
-          <input
+          <button
             type="submit"
             className="btn btn-default"
             disabled={submitting}
-            value={submitting ? '...' : 'Подтвердить'}
-          />
+          >{submitting ? <Spin btn /> : 'Подтвердить'}</button>
         </div>
       </div>
       {error && <div>{error}</div>}

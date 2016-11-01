@@ -1,42 +1,48 @@
-/* eslint no-constant-condition: 0 */
 import { LOAD_MODULE } from './actionTypes'
-import { loadAbiByName, getContract } from '../../utils/web3'
+import { getContractByAbiName } from '../../utils/web3'
 import { submit as submitContract, send as sendContract } from '../dao/actions'
+import { promiseFor } from '../../utils/helper'
 
 export function loadModule(aclAddress) {
   return (dispatch) => {
-    loadAbiByName('ACLStorage')
-      .then((abi) => {
-        const acl = getContract(abi, aclAddress);
+    getContractByAbiName('ACLStorage', aclAddress)
+      .then((acl) => {
         const groups = [];
-        try {
-          let index = 0
-          while (true) {
-            const group = acl.group(index)
-            const members = []
-            for (
-              let address = acl.memberFirst(group);
-              address !== '0x0000000000000000000000000000000000000000';
-              address = acl.memberNext(group, address)
-            ) {
-              members.push(address)
+        acl.call('groupLength')
+          .then((result) => {
+            if (result > 0) {
+              return promiseFor(index => index < result, index => (
+                acl.call('group', [index])
+                  .then((group) => {
+                    const members = []
+                    return acl.call('memberFirst', [group])
+                      .then(firstAddress => (
+                        promiseFor(address => address !== '0x0000000000000000000000000000000000000000', (address) => {
+                          members.push(address)
+                          return acl.call('memberNext', [group, address])
+                        }, firstAddress)
+                      ))
+                      .then(() => (
+                        groups.push({
+                          name: group,
+                          members
+                        })
+                      ))
+                  })
+                  .then(() => index + 1)
+              ), 0)
             }
-            groups.push({
-              name: group,
-              members
+            return false;
+          })
+          .then(() => {
+            dispatch({
+              type: LOAD_MODULE,
+              payload: {
+                address: aclAddress,
+                groups
+              }
             })
-            index += 1
-          }
-        } catch (err) {
-          console.log(err);
-        }
-        dispatch({
-          type: LOAD_MODULE,
-          payload: {
-            address: aclAddress,
-            groups
-          }
-        })
+          });
       })
   }
 }

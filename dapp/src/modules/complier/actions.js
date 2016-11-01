@@ -1,5 +1,4 @@
 import { LOAD_MODULE } from './actionTypes'
-// import { loadAbiByName, getContract } from '../../utils/web3'
 import { submit as submitContract, send as sendContract } from '../dao/actions'
 
 export function loadModule(complierAddress) {
@@ -10,16 +9,6 @@ export function loadModule(complierAddress) {
         address: complierAddress
       }
     })
-    // loadAbiByName('Complier')
-    //   .then((abi) => {
-    //     const complier = getContract(abi, complierAddress);
-    //     dispatch({
-    //       type: LOAD_MODULE,
-    //       payload: {
-    //         address: complierAddress
-    //       }
-    //     })
-    //   })
   }
 }
 

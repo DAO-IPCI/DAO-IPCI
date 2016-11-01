@@ -1,24 +1,47 @@
+import _ from 'lodash'
 import { LOAD_MODULE, CALL_FUNC } from './actionTypes'
-import { loadAbiByName, getContract, coinbase } from '../../utils/web3'
+import { getContractByAbiName, coinbase } from '../../utils/web3'
 import { submit as submitContract, send as sendContract, call as callContract } from '../dao/actions'
 
 export function loadModule(tokenAddress) {
   return (dispatch) => {
-    loadAbiByName('TokenEmission')
-      .then((abi) => {
-        const token = getContract(abi, tokenAddress);
-        let decimals = 1
-        if (token.decimals() > 0) {
-          decimals = Math.pow(10, token.decimals())
+    let token
+    let decimals
+    let symbol
+    const payload = {
+      address: tokenAddress
+    }
+    getContractByAbiName('TokenEmission', tokenAddress)
+      .then((contract) => {
+        token = contract
+        return token.call('name')
+      })
+      .then((name) => {
+        payload.name = name
+        return token.call('decimals')
+      })
+      .then((result) => {
+        decimals = result
+        if (decimals > 0) {
+          decimals = Math.pow(10, decimals)
+        } else {
+          decimals = 1
         }
+        return token.call('symbol')
+      })
+      .then((result) => {
+        symbol = result
+        return token.call('balanceOf', [coinbase()])
+      })
+      .then((result) => {
+        payload.balance = (_.toNumber(result) / decimals) + ' ' + symbol
+        return token.call('totalSupply')
+      })
+      .then((result) => {
+        payload.totalSupply = (_.toNumber(result) / decimals) + ' ' + symbol
         dispatch({
           type: LOAD_MODULE,
-          payload: {
-            address: tokenAddress,
-            name: token.name(),
-            totalSupply: (token.totalSupply() / decimals) + ' ' + token.symbol(),
-            balance: (token.balanceOf(coinbase()) / decimals) + ' ' + token.symbol()
-          }
+          payload
         })
       })
   }
@@ -42,28 +65,43 @@ export function send(address, action, values) {
   }
 }
 
-function normalResultCall(contract, action, result) {
+function normalResultCall(contract, action, output) {
   if (action === 'balanceOf') {
-    let decimals = 1
-    if (contract.decimals() > 0) {
-      decimals = Math.pow(10, contract.decimals())
-    }
-    return (result.toString() / decimals) + ' ' + contract.symbol()
+    let decimals
+    return contract.call('decimals')
+      .then((result) => {
+        decimals = result
+        return contract.call('symbol')
+      })
+      .then((symbol) => {
+        if (decimals > 0) {
+          decimals = Math.pow(10, decimals)
+        } else {
+          decimals = 1
+        }
+        return (_.toNumber(output) / decimals) + ' ' + symbol
+      })
   }
-  return result.toString()
+  return output.toString()
 }
 
 export function call(address, action, form) {
   return (dispatch) => {
-    callContract(dispatch, 'FormTokenFunc', address, 'TokenEmission', action, form)
-      .then((ret) => {
+    let contract
+    getContractByAbiName('TokenEmission', address)
+      .then((result) => {
+        contract = result
+        return callContract(dispatch, 'FormTokenFunc', contract, action, form)
+      })
+      .then(result => normalResultCall(contract, action, result))
+      .then((result) => {
         dispatch({
           type: CALL_FUNC,
           payload: {
             address,
             action,
             input: form,
-            output: normalResultCall(ret[0], action, ret[1])
+            output: result
           }
         })
       })
