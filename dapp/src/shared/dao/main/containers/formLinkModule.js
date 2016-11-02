@@ -18,7 +18,7 @@ function mapStateToProps(state, props) {
         },
         {
           name: 'Токен ACL',
-          value: 'token-acl'
+          value: 'tokenAcl'
         },
         {
           name: 'Аудитор',
