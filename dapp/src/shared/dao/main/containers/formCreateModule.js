@@ -25,7 +25,11 @@ function mapStateToProps(state, props) {
   } else if (props.module === 'auditor') {
     return {
       fields: ['operator', 'token', 'holder'],
-      labels: ['Адрес оператора', 'Адрес токена', 'Адрес holder']
+      labels: ['Адрес оператора', 'Адрес токена', 'Адрес holder'],
+      autocomplete: {
+        token: true,
+        holder: true
+      }
     }
   } else if (props.module === 'complier') {
     return {
