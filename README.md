@@ -4,6 +4,8 @@
 - **Operator of the Program** testnet address: `0x236EdcF07D0dF1C09E096719Eec3d7f53C8468F4`
 - **DAO curator** testnet address: `0x6EFBA8fb2AC5b6730729a972eC224426a287C3Ad`
 
+### Dapp web address: [https://airalab.github.io/DAO-IPCI/](https://airalab.github.io/DAO-IPCI/)
+
 ## Workflow
 1. **Operator of the Program** create new **Auditor** Access Control List (ACL) for each Integrated Program Mitigation Units (IPMU) ledger.
 2. **Issuer** send transaction to `IPMU ledger builder` with name of selected **Auditor** Access Control List. Only **Auditor** from **Auditor** Access Control List can issue new IPMU tokens.
