@@ -81,7 +81,9 @@ export default class Contract {
         if (error) {
           reject(error);
         }
-        event.stopWatching()
+        event.stopWatching((e, r) => {
+          console.log(e, r);
+        })
         resolve(result.args);
       })
     });
