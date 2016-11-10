@@ -13,7 +13,7 @@ export default class Notification extends Component {
   close(message) {
     const { onClose } = this.props
     if (!_.isEmpty(message) !== '') {
-      setTimeout(onClose, 5000)
+      setTimeout(onClose, 10000)
     }
   }
 
