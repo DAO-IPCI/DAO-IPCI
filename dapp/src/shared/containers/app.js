@@ -8,6 +8,7 @@ import Header from '../components/app/header'
 import Footer from '../components/app/footer'
 import Notification from '../components/app/notification'
 import { flashMessage, setDaoAddress } from '../../modules/app/actions';
+import { load } from '../../modules/log/actions';
 
 import './style.css'
 
@@ -17,6 +18,7 @@ class App extends Component {
     if (address) {
       this.props.setDaoAddress(address)
     }
+    this.props.loadLog()
   }
   render() {
     let content
@@ -54,11 +56,13 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   const actions = bindActionCreators({
     flashMessage,
-    setDaoAddress
+    setDaoAddress,
+    load
   }, dispatch)
   return {
     flashMessage: actions.flashMessage,
-    setDaoAddress: actions.setDaoAddress
+    setDaoAddress: actions.setDaoAddress,
+    loadLog: actions.load
   }
 }
 
