@@ -13,7 +13,7 @@ function mapStateToProps(state, props) {
           value: 'token-acl'
         },
         {
-          name: 'Страховой случай',
+          name: 'Страховой контракт',
           value: 'holder'
         },
         {

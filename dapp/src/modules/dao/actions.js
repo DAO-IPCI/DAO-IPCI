@@ -59,7 +59,7 @@ export function load(daoAddress) {
             modules: []
           },
           {
-            name: 'Страховой случай',
+            name: 'Страховые контракты',
             type: 'holder',
             modules: []
           },
