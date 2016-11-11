@@ -9,7 +9,7 @@ const Main = (props) => {
     <Link to={'/dao/holder/set-hold-duration/' + address} className="btn btn-default">Установить время удержания</Link>
     <Link to={'/dao/holder/withdraw/' + address} className="btn btn-default">Вывод средств</Link>
   </div>)
-  return (<Layout title={'Holder'} address={address} menu={menu}>
+  return (<Layout title={'Страховой случай'} address={address} menu={menu}>
     <p><b>Токен</b>: <Link to={'/dao/token-acl/' + token}>{token}</Link> ({balance})</p>
     <p><b>Время удержания</b>: {holdDuration} сек.</p>
     <div className="panel panel-default">

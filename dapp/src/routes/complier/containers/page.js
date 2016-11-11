@@ -34,10 +34,10 @@ Container.contextTypes = {
 function mapStateToProps(state) {
   return {
     dao_address: state.app.dao_address,
-    title: 'Потредитель',
+    title: 'Complier',
     menu: [
       {
-        name: 'Cоздать потребителя',
+        name: 'Cоздать контракт потребителя',
         href: '/dao/create/complier'
       }
     ]

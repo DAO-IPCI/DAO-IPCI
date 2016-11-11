@@ -9,7 +9,7 @@ const Main = (props) => {
     <Link to={'/dao/acl/create-group/' + address} className="btn btn-default">Создать группу</Link>
     <Link to={'/dao/acl/add-member/' + address} className="btn btn-default">Добавить адрес</Link>
   </div>)
-  return (<Layout title={'ACL'} address={address} menu={menu}>
+  return (<Layout title={'Группа аудиторов'} address={address} menu={menu}>
     {groups.map((group, index) => <Group key={index} {...group} onRemoveMember={onRemoveMember} />)}
   </Layout>)
 }

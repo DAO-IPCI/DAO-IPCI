@@ -37,7 +37,7 @@ function mapStateToProps(state) {
     title: 'Эмитент',
     menu: [
       {
-        name: 'Cоздать токен',
+        name: 'Cоздать углеродный реестр',
         href: '/dao/create/issuer'
       }
     ]

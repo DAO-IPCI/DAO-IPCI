@@ -37,7 +37,7 @@ function mapStateToProps(state) {
     title: 'Аудитор',
     menu: [
       {
-        name: 'Cоздать аудитора',
+        name: 'Cоздать контракт аудитора',
         href: '/dao/create/auditor'
       }
     ]

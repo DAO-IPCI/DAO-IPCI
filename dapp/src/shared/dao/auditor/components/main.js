@@ -8,9 +8,9 @@ const Main = (props) => {
     <Link to={'/dao/auditor/set-emission-limit/' + address} className="btn btn-default">Установить лимит</Link>
     <Link to={'/dao/auditor/set-hold-percentage/' + address} className="btn btn-default">Установить размер страхового взноса</Link>
     <Link to={'/dao/auditor/emission/' + address} className="btn btn-default">Эмиссия</Link>
-    <Link to={'/dao/auditor/transfer/' + address} className="btn btn-default">Перевод</Link>
+    <Link to={'/dao/auditor/transfer/' + address} className="btn btn-default">Перевод эмитенту</Link>
   </div>)
-  return (<Layout title={'Auditor'} address={address} menu={menu}>
+  return (<Layout title={'Аудитор'} address={address} menu={menu}>
     <p><b>Токен</b>: <Link to={'/dao/token-acl/' + token}>{token}</Link> ({balance})</p>
     <p><b>Страховка</b>: <Link to={'/dao/holder/' + holder}>{holder}</Link></p>
     <p><b>Кол-во проэмиссированого</b>: {value}</p>

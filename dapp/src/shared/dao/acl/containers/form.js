@@ -8,7 +8,7 @@ function mapStateToProps(state, props) {
     return {
       fields: ['group', 'address'],
       selects: {},
-      labels: ['Название группы', 'Адрес участника'],
+      labels: ['Название группы аудитора', 'Адрес контракта аудитора'],
       placeholders: ['Group', '0x111111111111111'],
       autocomplete: {
         address: true

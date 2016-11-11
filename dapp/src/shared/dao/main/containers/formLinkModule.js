@@ -9,32 +9,32 @@ function mapStateToProps(state, props) {
     selects: {
       type: [
         {
+          name: 'Углеродный реестр',
+          value: 'tokenAcl'
+        },
+        {
           name: 'Страховой случай',
-          value: 'token'
+          value: 'holder'
+        },
+        {
+          name: 'Контракт аудитора',
+          value: 'auditor'
+        },
+        {
+          name: 'Контракт сomplier',
+          value: 'complier'
+        },
+        {
+          name: 'Группа аудиторов',
+          value: 'acl'
         },
         {
           name: 'Токен',
           value: 'token'
         },
         {
-          name: 'Токен ACL',
-          value: 'tokenAcl'
-        },
-        {
-          name: 'Аудитор',
-          value: 'auditor'
-        },
-        {
-          name: 'Потребитель',
-          value: 'complier'
-        },
-        {
           name: 'Рынок',
           value: 'market'
-        },
-        {
-          name: 'ACL',
-          value: 'acl'
         }
       ]
     },

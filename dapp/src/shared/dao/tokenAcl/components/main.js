@@ -10,12 +10,12 @@ const Main = (props) => {
     <Link to={'/dao/token-acl/approve/' + address} className="btn btn-default">Апрув</Link>
     <Link to={'/dao/token-acl/emission/' + address} className="btn btn-default">Эмиссия</Link>
   </div>)
-  return (<Layout title={'TokenAcl' + name} address={address} menu={menu}>
+  return (<Layout title={'Углеродный реестр ' + name} address={address} menu={menu}>
     <p><b>Всего токенов</b>: {totalSupply}</p>
     <p><b>Мой баланс</b>: {balance}</p>
-    <p><b>ACL group</b>: {aclGroup}</p>
+    <p><b>Группа аудиторов</b>: {aclGroup}</p>
     <div className="panel panel-default">
-      <div className="panel-heading">Balance</div>
+      <div className="panel-heading">Баланс</div>
       <div className="panel-body">
         <Form address={address} action="balanceOf" />
       </div>

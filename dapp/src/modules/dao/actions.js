@@ -54,7 +54,7 @@ export function load(daoAddress) {
         const core = getContract(abi, daoAddress);
         const blocks = [
           {
-            name: 'ACL',
+            name: 'Группа аудиторов',
             type: 'acl',
             modules: []
           },
@@ -69,7 +69,7 @@ export function load(daoAddress) {
             modules: []
           },
           {
-            name: 'Потребитель',
+            name: 'Complier',
             type: 'complier',
             modules: []
           },
@@ -79,7 +79,7 @@ export function load(daoAddress) {
             modules: []
           },
           {
-            name: 'Токен ACL',
+            name: 'Углеродный реестр',
             type: 'token-acl',
             modules: []
           },

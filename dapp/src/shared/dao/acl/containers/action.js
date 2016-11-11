@@ -8,7 +8,7 @@ function mapStateToProps(store, props) {
       title = 'Создать группу'
       break
     case 'addMember':
-      title = 'Добавить адрес'
+      title = 'Добавить адрес аудитора'
       break
     default:
       title = '';

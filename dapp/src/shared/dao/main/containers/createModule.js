@@ -8,7 +8,7 @@ function mapStateToProps(store, props) {
       title = 'Создать ядро'
       break
     case 'issuer':
-      title = 'Создать эмитента'
+      title = 'Создать углеродный реестр'
       break
     case 'auditor':
       title = 'Создать аудитора'
@@ -20,7 +20,7 @@ function mapStateToProps(store, props) {
       title = 'Создать рынок'
       break
     case 'acl':
-      title = 'Создать ACL'
+      title = 'Создать группу аудиторов'
       break
     case 'token':
       title = 'Создать токен'

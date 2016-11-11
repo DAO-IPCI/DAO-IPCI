@@ -14,7 +14,7 @@ function mapStateToProps(store, props) {
       title = 'Эмиссия'
       break
     case 'transfer':
-      title = 'Перевод автору аудируемого токена'
+      title = 'Перевод эмитенту'
       break
     default:
       title = '';

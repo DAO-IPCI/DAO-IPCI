@@ -18,14 +18,14 @@ function mapStateToProps(state, props) {
   } else if (props.module === 'issuer') {
     return {
       fields: ['name', 'operator_core', 'group'],
-      labels: ['Название токена', 'Адрес DAO', 'Название группы эмитента'],
+      labels: ['Название', 'Адрес DAO', 'Название группы аудиторов'],
       initialValues: { operator_core: state.dao.address },
       disableds: [false, true, false]
     }
   } else if (props.module === 'auditor') {
     return {
       fields: ['operator', 'token', 'holder'],
-      labels: ['Адрес оператора', 'Адрес токена', 'Адрес holder'],
+      labels: ['Адрес оператора', 'Адрес углеродного реестра', 'Адрес страхового контракта'],
       autocomplete: {
         token: true,
         holder: true
