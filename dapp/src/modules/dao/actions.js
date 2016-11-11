@@ -96,6 +96,8 @@ export function load(daoAddress) {
                 .then((type) => {
                   if (type === 'https://github.com/airalab/core/blob/master/sol/acl/ACLStorage.sol') {
                     return 'acl'
+                  } else if (type === 'tokenAcl') {
+                    return 'token-acl'
                   }
                   return type
                 })

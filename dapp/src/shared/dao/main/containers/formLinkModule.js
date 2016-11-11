@@ -10,7 +10,7 @@ function mapStateToProps(state, props) {
       type: [
         {
           name: 'Углеродный реестр',
-          value: 'tokenAcl'
+          value: 'token-acl'
         },
         {
           name: 'Страховой случай',
