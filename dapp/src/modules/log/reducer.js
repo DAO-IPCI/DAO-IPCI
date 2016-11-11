@@ -1,4 +1,4 @@
-import { ADD, LOAD } from './actionTypes'
+import { ADD, LOAD, CLEAR } from './actionTypes'
 
 const initialState = {
   items: []
@@ -11,6 +11,9 @@ export default function dao(state = initialState, action) {
 
     case LOAD:
       return { ...state, items: action.payload }
+
+    case CLEAR:
+      return { ...state, items: [] }
 
     default:
       return state;

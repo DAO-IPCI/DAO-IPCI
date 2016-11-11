@@ -1,5 +1,5 @@
 import store from 'store'
-import { ADD, LOAD } from './actionTypes'
+import { ADD, LOAD, CLEAR } from './actionTypes'
 
 export function add(message) {
   let logs = store.get('logs', [])
@@ -9,6 +9,14 @@ export function add(message) {
   return {
     type: ADD,
     payload: message
+  }
+}
+
+export function clear() {
+  store.remove('logs')
+  // store.clear()
+  return {
+    type: CLEAR
   }
 }
 
