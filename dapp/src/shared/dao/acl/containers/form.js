@@ -1,5 +1,6 @@
 import { bindActionCreators } from 'redux'
 import { reduxForm } from 'redux-form'
+import i18next from 'i18next'
 import { submit } from '../../../../modules/acl/actions';
 import Form from '../../../components/common/form';
 
@@ -8,7 +9,7 @@ function mapStateToProps(state, props) {
     return {
       fields: ['group', 'address'],
       selects: {},
-      labels: ['Название группы аудитора', 'Адрес контракта аудитора'],
+      labels: [i18next.t('acl:formName'), i18next.t('acl:formAddress')],
       placeholders: ['Group', '0x111111111111111'],
       autocomplete: {
         address: true

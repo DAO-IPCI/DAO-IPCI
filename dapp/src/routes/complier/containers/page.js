@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
+import i18next from 'i18next'
 import Layout from '../../../shared/components/common/layout'
 
 class Container extends Component {
@@ -34,10 +35,10 @@ Container.contextTypes = {
 function mapStateToProps(state) {
   return {
     dao_address: state.app.dao_address,
-    title: 'Complier',
+    title: i18next.t('complier'),
     menu: [
       {
-        name: 'Cоздать контракт потребителя',
+        name: i18next.t('createComplier'),
         href: '/dao/create/complier'
       }
     ]

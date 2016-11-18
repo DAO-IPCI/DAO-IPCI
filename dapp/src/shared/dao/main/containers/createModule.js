@@ -5,28 +5,28 @@ function mapStateToProps(store, props) {
   let title
   switch (props.module) {
     case 'core':
-      title = 'Создать ядро'
+      title = 'titleCreateCore'
       break
     case 'issuer':
-      title = 'Создать углеродный реестр'
+      title = 'titleCreateIssuer'
       break
     case 'auditor':
-      title = 'Создать аудитора'
+      title = 'titleCreateAuditor'
       break
     case 'complier':
-      title = 'Создать потребителя'
+      title = 'titleCreateComplier'
       break
     case 'market':
-      title = 'Создать рынок'
+      title = 'titleCreateMarket'
       break
     case 'acl':
-      title = 'Создать группу аудиторов'
+      title = 'titleCreateAcl'
       break
     case 'token':
-      title = 'Создать токен'
+      title = 'titleCreateToken'
       break
     case 'tokenAcl':
-      title = 'Создать токен ACL'
+      title = 'titleCreateTokenAcl'
       break
     default:
       title = '';

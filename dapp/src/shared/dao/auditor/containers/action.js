@@ -5,16 +5,16 @@ function mapStateToProps(store, props) {
   let title
   switch (props.action) {
     case 'setEmissionLimit':
-      title = 'Абсолютный предел количества токенов, эмиссируемых Аудитором'
+      title = 'titleSetEmissionLimit'
       break
     case 'setHoldPercentage':
-      title = 'Размер страхового взноса в процентах'
+      title = 'titleSetHoldPercentage'
       break
     case 'emission':
-      title = 'Эмиссия'
+      title = 'titleEmission'
       break
     case 'transfer':
-      title = 'Перевод эмитенту'
+      title = 'titleTransfer'
       break
     default:
       title = '';

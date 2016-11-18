@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import _ from 'lodash'
+import { translate } from 'react-i18next'
 
 const Title = (props) => {
   const { title, menu, back } = props
@@ -18,7 +19,7 @@ const Title = (props) => {
           <ul className="nav nav-pills pull-right">
             <li role="presentation" className="dropdown">
               <a href="/" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                Меню <span className="caret" />
+                {props.t('menu')} <span className="caret" />
               </a>
               <ul className="dropdown-menu dropdown-menu-right">
                 {menu.map((item, index) =>
@@ -39,4 +40,4 @@ Title.propTypes = {
   back: PropTypes.string
 }
 
-export default Title
+export default translate()(Title)

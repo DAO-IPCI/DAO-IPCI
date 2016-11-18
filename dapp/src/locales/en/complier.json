@@ -1,0 +1,9 @@
+{
+  "titlePrefix": "Complier",
+  "menuBurn": "Сжечь",
+
+  "titleBurn": "Сжигание",
+
+  "formAddress": "Адрес токена",
+  "formAmount": "Кол-во"
+}

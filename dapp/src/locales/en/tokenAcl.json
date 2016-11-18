@@ -1,0 +1,17 @@
+{
+  "titlePrefix": "Carbon registry",
+  "menuSend": "Send",
+  "menuApprove": "Approve",
+  "menuEmission": "Emission",
+  "allTokens": "All tokens",
+  "myBalance": "My balance",
+  "groupAuditors": "Group auditors",
+  "Balance": "Balance",
+
+  "titleSend": "Send",
+  "titleApprove": "Approve",
+  "titleEmission": "Emission",
+
+  "formAddress": "Address",
+  "formAmount": "Amount token"
+}

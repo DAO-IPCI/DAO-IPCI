@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import i18next from 'i18next'
 import Layout from '../../../shared/components/common/layout'
 
 const Container = (props) => {
@@ -16,7 +17,7 @@ const Container = (props) => {
 function mapStateToProps() {
   const menu = [
     {
-      name: 'Cоздать ДАО',
+      name: i18next.t('createDao'),
       href: '/dao/create/core'
     }
   ];
@@ -33,7 +34,7 @@ function mapStateToProps() {
   //   })
   // }
   return {
-    title: 'Оператор',
+    title: i18next.t('operator'),
     menu
   }
 }

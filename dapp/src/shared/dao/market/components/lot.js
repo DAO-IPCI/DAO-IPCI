@@ -1,22 +1,23 @@
 import React, { PropTypes } from 'react'
+import { translate } from 'react-i18next'
 
 const Lot = (props) => {
-  const { address } = props
+  const { address, t } = props
 
   let buttons
   if (!props.my) {
     if (props.approve_sale_quantity < props.sale_quantity) {
-      buttons = <span className="label label-danger">не для продажи, продавец не дал доступ</span>
+      buttons = <span className="label label-danger">{t('notApprove')}</span>
     } else if (props.approve_buy_quantity < props.buy_quantity) {
-      buttons = <button className="btn btn-success" onClick={props.approveLotBuy}>Дать доступ</button>
+      buttons = <button className="btn btn-success" onClick={props.approveLotBuy}>{t('approve')}</button>
     } else {
-      buttons = <button className="btn btn-success" onClick={props.dealLot}>Купить</button>
+      buttons = <button className="btn btn-success" onClick={props.dealLot}>{t('buyLot')}</button>
     }
   } else {
     buttons = (<div className="btn-group">
-      <button className="btn btn-warning" onClick={props.removeLot}>Снять лот</button>
+      <button className="btn btn-warning" onClick={props.removeLot}>{t('removeLot')}</button>
       {props.approve_sale_quantity < props.sale_quantity &&
-        <button className="btn btn-success" onClick={props.approveLotSale}>Дать доступ</button>
+        <button className="btn btn-success" onClick={props.approveLotSale}>{t('approve')}</button>
       }
     </div>)
   }
@@ -29,7 +30,7 @@ const Lot = (props) => {
       <div className="row">
         <div className="col-md-6">
           <ul className="list-group" style={{ marginBottom: 0 }}>
-            <li className="list-group-item active">Продается</li>
+            <li className="list-group-item active">{t('sale')}</li>
             <li className="list-group-item">{props.sale_name}</li>
             <li className="list-group-item"><span className="label label-primary">{props.sale_address}</span></li>
             <li className="list-group-item">{props.sale_quantity}</li>
@@ -37,7 +38,7 @@ const Lot = (props) => {
         </div>
         <div className="col-md-6">
           <ul className="list-group" style={{ marginBottom: 0 }}>
-            <li className="list-group-item active">За</li>
+            <li className="list-group-item active">{t('buy')}</li>
             <li className="list-group-item">{props.buy_name}</li>
             <li className="list-group-item"><span className="label label-primary">{props.buy_address}</span></li>
             <li className="list-group-item">{props.buy_quantity}</li>
@@ -67,4 +68,4 @@ Lot.propTypes = {
   dealLot: PropTypes.func.isRequired
 }
 
-export default Lot
+export default translate(['market'])(Lot)

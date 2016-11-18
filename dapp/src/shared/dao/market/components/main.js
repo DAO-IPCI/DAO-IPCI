@@ -1,14 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router'
+import { translate } from 'react-i18next'
 import { Layout } from '../../main/components'
 import Lot from './lot'
 
 const Main = (props) => {
-  const { address, lots, approveLot, dealLot, removeLot } = props
+  const { address, lots, approveLot, dealLot, removeLot, t } = props
   const menu = (<div className="btn-group" style={{ marginBottom: 10 }}>
-    <Link to={'/dao/market/lot/' + address} className="btn btn-default">Добавить лот</Link>
+    <Link to={'/dao/market/lot/' + address} className="btn btn-default">{t('menuAddLot')}</Link>
   </div>)
-  return (<Layout title={'Market'} address={address} menu={menu}>
+  return (<Layout title={t('titlePrefix')} address={address} menu={menu}>
     {lots.map((item, index) => (
       <Lot
         key={index}
@@ -22,4 +23,4 @@ const Main = (props) => {
   </Layout>)
 }
 
-export default Main
+export default translate(['market'])(Main)

@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import Autosuggest from 'react-autosuggest'
+import { translate } from 'react-i18next'
 
 function escapeRegexCharacters(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -72,7 +73,7 @@ class Container extends Component {
     const { field } = this.props;
     const { value, suggestions } = this.state;
     const inputProps = {
-      placeholder: 'Для поиска начните набирать адрес или название модуля',
+      placeholder: this.props.t('autocompletePlaceholder'),
       value,
       ...field,
       onChange: (evt, { newValue }) => {
@@ -117,4 +118,4 @@ function mapStateToProps(state, props) {
   }
 }
 
-export default connect(mapStateToProps)(Container)
+export default connect(mapStateToProps)(translate()(Container))

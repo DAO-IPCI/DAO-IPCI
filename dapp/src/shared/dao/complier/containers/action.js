@@ -5,7 +5,7 @@ function mapStateToProps(store, props) {
   let title
   switch (props.action) {
     case 'burn':
-      title = 'Сжигание'
+      title = 'titleBurn'
       break
     default:
       title = '';

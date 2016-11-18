@@ -1,5 +1,6 @@
 import { bindActionCreators } from 'redux'
 import { reduxForm } from 'redux-form'
+import i18next from 'i18next'
 import { submit } from '../../../../modules/market/actions';
 import Form from '../../../components/common/form';
 import { coinbase } from '../../../../utils/web3'
@@ -9,7 +10,7 @@ function mapStateToProps(state, props) {
     return {
       fields: ['seller', 'sale', 'buy', 'quantity_sale', 'quantity_buy'],
       selects: {},
-      labels: ['Адрес продавца', 'Токен на продажу', 'Токен получения', 'Кол-во на продажу', 'Кол-во получаемого'],
+      labels: [i18next.t('market:formSeller'), i18next.t('market:formTokenSale'), i18next.t('market:formTokenBuy'), i18next.t('market:formAmountSale'), i18next.t('market:formAmountBuy')],
       placeholders: ['0x1', '0x111111111111111', '0x2222222222222222222', 1, 1],
       initialValues: { seller: coinbase() },
       autocomplete: {

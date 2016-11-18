@@ -7,19 +7,25 @@ import { getWeb3, isAccounts } from '../../utils/web3'
 import Header from '../components/app/header'
 import Footer from '../components/app/footer'
 import Notification from '../components/app/notification'
-import { flashMessage, setDaoAddress } from '../../modules/app/actions';
+import { flashMessage, setDaoAddress, setLanguage } from '../../modules/app/actions';
 import { load } from '../../modules/log/actions';
 
 import './style.css'
 
+// @translate(['view', 'nav'], { wait: true })
 class App extends Component {
   componentWillMount() {
     const address = cookie.load('dao_address')
     if (address) {
       this.props.setDaoAddress(address)
     }
+    const language = cookie.load('language')
+    if (language) {
+      this.props.setLanguage(language)
+    }
     this.props.loadLog()
   }
+
   render() {
     let content
     if (getWeb3()) {
@@ -36,6 +42,8 @@ class App extends Component {
       <Header
         title={this.props.title}
         dao_address={this.props.dao_address}
+        language={this.props.language}
+        setLanguage={this.props.setLanguage}
       />
       <div className="container">
         {content}
@@ -50,18 +58,21 @@ function mapStateToProps(state) {
   return {
     title: state.app.title,
     flash_message: state.app.flash_message,
-    dao_address: state.app.dao_address
+    dao_address: state.app.dao_address,
+    language: state.app.language
   }
 }
 function mapDispatchToProps(dispatch) {
   const actions = bindActionCreators({
     flashMessage,
     setDaoAddress,
+    setLanguage,
     load
   }, dispatch)
   return {
     flashMessage: actions.flashMessage,
     setDaoAddress: actions.setDaoAddress,
+    setLanguage: actions.setLanguage,
     loadLog: actions.load
   }
 }

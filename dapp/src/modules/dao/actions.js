@@ -1,6 +1,7 @@
 import { startSubmit, stopSubmit, reset } from 'redux-form';
 import _ from 'lodash'
 import { hashHistory } from 'react-router';
+import i18next from 'i18next'
 import { LOAD, ADD_MODULE } from './actionTypes'
 import { loadAbiByName, getContract, blockchain, getTransaction, createModule, createModuleWatch, getModuleAddress } from '../../utils/web3'
 import { promiseFor } from '../../utils/helper'
@@ -54,37 +55,37 @@ export function load(daoAddress) {
         const core = getContract(abi, daoAddress);
         const blocks = [
           {
-            name: 'Группа аудиторов',
+            name: i18next.t('dao:groupAuditors'),
             type: 'acl',
             modules: []
           },
           {
-            name: 'Страховые контракты',
+            name: i18next.t('dao:holder'),
             type: 'holder',
             modules: []
           },
           {
-            name: 'Аудитор',
+            name: i18next.t('dao:auditor'),
             type: 'auditor',
             modules: []
           },
           {
-            name: 'Complier',
+            name: i18next.t('dao:complier'),
             type: 'complier',
             modules: []
           },
           {
-            name: 'Токен',
+            name: i18next.t('dao:token'),
             type: 'token',
             modules: []
           },
           {
-            name: 'Углеродный реестр',
+            name: i18next.t('dao:carbonRegistry'),
             type: 'token-acl',
             modules: []
           },
           {
-            name: 'Рынок',
+            name: i18next.t('dao:market'),
             type: 'market',
             modules: []
           }

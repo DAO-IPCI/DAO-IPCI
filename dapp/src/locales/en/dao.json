@@ -1,0 +1,57 @@
+{
+  "groupAuditors": "Group auditors",
+  "holder": "Holder contracts",
+  "auditor": "Auditor",
+  "complier": "Complier",
+  "token": "Token",
+  "carbonRegistry": "Carbon registry",
+  "market": "Market",
+  "action": "Action",
+  "open": "Open",
+  "remove": "Remove",
+
+  "titleCreateCore": "Создать ядро",
+  "titleCreateIssuer": "Создать углеродный реестр",
+  "titleCreateAuditor": "Создать аудитора",
+  "titleCreateComplier": "Создать потребителя",
+  "titleCreateMarket": "Создать рынок",
+  "titleCreateAcl": "Создать группу аудиторов",
+  "titleCreateToken": "Создать токен",
+  "titleCreateTokenAcl": "Создать токен ACL",
+  "titleLinkModule": "Добавить модуль в ядро",
+
+  "formCoreDaoName": "Имя автономии",
+  "formCoreDaoDescription": "Описание автономии",
+  "formCoreOperatorName": "Имя оператора",
+
+  "formIssuerName": "Название",
+  "formIssuerOperatorCore": "Адрес DAO",
+  "formIssuerGroup": "Название группы аудиторов",
+
+  "formAuditorOperator": "Адрес оператора",
+  "formAuditorToken": "Адрес углеродного реестра",
+  "formAuditorHolder": "Адрес страхового контракта",
+
+  "formTokenName": "Название",
+  "formTokenSymbol": "Символ",
+  "formTokenDecimals": "Кол-во знаков",
+  "formTokenStartCount": "Начальная сумма",
+
+  "formTokenAclName": "Название",
+  "formTokenAclSymbol": "Символ",
+  "formTokenAclDecimals": "Кол-во знаков",
+  "formTokenAclStartCount": "Начальная сумма",
+  "formTokenAclAcl": "Адрес ACL",
+  "formTokenAclAclGroup": "Название группы ACL",
+
+  "formLinkType": "Тип модуля",
+  "formLinkName": "Название",
+  "formLinkAddress": "Адрес контракта",
+  "formLinkTokenAcl": "Углеродный реестр",
+  "formLinkHolder": "Страховой контракт",
+  "formLinkAuditor": "Контракт аудитора",
+  "formLinkComplier": "Контракт сomplier",
+  "formLinkAcl": "Группа аудиторов",
+  "formLinkToken": "Токен",
+  "formLinkMarket": "Рынок"
+}

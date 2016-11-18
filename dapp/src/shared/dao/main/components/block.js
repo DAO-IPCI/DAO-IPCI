@@ -1,9 +1,10 @@
 /* eslint jsx-a11y/no-static-element-interactions: 0 */
 import React from 'react'
 import { Link } from 'react-router'
+import { translate } from 'react-i18next'
 
 const Block = (props) => {
-  const { name, type, modules, role } = props
+  const { name, type, modules, role, onRemoveModule, t } = props
 
   return (<div className="panel panel-default">
     <div className="panel-heading">
@@ -21,10 +22,11 @@ const Block = (props) => {
           <div key={index} className="list-group-item">
             <div className="btn-group pull-right">
               <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                Action <span className="caret" />
+                {t('action')} <span className="caret" />
               </button>
               <ul className="dropdown-menu">
-                <li><Link to={'/dao/' + type + '/' + item.address}>Открыть</Link></li>
+                <li><Link to={'/dao/' + type + '/' + item.address}>{t('open')}</Link></li>
+                <li><a onClick={() => onRemoveModule(item.name)}>{t('remove')}</a></li>
               </ul>
             </div>
             <Link to={'/dao/' + type + '/' + item.address}>
@@ -38,4 +40,4 @@ const Block = (props) => {
   </div>)
 }
 
-export default Block
+export default translate(['dao'])(Block)

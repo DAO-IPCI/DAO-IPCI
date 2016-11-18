@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import _ from 'lodash'
+import { translate } from 'react-i18next'
 import Auto from './auto'
 import Spin from './spin'
 
@@ -49,7 +50,7 @@ const Form = (props) => {
         )
       })}
       {output !== '' &&
-        <div><b>Результат</b>:<div dangerouslySetInnerHTML={{ __html: output }} /></div>
+        <div><b>{props.t('result')}</b>:<div dangerouslySetInnerHTML={{ __html: output }} /></div>
       }
       <div className="form-group">
         <div className="text-center">
@@ -57,7 +58,7 @@ const Form = (props) => {
             type="submit"
             className="btn btn-default"
             disabled={submitting}
-          >{submitting ? <Spin btn /> : 'Подтвердить'}</button>
+          >{submitting ? <Spin btn /> : props.t('submit')}</button>
         </div>
       </div>
       {error && <div>{error}</div>}
@@ -77,4 +78,4 @@ Form.defaultProps = {
   output: ''
 };
 
-export default Form
+export default translate()(Form)

@@ -5,13 +5,13 @@ function mapStateToProps(store, props) {
   let title
   switch (props.action) {
     case 'transfer':
-      title = 'Отправить'
+      title = 'titleSend'
       break
     case 'approve':
-      title = 'Апрув'
+      title = 'titleApprove'
       break
     case 'emission':
-      title = 'Эмиссия'
+      title = 'titleEmission'
       break
     default:
       title = '';

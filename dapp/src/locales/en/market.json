@@ -1,0 +1,18 @@
+{
+  "titlePrefix": "Market",
+  "menuAddLot": "Добавить лот",
+  "notApprove": "не для продажи, продавец не дал доступ",
+  "approve": "Дать доступ",
+  "buyLot": "Купить",
+  "removeLot": "Снять лот",
+  "sale": "Продается",
+  "buy": "За",
+
+  "titleAddLot": "Добавить лот",
+
+  "formSeller": "Адрес продавца",
+  "formTokenSale": "Токен на продажу",
+  "formTokenBuy": "Токен получения",
+  "formAmountSale": "Кол-во на продажу",
+  "formAmountBuy": "Кол-во получаемого"
+}

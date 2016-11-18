@@ -5,10 +5,10 @@ function mapStateToProps(store, props) {
   let title
   switch (props.action) {
     case 'setHoldDuration':
-      title = 'Время удержания страхового взноса в секундах'
+      title = 'titleSetHoldDuration'
       break
     case 'withdraw':
-      title = 'Вывод средств'
+      title = 'titleWithdraw'
       break
     default:
       title = '';

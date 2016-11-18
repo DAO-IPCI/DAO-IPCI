@@ -1,5 +1,6 @@
 import { bindActionCreators } from 'redux'
 import { reduxForm } from 'redux-form'
+import i18next from 'i18next'
 import { submit } from '../../../../modules/token/actions';
 import Form from '../../../components/common/form';
 
@@ -8,7 +9,7 @@ function mapStateToProps(state, props) {
     return {
       fields: ['address', 'value'],
       selects: {},
-      labels: ['Адрес', 'Кол-во токенов'],
+      labels: [i18next.t('token:formAddress'), i18next.t('token:formAmount')],
       placeholders: ['0x111111111111111', '1'],
       autocomplete: {
         address: true
@@ -18,7 +19,7 @@ function mapStateToProps(state, props) {
     return {
       fields: ['value'],
       selects: {},
-      labels: ['Кол-во токенов'],
+      labels: [i18next.t('tokenAcl:formAmount')],
       placeholders: ['10']
     }
   }

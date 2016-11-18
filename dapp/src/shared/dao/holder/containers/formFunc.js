@@ -1,6 +1,7 @@
 import { bindActionCreators } from 'redux'
 import { reduxForm } from 'redux-form'
 import _ from 'lodash'
+import i18next from 'i18next'
 import { call } from '../../../../modules/holder/actions';
 import Form from '../../../components/common/form';
 
@@ -16,7 +17,7 @@ function mapStateToProps(state, props) {
     }
     return {
       fields: ['index'],
-      labels: ['Индекс'],
+      labels: [i18next.t('holder:formIndex')],
       initialValues: input,
       output
     }

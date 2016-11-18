@@ -1,9 +1,10 @@
 /* eslint react/prefer-stateless-function: 0*/
 import React, { PropTypes, Component } from 'react'
+import { translate } from 'react-i18next'
 
 class Layout extends Component {
   render() {
-    const { children, title, address, menu, hideBack } = this.props
+    const { children, title, address, menu, hideBack, t } = this.props
     return (<div>
       <div className="row">
         <div className="col-md-4">
@@ -14,7 +15,7 @@ class Layout extends Component {
           {menu}
           {!hideBack &&
             <div className="btn-group" style={{ marginBottom: 10 }}>
-              <button onClick={this.context.router.goBack} className="btn btn-default">Назад</button>
+              <button onClick={this.context.router.goBack} className="btn btn-default">{t('back')}</button>
             </div>
           }
         </div>
@@ -32,4 +33,4 @@ Layout.defaultProps = {
   hideBack: true
 };
 
-export default Layout
+export default translate()(Layout)

@@ -5,10 +5,10 @@ function mapStateToProps(store, props) {
   let title
   switch (props.action) {
     case 'createGroup':
-      title = 'Создать группу'
+      title = 'titleCreateGroup'
       break
     case 'addMember':
-      title = 'Добавить адрес аудитора'
+      title = 'titleAddMember'
       break
     default:
       title = '';

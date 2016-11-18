@@ -1,5 +1,6 @@
 import { bindActionCreators } from 'redux'
 import { reduxForm } from 'redux-form'
+import i18next from 'i18next'
 import { submitLinkModule } from '../../../../modules/dao/actions';
 import Form from '../../../../shared/components/common/form';
 
@@ -9,37 +10,37 @@ function mapStateToProps(state, props) {
     selects: {
       type: [
         {
-          name: 'Углеродный реестр',
+          name: i18next.t('dao:formLinkTokenAcl'),
           value: 'token-acl'
         },
         {
-          name: 'Страховой контракт',
+          name: i18next.t('dao:formLinkHolder'),
           value: 'holder'
         },
         {
-          name: 'Контракт аудитора',
+          name: i18next.t('dao:formLinkAuditor'),
           value: 'auditor'
         },
         {
-          name: 'Контракт сomplier',
+          name: i18next.t('dao:formLinkComplier'),
           value: 'complier'
         },
         {
-          name: 'Группа аудиторов',
+          name: i18next.t('dao:formLinkAcl'),
           value: 'acl'
         },
         {
-          name: 'Токен',
+          name: i18next.t('dao:formLinkToken'),
           value: 'token'
         },
         {
-          name: 'Рынок',
+          name: i18next.t('dao:formLinkMarket'),
           value: 'market'
         }
       ]
     },
     initialValues: { type: props.module, address: props.address },
-    labels: ['Тип модуля', 'Название', 'Адрес контракта'],
+    labels: [i18next.t('dao:formLinkType'), i18next.t('dao:formLinkName'), i18next.t('dao:formLinkAddress')],
     placeholders: []
   }
 }
