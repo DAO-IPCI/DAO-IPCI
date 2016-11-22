@@ -1,15 +1,15 @@
 {
   "titlePrefix": "Holder contract",
-  "menuSetHoldDuration": "Установить время удержания",
-  "menuWithdraw": "Вывод средств",
-  "token": "Токен",
-  "holdDuration": "Время удержания",
-  "holdDurationUnit": "сек.",
+  "menuSetHoldDuration": "Set hold time is sec",
+  "menuWithdraw": "Withdraw",
+  "token": "Token",
+  "holdDuration": "Hold time",
+  "holdDurationUnit": "sec",
 
-  "titleSetHoldDuration": "Время удержания страхового взноса в секундах",
-  "titleWithdraw": "Вывод средств",
+  "titleSetHoldDuration": "Hold time",
+  "titleWithdraw": "Withdraw",
 
-  "formDuration": "Продолжительность в сек.",
-  "formIndexRecord": "Индекс записи",
-  "formIndex": "Индекс"
+  "formDuration": "Duration",
+  "formIndexRecord": "Record index",
+  "formIndex": "Index"
 }
