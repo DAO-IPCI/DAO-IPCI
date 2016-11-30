@@ -1,0 +1,21 @@
+{
+  "titlePrefix": "Auditor",
+  "menuSetEmissionLimit": "Set issue limit",
+  "menuSetHoldPercentage": "Set hold percentage",
+  "menuEmission": "Issue",
+  "menuTransfer": "Transfer to issuer",
+  "token": "Token",
+  "holder": "Hold",
+  "value": "Value",
+  "limit": "Value limit",
+  "percentage": "Hold percentage",
+
+  "titleSetEmissionLimit": "Token issue limit",
+  "titleSetHoldPercentage": "Hold percentage",
+  "titleEmission": "Issue",
+  "titleTransfer": "Transfer to issuer",
+
+  "formLimit": "Limit",
+  "formPercentage": "Percentage",
+  "formAmount": "Amount"
+}

@@ -1,0 +1,57 @@
+{
+  "groupAuditors": "Group auditors",
+  "holder": "Holder contracts",
+  "auditor": "Auditor",
+  "complier": "Complier",
+  "token": "Token",
+  "carbonRegistry": "Carbon registry",
+  "market": "Market",
+  "action": "Action",
+  "open": "Open",
+  "remove": "Remove",
+
+  "titleCreateCore": "Create DAO Core",
+  "titleCreateIssuer": "Create issuer contract",
+  "titleCreateAuditor": "Create auditor contract",
+  "titleCreateComplier": "Create complier contract",
+  "titleCreateMarket": "Create Market",
+  "titleCreateAcl": "Create auditors group",
+  "titleCreateToken": "Create carbon Token",
+  "titleCreateTokenAcl": "Create ACL token",
+  "titleLinkModule": "Add module to DAO Core",
+
+  "formCoreDaoName": "DAO name",
+  "formCoreDaoDescription": "DAO description",
+  "formCoreOperatorName": "Operator name",
+
+  "formIssuerName": "Issuer name",
+  "formIssuerOperatorCore": "DAO address",
+  "formIssuerGroup": "Auditor group",
+
+  "formAuditorOperator": "Operator address",
+  "formAuditorToken": "Carbon token address",
+  "formAuditorHolder": "Issuer contract address",
+
+  "formTokenName": "Name",
+  "formTokenSymbol": "Symbol",
+  "formTokenDecimals": "Decimals",
+  "formTokenStartCount": "Start amount",
+
+  "formTokenAclName": "Name",
+  "formTokenAclSymbol": "Symbol",
+  "formTokenAclDecimals": "Decimals",
+  "formTokenAclStartCount": "Start amount",
+  "formTokenAclAcl": "ACL address",
+  "formTokenAclAclGroup": "ACL group name",
+
+  "formLinkType": "Module type",
+  "formLinkName": "Name",
+  "formLinkAddress": "Contract address",
+  "formLinkTokenAcl": "TokenACL",
+  "formLinkHolder": "Issuer contract",
+  "formLinkAuditor": "Auditor contract",
+  "formLinkComplier": "Complier contract",
+  "formLinkAcl": "Auditor group",
+  "formLinkToken": "Token",
+  "formLinkMarket": "Market"
+}

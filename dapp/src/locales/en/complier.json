@@ -1,0 +1,9 @@
+{
+  "titlePrefix": "Complier",
+  "menuBurn": "Burn",
+
+  "titleBurn": "Burning",
+
+  "formAddress": "Token address",
+  "formAmount": "Amount"
+}

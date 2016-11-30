@@ -1,0 +1,18 @@
+{
+  "titlePrefix": "Market",
+  "menuAddLot": "Add lot",
+  "notApprove": "Unapporoved",
+  "approve": "Approve",
+  "buyLot": "Buy lot",
+  "removeLot": "Remove lot",
+  "sale": "Sale",
+  "buy": "Buy",
+
+  "titleAddLot": "Add lot",
+
+  "formSeller": "Seller address",
+  "formTokenSale": "Token for sale",
+  "formTokenBuy": "Token to buy",
+  "formAmountSale": "Amount for sale",
+  "formAmountBuy": "Amount to buy"
+}

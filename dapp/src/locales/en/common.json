@@ -1,0 +1,19 @@
+{
+  "lng": "lng",
+  "user": "User",
+  "operator": "Operator",
+  "issuer": "Issuer",
+  "auditor": "Auditor",
+  "complier": "Complier",
+  "createDao": "Create DAO",
+  "createCarbonRegistry": "Create carbon registry",
+  "createComplier": "Create contract complier",
+  "createAuditor": "Create contract auditor",
+  "selectDao": "select",
+  "log": "log",
+  "result": "Result",
+  "submit": "Submit",
+  "menu": "Menu",
+  "back": "Back",
+  "autocompletePlaceholder": "For search start input address or name"
+}

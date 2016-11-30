@@ -1,0 +1,19 @@
+{
+  "lng": "языки",
+  "user": "Пользователь",
+  "operator": "Оператор",
+  "issuer": "Эмитент",
+  "auditor": "Аудитор",
+  "complier": "Потребитель",
+  "createDao": "Cоздать ДАО",
+  "createCarbonRegistry": "Cоздать углеродный реестр",
+  "createComplier": "Cоздать контракт потребителя",
+  "createAuditor": "Cоздать контракт аудитора",
+  "selectDao": "указать",
+  "log": "лог",
+  "result": "Результат",
+  "submit": "Подтвердить",
+  "menu": "Меню",
+  "back": "Назад",
+  "autocompletePlaceholder": "Для поиска начните набирать адрес или название модуля"
+}

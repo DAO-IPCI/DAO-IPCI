@@ -1,0 +1,12 @@
+{
+  "titlePrefix": "Group auditors",
+  "menuCreateGroup": "Create group",
+  "menuAddMember": "Add member",
+  "delete": "Remove",
+
+  "titleCreateGroup": "Create group",
+  "titleAddMember": "Add auditor address",
+
+  "formName": "Audotor group name",
+  "formAddress": "Auditor contract address"
+}

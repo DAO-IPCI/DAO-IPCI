@@ -1,0 +1,21 @@
+{
+  "titlePrefix": "Аудитор",
+  "menuSetEmissionLimit": "Установить лимит",
+  "menuSetHoldPercentage": "Установить размер страхового взноса",
+  "menuEmission": "Эмиссия",
+  "menuTransfer": "Перевод эмитенту",
+  "token": "Токен",
+  "holder": "Страховка",
+  "value": "Кол-во проэмиссированого",
+  "limit": "Лимит количества токенов",
+  "percentage": "Процент страхового взноса",
+
+  "titleSetEmissionLimit": "Абсолютный предел количества токенов, эмиссируемых Аудитором",
+  "titleSetHoldPercentage": "Размер страхового взноса в процентах",
+  "titleEmission": "Эмиссия",
+  "titleTransfer": "Перевод эмитенту",
+
+  "formLimit": "Лимит",
+  "formPercentage": "Процент",
+  "formAmount": "Кол-во"
+}
