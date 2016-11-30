@@ -1,3 +1,4 @@
+pragma solidity ^0.4.4;
 import 'creator/CreatorTokenEmissionACL.sol';
 import 'creator/CreatorInsuranceHolder.sol';
 import 'builder/Builder.sol';
@@ -14,17 +15,35 @@ contract BuilderIssuerLedger is Builder {
      * @param _group is a emitent group of created ledger
      * @return address new contract
      */
-    function create(string _name, address _operator_core, string _group) returns (address) {
+    function create(string _name, address _operator_core, string _group, address _client) payable returns (address) {
+        if (buildingCostWei > 0 && beneficiary != 0) {
+            // Too low value
+            if (msg.value < buildingCostWei) throw;
+            // Beneficiary send
+            if (!beneficiary.send(buildingCostWei)) throw;
+            // Refund
+            if (msg.value > buildingCostWei) {
+                if (!msg.sender.send(msg.value - buildingCostWei)) throw;
+            }
+        } else {
+            // Refund all
+            if (msg.value > 0) {
+                if (!msg.sender.send(msg.value)) throw;
+            }
+        }
+
+        if (_client == 0)
+            _client = msg.sender;
+ 
         var dao = Core(_operator_core);
-        var acl = dao.getModule("ACLStorage");
+        var acl = dao.get("ACLStorage");
         var token = CreatorTokenEmissionACL.create(_name, "IPMU", 0, 0, acl, _group);
  
-        var operator = dao.firstModule();
+        var operator = dao.first();
         var holder = CreatorInsuranceHolder.create(operator, token);
 
-        Owned(holder).delegate(msg.sender);
-        Owned(token).delegate(msg.sender);
-        deal(holder);
+        holder.delegate(_client);
+        token.delegate(_client);
         return holder;
     }
 }

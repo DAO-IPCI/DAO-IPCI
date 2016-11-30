@@ -1,3 +1,4 @@
+pragma solidity ^0.4.4;
 import 'builder/Builder.sol';
 import 'creator/CreatorCore.sol';
 import 'creator/CreatorACLStorage.sol';
@@ -21,28 +22,47 @@ contract BuilderOperator is Builder {
      */
     function create(string _dao_name,
                     string _dao_description,
-                    string _operator_name) returns (address) {
+                    string _operator_name,
+                    address _client) payable returns (address) {
+        if (buildingCostWei > 0 && beneficiary != 0) {
+            // Too low value
+            if (msg.value < buildingCostWei) throw;
+            // Beneficiary send
+            if (!beneficiary.send(buildingCostWei)) throw;
+            // Refund
+            if (msg.value > buildingCostWei) {
+                if (!msg.sender.send(msg.value - buildingCostWei)) throw;
+            }
+        } else {
+            // Refund all
+            if (msg.value > 0) {
+                if (!msg.sender.send(msg.value)) throw;
+            }
+        }
+
+        if (_client == 0)
+            _client = msg.sender;
+ 
         var core = CreatorCore.create(_dao_name, _dao_description);
  
         // Operator address 
-        core.setModule(_operator_name, msg.sender, "", true);
+        core.set(_operator_name, _client, "", true);
 
         // ACL Storage
         var acl  = CreatorACLStorage.create();
-        acl.delegate(msg.sender);
-        core.setModule("ACLStorage", acl,
+        acl.delegate(_client);
+        core.set("ACLStorage", acl,
             "https://github.com/airalab/core/blob/master/sol/acl/ACLStorage.sol", false);
 
         // BuilderIssuerLedger
-        core.setModule("BuilderIssuerLedger", dao_factory.getModule("BuilderIssuerLedger"),
+        core.set("BuilderIssuerLedger", dao_factory.get("BuilderIssuerLedger"),
             "https://github.com/airalab/DAO-IPCI/blob/master/contracts/builder/BuilderIssuerLedger.sol", false);
 
         // BuliderAuditor
-        core.setModule("BuilderAuditor", dao_factory.getModule("BuilderAuditor"),
+        core.set("BuilderAuditor", dao_factory.get("BuilderAuditor"),
             "https://github.com/airalab/DAO-IPCI/blob/master/contracts/builder/BuilderAuditor.sol", false);
 
-        Owned(core).delegate(msg.sender);
-        deal(core);
+        core.delegate(_client);
         return core;
     }
 }

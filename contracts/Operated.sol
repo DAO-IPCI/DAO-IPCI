@@ -1,3 +1,4 @@
+pragma solidity ^0.4.4;
 import 'common/Mortal.sol';
 
 contract Operated is Mortal {
@@ -11,5 +12,5 @@ contract Operated is Mortal {
     function Operated(address _operator)
     { operator = _operator; }
 
-    modifier onlyOperator { if (msg.sender != operator) throw; _ }
+    modifier onlyOperator { if (msg.sender != operator) throw; _; }
 }

@@ -1,3 +1,4 @@
+pragma solidity ^0.4.4;
 import 'token/Token.sol';
 import './Operated.sol';
 

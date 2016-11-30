@@ -1,3 +1,4 @@
+pragma solidity ^0.4.4;
 import 'token/TokenEmission.sol';
 import './InsuranceHolder.sol';
 import './Operated.sol';
