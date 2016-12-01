@@ -95,6 +95,9 @@ export function load(daoAddress) {
             promiseFor(address => address !== '0x0000000000000000000000000000000000000000', (address) => {
               core.call('abiOf', [address])
                 .then((type) => {
+                  if (type === 'https://github.com/airalab/core/blob/master/sol/acl/ACLStorage.sol') {
+                    return 'acl'
+                  }
                   if (type === 'tokenAcl') {
                     return 'token-acl'
                   }
