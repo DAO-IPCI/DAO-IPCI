@@ -11,7 +11,9 @@ const Block = (props) => {
       {name}
       {(role === 'operator') &&
         <div className="btn-group pull-right" style={{ marginBottom: 10 }}>
-          <Link to={'/dao/create/' + type} className="btn btn-info btn-xs"><span className="glyphicon glyphicon-plus" /></Link>
+          {type !== 'holder' &&
+            <Link to={'/dao/create/' + type} className="btn btn-info btn-xs"><span className="glyphicon glyphicon-plus" /></Link>
+          }
           <Link to={'/dao/link/' + type} className="btn btn-info btn-xs"><span className="glyphicon glyphicon-link" /></Link>
         </div>
       }
