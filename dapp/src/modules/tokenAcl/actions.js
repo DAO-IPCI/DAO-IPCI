@@ -35,6 +35,9 @@ export function loadModule(tokenAclAddress) {
       })
       .then((result) => {
         symbol = result
+        if (symbol === 'IPMU') {
+          symbol = 'testCER'
+        }
         return token.call('balanceOf', [coinbase()])
       })
       .then((result) => {
