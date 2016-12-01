@@ -7,12 +7,6 @@ import 'creator/CreatorACLStorage.sol';
  * @title BuilderOperator contract
  */
 contract BuilderOperator is Builder {
-    // DAO Factory address
-    Core public dao_factory;
-
-    function setDaoFactory(Core _core) onlyOwner
-    { dao_factory = _core; }
-
     /**
      * @dev Run script creation contract
      * @param _dao_name is an operator DAO name
@@ -53,14 +47,6 @@ contract BuilderOperator is Builder {
         acl.delegate(_client);
         core.set("ACLStorage", acl,
             "https://github.com/airalab/core/blob/master/sol/acl/ACLStorage.sol", false);
-
-        // BuilderIssuerLedger
-        core.set("BuilderIssuerLedger", dao_factory.get("BuilderIssuerLedger"),
-            "https://github.com/airalab/DAO-IPCI/blob/master/contracts/builder/BuilderIssuerLedger.sol", false);
-
-        // BuliderAuditor
-        core.set("BuilderAuditor", dao_factory.get("BuilderAuditor"),
-            "https://github.com/airalab/DAO-IPCI/blob/master/contracts/builder/BuilderAuditor.sol", false);
 
         core.delegate(_client);
         getContractsOf[_client].push(core);
