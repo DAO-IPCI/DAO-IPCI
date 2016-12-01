@@ -44,6 +44,7 @@ contract BuilderIssuerLedger is Builder {
 
         holder.delegate(_client);
         token.delegate(_client);
+        Builded(_client, holder);
         return holder;
     }
 }

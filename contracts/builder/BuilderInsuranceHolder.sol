@@ -33,6 +33,7 @@ contract BuilderInsuranceHolder is Builder {
             _client = msg.sender;
  
         var inst = CreatorInsuranceHolder.create(_operator, _token);
+        Builded(_client, inst);
         inst.delegate(_client);
         return inst;
     }

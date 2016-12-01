@@ -35,6 +35,7 @@ contract BuilderAuditor is Builder {
             _client = msg.sender;
  
         var inst = CreatorAuditor.create(_operator, _token, _holder);
+        Builded(_client, inst);
         inst.delegate(_client);
         return inst;
     }
