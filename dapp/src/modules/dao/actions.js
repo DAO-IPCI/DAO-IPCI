@@ -278,7 +278,7 @@ export function call(dispatch, formName, contract, action, form) {
 
 export function removeModule(address, name) {
   return (dispatch) => {
-    send(dispatch, address, 'Core', 'removeModule', [name])
+    send(dispatch, address, 'Core', 'remove', [name])
       .then(() => {
         dispatch(load(address))
       })
