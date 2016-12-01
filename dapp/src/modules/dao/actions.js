@@ -156,7 +156,7 @@ export function setModule(dispatch, daoAddress, name, address, type) {
   return loadAbiByName('Core')
     .then((abi) => {
       const core = getContract(abi, daoAddress);
-      return core.send('setModule', [name, address, type, false])
+      return core.send('set', [name, address, type, false])
     })
     .then((txId) => {
       dispatch(flashMessage('txId: ' + txId))
