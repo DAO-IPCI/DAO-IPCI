@@ -84,20 +84,18 @@ export function load(daoAddress) {
             type: 'token-acl',
             modules: []
           },
-          {
-            name: i18next.t('dao:market'),
-            type: 'market',
-            modules: []
-          }
+          // {
+          //   name: i18next.t('dao:market'),
+          //   type: 'market',
+          //   modules: []
+          // }
         ]
-        core.call('firstModule')
+        core.call('first')
           .then(firstAddress => (
             promiseFor(address => address !== '0x0000000000000000000000000000000000000000', (address) => {
-              core.call('interfaceOf', [address])
+              core.call('abiOf', [address])
                 .then((type) => {
-                  if (type === 'https://github.com/airalab/core/blob/master/sol/acl/ACLStorage.sol') {
-                    return 'acl'
-                  } else if (type === 'tokenAcl') {
+                  if (type === 'tokenAcl') {
                     return 'token-acl'
                   }
                   return type
@@ -105,7 +103,7 @@ export function load(daoAddress) {
                 .then((type) => {
                   const block = _.find(blocks, ['type', type])
                   if (block) {
-                    core.call('getModuleName', [address])
+                    core.call('getName', [address])
                       .then((name) => {
                         block.modules.push({
                           name,
@@ -114,7 +112,7 @@ export function load(daoAddress) {
                       })
                   }
                 })
-              return core.call('nextModule', [address])
+              return core.call('next', [address])
             }, firstAddress)
           ))
           .then(() => core.call('name'))
@@ -155,7 +153,7 @@ export function setModule(dispatch, daoAddress, name, address, type) {
   return loadAbiByName('Core')
     .then((abi) => {
       const core = getContract(abi, daoAddress);
-      return core.send('setModule', [name, address, type, true])
+      return core.send('setModule', [name, address, type, false])
     })
     .then((txId) => {
       dispatch(flashMessage('txId: ' + txId))

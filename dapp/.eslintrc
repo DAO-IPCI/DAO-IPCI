@@ -11,7 +11,8 @@
     "no-console": 0,
     "semi": 0,
     "comma-dangle": 0,
-    "prefer-template": 0
+    "prefer-template": 0,
+    "linebreak-style": 0
   },
   "parserOptions": {
     "ecmaVersion": 6,

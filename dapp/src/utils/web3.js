@@ -65,11 +65,32 @@ export function getContract(abi, address) {
 }
 
 export function getUrlAbi(contract) {
-  const contractNew = contract.split(' ').pop()
-  if (/builder/i.test(contractNew)) {
-    return 'https://raw.githubusercontent.com/airalab/core/master/abi/builder/' + contractNew + '.json'
+  let isBuilder = false;
+  if (/builder/i.test(contract)) {
+    isBuilder = true;
   }
-  return 'https://raw.githubusercontent.com/airalab/core/master/abi/modules/' + contractNew + '.json'
+  const ipci = [
+    'BuilderAuditor',
+    'BuilderComplier',
+    'BuilderInsuranceHolder',
+    'BuilderIssuerLedger',
+    'BuilderOperator',
+    'Auditor',
+    'Complier',
+    'InsuranceHolder',
+  ]
+  let repo = 'core'
+  if (_.indexOf(ipci, contract) >= 0) {
+    repo = 'DAO-IPCI'
+  }
+  let url = 'https://raw.githubusercontent.com/airalab/' + repo + '/master/abi/'
+  if (isBuilder) {
+    url += 'builder/'
+  } else if (repo === 'core') {
+    url += 'modules/'
+  }
+  url += contract + '.json'
+  return url
 }
 
 function loadAbi(url) {
@@ -105,12 +126,15 @@ export function getModuleAddress(module) {
     });
   }
   return getFactory()
-    .then(factory => factory.call('getModule', ['Aira ' + module]))
+    .then(factory => factory.call('get', [module]))
 }
 
 export function createModule(cotract, args) {
   return cotract.call('buildingCostWei')
-    .then(result => cotract.send('create', args, { value: result }))
+    .then((result) => {
+      args.push(0) // client
+      return cotract.send('create', args, { value: result })
+    })
 }
 
 export function createModuleWatch(cotract) {
