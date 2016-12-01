@@ -31,6 +31,7 @@ contract BuilderComplier is Builder {
             _client = msg.sender;
  
         var inst = CreatorComplier.create();
+        getContractsOf[_client].push(inst);
         Builded(_client, inst);
         inst.delegate(_client);
         return inst;

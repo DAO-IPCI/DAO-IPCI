@@ -63,6 +63,7 @@ contract BuilderOperator is Builder {
             "https://github.com/airalab/DAO-IPCI/blob/master/contracts/builder/BuilderAuditor.sol", false);
 
         core.delegate(_client);
+        getContractsOf[_client].push(core);
         Builded(_client, core);
         return core;
     }
