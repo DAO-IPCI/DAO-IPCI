@@ -74,11 +74,11 @@ export function load(daoAddress) {
             type: 'complier',
             modules: []
           },
-          {
-            name: i18next.t('dao:token'),
-            type: 'token',
-            modules: []
-          },
+          // {
+          //   name: i18next.t('dao:token'),
+          //   type: 'token',
+          //   modules: []
+          // },
           {
             name: i18next.t('dao:carbonRegistry'),
             type: 'token-acl',
