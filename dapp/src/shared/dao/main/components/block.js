@@ -25,7 +25,9 @@ const Block = (props) => {
               </button>
               <ul className="dropdown-menu">
                 <li><Link to={'/dao/' + type + '/' + item.address}>{t('open')}</Link></li>
-                <li><a onClick={() => onRemoveModule(item.name)}>{t('remove')}</a></li>
+                {(role === 'operator') &&
+                  <li><a onClick={() => onRemoveModule(item.name)}>{t('remove')}</a></li>
+                }
               </ul>
             </div>
             <Link to={'/dao/' + type + '/' + item.address}>
