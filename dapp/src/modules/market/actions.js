@@ -28,77 +28,133 @@ export function loadModule(marketAddress) {
           .then(firstAddress => (
             promiseFor(address => address !== '0x0000000000000000000000000000000000000000', (address) => {
               const lot = getContract(lotAbi, address)
-              lot.call('closed')
+              const item = {}
+              let tokenSale
+              let tokenBuy
+              let saleApprove
+              let buyApprove
+              let isClosed
+              return lot.call('closed')
                 .then((closed) => {
+                  isClosed = closed
                   if (!closed) {
-                    const item = {
-                      address
-                    }
-                    let tokenSale
-                    let tokenBuy
-                    let saleApprove
-                    let buyApprove
-                    lot.call('seller')
-                      .then((result) => {
-                        item.seller = result
-                        item.my = (result === coinbase())
-                        return lot.call('buyer')
-                      })
-                      .then((result) => {
-                        item.buyer = result
-                        return lot.call('quantity_sale')
-                      })
-                      .then((result) => {
-                        item.sale_quantity = result
-                        return lot.call('quantity_buy')
-                      })
-                      .then((result) => {
-                        item.buy_quantity = result
-                        return lot.call('sale')
-                      })
-                      .then((result) => {
-                        item.sale_address = result
-                        tokenSale = getContract(tokenAbi, item.sale_address)
-                        return lot.call('buy')
-                      })
-                      .then((result) => {
-                        item.buy_address = result
-                        tokenBuy = getContract(tokenAbi, item.buy_address)
-                      })
-                      .then(() => tokenSale.call('name'))
-                      .then((result) => {
-                        item.sale_name = result
-                      })
-                      .then(() => tokenBuy.call('name'))
-                      .then((result) => {
-                        item.buy_name = result
-                      })
-                      .then(() => tokenSale.call('allowance', [item.seller, address]))
-                      .then((result) => {
-                        saleApprove = _.toNumber(result)
-                        return tokenSale.call('balanceOf', [item.seller])
-                      })
-                      .then((result) => {
-                        const saleBalance = _.toNumber(result)
-                        item.approve_sale_quantity = saleApprove > saleBalance ?
-                          saleBalance : saleApprove;
-                      })
-                      .then(() => tokenBuy.call('allowance', [coinbase(), address]))
-                      .then((result) => {
-                        buyApprove = _.toNumber(result)
-                        return tokenBuy.call('balanceOf', [coinbase()])
-                      })
-                      .then((result) => {
-                        const buyBalance = _.toNumber(result)
-                        item.approve_sale_quantity = buyApprove > buyBalance ?
-                          buyBalance : buyApprove;
-                      })
-                      .then(() => {
-                        lots.push(item)
-                      })
+                    item.address = address
+                    return lot.call('seller')
+                  }
+                  return false;
+                })
+                .then((result) => {
+                  if (!isClosed) {
+                    item.seller = result
+                    item.my = (result === coinbase())
+                    return lot.call('buyer')
+                  }
+                  return false;
+                })
+                .then((result) => {
+                  if (!isClosed) {
+                    item.buyer = result
+                    return lot.call('quantity_sale')
+                  }
+                  return false;
+                })
+                .then((result) => {
+                  if (!isClosed) {
+                    item.sale_quantity = _.toNumber(result)
+                    return lot.call('quantity_buy')
+                  }
+                  return false;
+                })
+                .then((result) => {
+                  if (!isClosed) {
+                    item.buy_quantity = _.toNumber(result)
+                    return lot.call('sale')
+                  }
+                  return false;
+                })
+                .then((result) => {
+                  if (!isClosed) {
+                    item.sale_address = result
+                    tokenSale = getContract(tokenAbi, item.sale_address)
+                    return lot.call('buy')
+                  }
+                  return false;
+                })
+                .then((result) => {
+                  if (!isClosed) {
+                    item.buy_address = result
+                    tokenBuy = getContract(tokenAbi, item.buy_address)
                   }
                 })
-              return market.call('next', [address])
+                .then(() => {
+                  if (!isClosed) {
+                    return tokenSale.call('name')
+                  }
+                  return false;
+                })
+                .then((result) => {
+                  if (!isClosed) {
+                    item.sale_name = result
+                  }
+                  return false;
+                })
+                .then(() => {
+                  if (!isClosed) {
+                    return tokenBuy.call('name')
+                  }
+                  return false;
+                })
+                .then((result) => {
+                  if (!isClosed) {
+                    item.buy_name = result
+                  }
+                })
+                .then(() => {
+                  if (!isClosed) {
+                    return tokenSale.call('allowance', [item.seller, address])
+                  }
+                  return false;
+                })
+                .then((result) => {
+                  if (!isClosed) {
+                    saleApprove = _.toNumber(result)
+                    return tokenSale.call('balanceOf', [item.seller])
+                  }
+                  return false;
+                })
+                .then((result) => {
+                  if (!isClosed) {
+                    const saleBalance = _.toNumber(result)
+                    item.approve_sale_quantity = saleApprove > saleBalance ?
+                      saleBalance : saleApprove;
+                  }
+                })
+                .then(() => {
+                  if (!isClosed) {
+                    return tokenBuy.call('allowance', [coinbase(), address])
+                  }
+                  return false;
+                })
+                .then((result) => {
+                  if (!isClosed) {
+                    buyApprove = _.toNumber(result)
+                    return tokenBuy.call('balanceOf', [coinbase()])
+                  }
+                  return false;
+                })
+                .then((result) => {
+                  if (!isClosed) {
+                    const buyBalance = _.toNumber(result)
+                    item.approve_buy_quantity = buyApprove > buyBalance ?
+                      buyBalance : buyApprove;
+                  }
+                })
+                .then(() => {
+                  if (!isClosed) {
+                    lots.push(item)
+                  }
+                })
+                .then(() => market.call('next', [address]))
             }, firstAddress)
           ))
           .then(() => {

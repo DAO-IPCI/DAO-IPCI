@@ -74,21 +74,21 @@ export function load(daoAddress) {
             type: 'complier',
             modules: []
           },
-          // {
-          //   name: i18next.t('dao:token'),
-          //   type: 'token',
-          //   modules: []
-          // },
+          {
+            name: i18next.t('dao:token'),
+            type: 'token',
+            modules: []
+          },
           {
             name: i18next.t('dao:carbonRegistry'),
             type: 'token-acl',
             modules: []
           },
-          // {
-          //   name: i18next.t('dao:market'),
-          //   type: 'market',
-          //   modules: []
-          // }
+          {
+            name: i18next.t('dao:market'),
+            type: 'market',
+            modules: []
+          }
         ]
         core.call('first')
           .then(firstAddress => (
