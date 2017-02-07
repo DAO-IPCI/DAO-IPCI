@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import Promise from 'bluebird'
 import { LOAD_MODULE } from './actionTypes'
-import { getContractByAbiName } from '../../utils/web3'
+import { getContractByAbiName, listenAddress } from '../../utils/web3'
 import { submit as submitContract, send as sendContract } from '../dao/actions'
 
 export function loadModule(auditorAddress) {
@@ -59,6 +59,9 @@ export function loadModule(auditorAddress) {
             balance
           }
         })
+        listenAddress(auditorAddress, 'loadModule', (address) => {
+          dispatch(loadModule(address))
+        })
       })
   }
 }
@@ -66,17 +69,11 @@ export function loadModule(auditorAddress) {
 export function submit(address, action, form) {
   return (dispatch) => {
     submitContract(dispatch, 'FormAuditor', address, 'Auditor', action, form)
-      .then(() => {
-        dispatch(loadModule(address))
-      })
   }
 }
 
 export function send(address, action, values) {
   return (dispatch) => {
     sendContract(dispatch, address, 'Auditor', action, values)
-      .then(() => {
-        dispatch(loadModule(address))
-      })
   }
 }

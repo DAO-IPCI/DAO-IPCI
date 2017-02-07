@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import cookie from 'react-cookie'
-import { getWeb3, isAccounts } from '../../utils/web3'
+import { getWeb3, isAccounts, runListener } from '../../utils/web3'
 
 import Header from '../components/app/header'
 import Footer from '../components/app/footer'
@@ -24,6 +24,7 @@ class App extends Component {
       this.props.setLanguage(language)
     }
     this.props.loadLog()
+    runListener();
   }
 
   render() {

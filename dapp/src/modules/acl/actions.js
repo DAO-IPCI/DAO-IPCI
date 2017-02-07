@@ -1,5 +1,5 @@
 import { LOAD_MODULE } from './actionTypes'
-import { getContractByAbiName } from '../../utils/web3'
+import { getContractByAbiName, listenAddress } from '../../utils/web3'
 import { submit as submitContract, send as sendContract } from '../dao/actions'
 import { promiseFor } from '../../utils/helper'
 
@@ -42,6 +42,9 @@ export function loadModule(aclAddress) {
                 groups
               }
             })
+            listenAddress(aclAddress, 'loadModule', (address) => {
+              dispatch(loadModule(address))
+            })
           });
       })
   }
@@ -50,17 +53,11 @@ export function loadModule(aclAddress) {
 export function submit(address, action, form) {
   return (dispatch) => {
     submitContract(dispatch, 'FormAcl', address, 'ACLStorage', action, form)
-      .then(() => {
-        dispatch(loadModule(address))
-      })
   }
 }
 
 export function send(address, action, values) {
   return (dispatch) => {
     sendContract(dispatch, address, 'ACLStorage', action, values)
-      .then(() => {
-        dispatch(loadModule(address))
-      })
   }
 }

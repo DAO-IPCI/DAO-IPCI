@@ -3,39 +3,9 @@ import _ from 'lodash'
 import { hashHistory } from 'react-router';
 import i18next from 'i18next'
 import { LOAD, ADD_MODULE } from './actionTypes'
-import { loadAbiByName, getContract, blockchain, getTransaction, createModule, createModuleWatch, getModuleAddress } from '../../utils/web3'
+import { loadAbiByName, getContract, blockchain, createModule, createModuleWatch, getModuleAddress } from '../../utils/web3'
 import { promiseFor } from '../../utils/helper'
 import { flashMessage } from '../app/actions'
-import { loadModule as aclLoadModule } from '../acl/actions'
-// import { loadModule as tokenLoadModule } from '../token/actions'
-// import { loadModule as tokenAclLoadModule } from '../tokenAcl/actions'
-// import { loadModule as ambixLoadModule } from '../ambix/actions'
-// import { loadModule as marketLoadModule } from '../market/actions'
-
-export function observeModules() {
-  const loadModule = {
-    acl: aclLoadModule,
-    // token: tokenLoadModule,
-    // 'token-acl': tokenAclLoadModule,
-    // ambix: ambixLoadModule,
-    // market: marketLoadModule
-  }
-  return (dispatch, getState) => {
-    blockchain.setSubscribe((bl) => {
-      _.forEach(bl.transactions, (txId) => {
-        const info = getTransaction(txId);
-        const state = getState()
-        _.forEach(state.dao.blocks, (block) => {
-          _.forEach(block.modules, (module) => {
-            if (module.address === info.from || module.address === info.to) {
-              dispatch(loadModule[block.type](module.address))
-            }
-          })
-        })
-      })
-    })
-  }
-}
 
 export function addModule(type, name, address) {
   return {
@@ -133,7 +103,6 @@ export function load(daoAddress) {
               }
             })
           });
-        // dispatch(observeModules())
       })
   }
 }

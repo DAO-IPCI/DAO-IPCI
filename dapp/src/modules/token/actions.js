@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import Promise from 'bluebird'
 import { LOAD_MODULE, CALL_FUNC } from './actionTypes'
-import { getContractByAbiName, coinbase } from '../../utils/web3'
+import { getContractByAbiName, coinbase, listenAddress } from '../../utils/web3'
 import { submit as submitContract, send as sendContract, call as callContract } from '../dao/actions'
 
 export function loadModule(tokenAddress) {
@@ -37,6 +37,9 @@ export function loadModule(tokenAddress) {
             ...token
           }
         })
+        listenAddress(tokenAddress, 'loadModule', (address) => {
+          dispatch(loadModule(address))
+        })
       })
   }
 }
@@ -44,18 +47,12 @@ export function loadModule(tokenAddress) {
 export function submit(address, action, form) {
   return (dispatch) => {
     submitContract(dispatch, 'FormToken', address, 'TokenEmission', action, form)
-      .then(() => {
-        dispatch(loadModule(address))
-      })
   }
 }
 
 export function send(address, action, values) {
   return (dispatch) => {
     sendContract(dispatch, address, 'TokenEmission', action, values)
-      .then(() => {
-        dispatch(loadModule(address))
-      })
   }
 }
 

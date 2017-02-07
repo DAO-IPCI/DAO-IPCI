@@ -57,7 +57,14 @@ export function transfer(from, to, value, isEther = true) {
 }
 
 export function getTransaction(txId) {
-  return web3.eth.getTransaction(txId);
+  return new Promise((resolve, reject) => {
+    web3.eth.getTransaction(txId, (error, result) => {
+      if (error) {
+        reject(error);
+      }
+      resolve(result);
+    })
+  });
 }
 
 export function getContract(abi, address) {
@@ -140,4 +147,32 @@ export function createModule(cotract, args) {
 export function createModuleWatch(cotract) {
   return cotract.watch('Builded')
     .then(params => params.instance)
+}
+
+let listeners = {}
+export function listenAddress(address, name, cb) {
+  if (!_.has(listeners, address) || !_.has(listeners, [address, name])) {
+    listeners = _.set(listeners, [address, name], cb)
+  }
+}
+export function runListener() {
+  if (getWeb3()) {
+    blockchain.setSubscribe((bl) => {
+      _.forEach(bl.transactions, (txId) => {
+        getTransaction(txId)
+          .then((info) => {
+            if (_.has(listeners, info.from) || _.has(listeners, info.to)) {
+              _.forEach(listeners[info.from], (cb) => {
+                cb(info.from)
+              });
+            }
+            if (_.has(listeners, info.to)) {
+              _.forEach(listeners[info.to], (cb) => {
+                cb(info.to)
+              });
+            }
+          });
+      })
+    })
+  }
 }

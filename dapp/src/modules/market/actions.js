@@ -2,7 +2,7 @@ import { startSubmit, stopSubmit, reset } from 'redux-form'
 import _ from 'lodash'
 import Promise from 'bluebird'
 import { LOAD_MODULE } from './actionTypes'
-import { getContractByAbiName, loadAbiByName, getContract, blockchain, coinbase } from '../../utils/web3'
+import { getContractByAbiName, loadAbiByName, getContract, blockchain, coinbase, listenAddress } from '../../utils/web3'
 import { promiseFor } from '../../utils/helper'
 import { flashMessage } from '../app/actions'
 
@@ -93,6 +93,15 @@ export function loadModule(marketAddress) {
                 .then((tokensInfoResult) => {
                   if (tokensInfoResult) {
                     lots.push({ ...item, ...tokensInfoResult })
+                    listenAddress(item.address, 'loadModuleMarket', () => {
+                      dispatch(loadModule(marketAddress))
+                    })
+                    listenAddress(item.sale_address, 'loadModuleMarket', () => {
+                      dispatch(loadModule(marketAddress))
+                    })
+                    listenAddress(item.buy_address, 'loadModuleMarket', () => {
+                      dispatch(loadModule(marketAddress))
+                    })
                   }
                 })
                 .then(() => market.call('next', [address]))
@@ -105,6 +114,9 @@ export function loadModule(marketAddress) {
                 address: marketAddress,
                 lots
               }
+            })
+            listenAddress(marketAddress, 'loadModule', (address) => {
+              dispatch(loadModule(address))
             })
           });
       })
@@ -120,7 +132,6 @@ export function dealLot(marketAddress, address) {
         return blockchain.subscribeTx(txId)
       })
       .then(() => {
-        dispatch(loadModule(marketAddress))
         dispatch(flashMessage('Лот куплен'))
       })
   }
@@ -135,7 +146,6 @@ export function removeLot(marketAddress, address) {
         return blockchain.subscribeTx(txId)
       })
       .then(() => {
-        dispatch(loadModule(marketAddress))
         dispatch(flashMessage('Лот удален'))
       })
   }
@@ -150,7 +160,6 @@ export function approveLot(marketAddress, lot, token, value) {
         return blockchain.subscribeTx(txId)
       })
       .then(() => {
-        dispatch(loadModule(marketAddress))
         dispatch(flashMessage('Дан доступ'))
       })
   }
@@ -183,7 +192,6 @@ export function submit(marketAddress, action, form) {
           dispatch(stopSubmit('FormMarket'))
           dispatch(reset('FormMarket'))
           dispatch(flashMessage('blockNumber: ' + blockNumber))
-          dispatch(loadModule(marketAddress))
         })
         .catch(() => {
           dispatch(stopSubmit('FormMarket'))
