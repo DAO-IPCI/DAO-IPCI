@@ -93,7 +93,8 @@ export function load(daoAddress) {
         core.call('first')
           .then(firstAddress => (
             promiseFor(address => address !== '0x0000000000000000000000000000000000000000', (address) => {
-              core.call('abiOf', [address])
+              let block;
+              return core.call('abiOf', [address])
                 .then((type) => {
                   if (type === 'https://github.com/airalab/core/blob/master/sol/acl/ACLStorage.sol') {
                     return 'acl'
@@ -104,18 +105,21 @@ export function load(daoAddress) {
                   return type
                 })
                 .then((type) => {
-                  const block = _.find(blocks, ['type', type])
+                  block = _.find(blocks, ['type', type])
                   if (block) {
-                    core.call('getName', [address])
-                      .then((name) => {
-                        block.modules.push({
-                          name,
-                          address
-                        })
-                      })
+                    return core.call('getName', [address])
+                  }
+                  return false;
+                })
+                .then((name) => {
+                  if (name) {
+                    block.modules.push({
+                      name,
+                      address
+                    })
                   }
                 })
-              return core.call('next', [address])
+                .then(() => core.call('next', [address]))
             }, firstAddress)
           ))
           .then(() => core.call('name'))
