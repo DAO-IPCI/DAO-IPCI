@@ -1,52 +1,57 @@
 import _ from 'lodash'
+import Promise from 'bluebird'
 import { LOAD_MODULE, CALL_FUNC } from './actionTypes'
 import { getContractByAbiName } from '../../utils/web3'
 import { submit as submitContract, send as sendContract, call as callContract } from '../dao/actions'
 
 export function loadModule(holderAddress) {
   return (dispatch) => {
-    let holder
-    let token
-    let decimals
-    let symbol
-    const payload = {
+    let payload = {
       address: holderAddress
     }
     getContractByAbiName('InsuranceHolder', holderAddress)
-      .then((contract) => {
-        holder = contract
-        return holder.call('token')
-      })
-      .then((result) => {
-        payload.token = result
-        return holder.call('holdDuration')
-      })
-      .then((result) => {
-        payload.holdDuration = _.toNumber(result)
-        return getContractByAbiName('TokenEmission', payload.token)
-      })
-      .then((contract) => {
-        token = contract
-        return token.call('decimals')
-      })
-      .then((result) => {
-        decimals = result
-        if (decimals > 0) {
-          decimals = Math.pow(10, decimals)
-        } else {
-          decimals = 1
+      .then(contract => (
+        Promise.join(
+          contract.call('token'),
+          contract.call('holdDuration'),
+          (token, holdDuration) => (
+            {
+              token,
+              holdDuration: _.toNumber(holdDuration)
+            }
+          )
+        )
+      ))
+      .then((holder) => {
+        payload = {
+          ...payload,
+          ...holder
         }
-        return token.call('symbol')
       })
-      .then((result) => {
-        symbol = result
-        return token.call('balanceOf', [holderAddress])
-      })
-      .then((result) => {
-        payload.balance = (_.toNumber(result) / decimals) + ' ' + symbol
+      .then(() => getContractByAbiName('TokenEmission', payload.token))
+      .then(contract => (
+        Promise.join(
+          contract.call('decimals'),
+          contract.call('symbol'),
+          contract.call('balanceOf', [holderAddress]),
+          (decimalsR, symbol, balance) => {
+            let decimals = decimalsR
+            if (decimals > 0) {
+              decimals = Math.pow(10, decimals)
+            } else {
+              decimals = 1
+            }
+            return (_.toNumber(balance) / decimals) + ' ' + symbol
+          }
+        )
+      ))
+      .then((balance) => {
         dispatch({
           type: LOAD_MODULE,
-          payload
+          payload: {
+            ...payload,
+            balance
+          }
         })
       })
   }

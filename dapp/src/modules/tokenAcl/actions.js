@@ -1,54 +1,47 @@
 import _ from 'lodash'
+import Promise from 'bluebird'
 import { LOAD_MODULE, CALL_FUNC } from './actionTypes'
 import { getContractByAbiName, coinbase } from '../../utils/web3'
 import { submit as submitContract, send as sendContract, call as callContract } from '../dao/actions'
 
 export function loadModule(tokenAclAddress) {
   return (dispatch) => {
-    let token
-    let decimals
-    let symbol
-    const payload = {
-      address: tokenAclAddress
-    }
     getContractByAbiName('TokenEmissionACL', tokenAclAddress)
-      .then((contract) => {
-        token = contract
-        return token.call('name')
-      })
-      .then((name) => {
-        payload.name = name
-        return token.call('emitentGroup')
-      })
-      .then((result) => {
-        payload.aclGroup = result
-        return token.call('decimals')
-      })
-      .then((result) => {
-        decimals = result
-        if (decimals > 0) {
-          decimals = Math.pow(10, decimals)
-        } else {
-          decimals = 1
-        }
-        return token.call('symbol')
-      })
-      .then((result) => {
-        symbol = result
-        if (symbol === 'IPMU') {
-          symbol = 'testCER'
-        }
-        return token.call('balanceOf', [coinbase()])
-      })
-      .then((result) => {
-        payload.balance = (_.toNumber(result) / decimals) + ' ' + symbol
-        return token.call('totalSupply')
-      })
-      .then((result) => {
-        payload.totalSupply = (_.toNumber(result) / decimals) + ' ' + symbol
+      .then(contract => (
+        Promise.join(
+          contract.call('name'),
+          contract.call('emitentGroup'),
+          contract.call('decimals'),
+          contract.call('symbol'),
+          contract.call('balanceOf', [coinbase()]),
+          contract.call('totalSupply'),
+          (name, aclGroup, decimalsR, symbolR, balance, totalSupply) => {
+            let decimals = decimalsR
+            if (decimals > 0) {
+              decimals = Math.pow(10, decimals)
+            } else {
+              decimals = 1
+            }
+            let symbol = symbolR
+            if (symbol === 'IPMU') {
+              symbol = 'testCER'
+            }
+            return {
+              name,
+              aclGroup,
+              balance: (_.toNumber(balance) / decimals) + ' ' + symbol,
+              totalSupply: (_.toNumber(totalSupply) / decimals) + ' ' + symbol
+            }
+          }
+        )
+      ))
+      .then((token) => {
         dispatch({
           type: LOAD_MODULE,
-          payload
+          payload: {
+            address: tokenAclAddress,
+            ...token
+          }
         })
       })
   }

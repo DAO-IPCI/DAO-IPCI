@@ -1,64 +1,63 @@
 import _ from 'lodash'
+import Promise from 'bluebird'
 import { LOAD_MODULE } from './actionTypes'
 import { getContractByAbiName } from '../../utils/web3'
 import { submit as submitContract, send as sendContract } from '../dao/actions'
 
 export function loadModule(auditorAddress) {
   return (dispatch) => {
-    let auditor
-    let token
-    let decimals
-    let symbol
-    const payload = {
+    let payload = {
       address: auditorAddress
     }
     getContractByAbiName('Auditor', auditorAddress)
-      .then((contract) => {
-        auditor = contract
-        return auditor.call('token')
-      })
-      .then((result) => {
-        payload.token = result
-        return getContractByAbiName('TokenEmission', payload.token)
-      })
-      .then((contract) => {
-        token = contract
-        return token.call('decimals')
-      })
-      .then((result) => {
-        decimals = result
-        if (decimals > 0) {
-          decimals = Math.pow(10, decimals)
-        } else {
-          decimals = 1
+      .then(contract => (
+        Promise.join(
+          contract.call('token'),
+          contract.call('insuranceHolder'),
+          contract.call('emissionValue'),
+          contract.call('emissionLimit'),
+          contract.call('holdPercentage'),
+          (token, holder, value, limit, percentage) => (
+            {
+              token,
+              holder,
+              value: _.toNumber(value),
+              limit: _.toNumber(limit),
+              percentage: _.toNumber(percentage)
+            }
+          )
+        )
+      ))
+      .then((auditor) => {
+        payload = {
+          ...payload,
+          ...auditor
         }
-        return token.call('symbol')
       })
-      .then((result) => {
-        symbol = result
-        return token.call('balanceOf', [auditorAddress])
-      })
-      .then((result) => {
-        payload.balance = (_.toNumber(result) / decimals) + ' ' + symbol
-        return auditor.call('insuranceHolder')
-      })
-      .then((result) => {
-        payload.holder = result
-        return auditor.call('emissionValue')
-      })
-      .then((result) => {
-        payload.value = _.toNumber(result)
-        return auditor.call('emissionLimit')
-      })
-      .then((result) => {
-        payload.limit = _.toNumber(result)
-        return auditor.call('holdPercentage')
-      })
-      .then((result) => {
-        payload.percentage = _.toNumber(result)
+      .then(() => getContractByAbiName('TokenEmission', payload.token))
+      .then(contract => (
+        Promise.join(
+          contract.call('decimals'),
+          contract.call('symbol'),
+          contract.call('balanceOf', [auditorAddress]),
+          (decimalsR, symbol, balance) => {
+            let decimals = decimalsR
+            if (decimals > 0) {
+              decimals = Math.pow(10, decimals)
+            } else {
+              decimals = 1
+            }
+            return (_.toNumber(balance) / decimals) + ' ' + symbol
+          }
+        )
+      ))
+      .then((balance) => {
         dispatch({
           type: LOAD_MODULE,
-          payload
+          payload: {
+            ...payload,
+            balance
+          }
         })
       })
   }
