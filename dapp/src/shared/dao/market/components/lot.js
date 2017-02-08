@@ -6,9 +6,9 @@ const Lot = (props) => {
 
   let buttons
   if (!props.my) {
-    if (props.approve_sale_quantity < props.sale_quantity) {
+    if (props.approve_sale_quantity < props.sale_quantity_full) {
       buttons = <span className="label label-danger">{t('notApprove')}</span>
-    } else if (props.approve_buy_quantity < props.buy_quantity) {
+    } else if (props.approve_buy_quantity < props.buy_quantity_full) {
       buttons = <button className="btn btn-success" onClick={props.approveLotBuy}>{t('approve')}</button>
     } else {
       buttons = <button className="btn btn-success" onClick={props.dealLot}>{t('buyLot')}</button>
@@ -16,7 +16,7 @@ const Lot = (props) => {
   } else {
     buttons = (<div className="btn-group">
       <button className="btn btn-warning" onClick={props.removeLot}>{t('removeLot')}</button>
-      {props.approve_sale_quantity < props.sale_quantity &&
+      {props.approve_sale_quantity < props.sale_quantity_full &&
         <button className="btn btn-success" onClick={props.approveLotSale}>{t('approve')}</button>
       }
     </div>)
@@ -33,7 +33,15 @@ const Lot = (props) => {
             <li className="list-group-item active">{t('sale')}</li>
             <li className="list-group-item">{props.sale_name}</li>
             <li className="list-group-item"><span className="label label-primary">{props.sale_address}</span></li>
-            <li className="list-group-item">{props.sale_quantity}</li>
+            <li className="list-group-item">
+              {props.sale_commission > 0 ?
+                <span>
+                  {props.sale_quantity} + {props.sale_commission}% = {props.sale_quantity_full}
+                </span>
+                :
+                <span>{props.sale_quantity}</span>
+              }
+            </li>
           </ul>
         </div>
         <div className="col-md-6">
@@ -41,7 +49,15 @@ const Lot = (props) => {
             <li className="list-group-item active">{t('buy')}</li>
             <li className="list-group-item">{props.buy_name}</li>
             <li className="list-group-item"><span className="label label-primary">{props.buy_address}</span></li>
-            <li className="list-group-item">{props.buy_quantity}</li>
+            <li className="list-group-item">
+              {props.buy_commission > 0 ?
+                <span>
+                  {props.buy_quantity} + {props.buy_commission}% = {props.buy_quantity_full}
+                </span>
+                :
+                <span>{props.buy_quantity}</span>
+              }
+            </li>
           </ul>
         </div>
       </div>

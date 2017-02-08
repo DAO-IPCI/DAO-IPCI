@@ -11,9 +11,28 @@ export function loadModule(marketAddress) {
     let market
     let tokenAbi
     let lotAbi
+    let payload = {
+      address: marketAddress
+    }
     getContractByAbiName('Market', marketAddress)
       .then((contract) => {
         market = contract
+        return Promise.join(
+          contract.call('commissionToken'),
+          contract.call('commission'),
+          (commissionToken, commission) => (
+            {
+              commissionToken,
+              commission: _.toNumber(commission) / 100
+            }
+          )
+        )
+      })
+      .then((commission) => {
+        payload = {
+          ...payload,
+          ...commission
+        }
         return loadAbiByName('TokenEmission')
       })
       .then((abi) => {
@@ -44,17 +63,35 @@ export function loadModule(marketAddress) {
                       lot.call('quantity_buy'),
                       lot.call('sale'),
                       lot.call('buy'),
-                      (seller, buyer, quantitySale, quantityBuy, sale, buy) => (
-                        {
+                      lot.call('commissionAmount'),
+                      (seller, buyer, quantitySale, quantityBuy, sale, buy, commissionAmount) => {
+                        let saleCommission = 0
+                        let saleQuantityFull = _.toNumber(quantitySale)
+                        if (sale === payload.commissionToken) {
+                          saleQuantityFull += _.toNumber(commissionAmount)
+                          saleCommission = payload.commission
+                        }
+                        let buyCommission = 0
+                        let buyQuantityFull = _.toNumber(quantityBuy)
+                        if (buy === payload.commissionToken) {
+                          buyQuantityFull += _.toNumber(commissionAmount)
+                          buyCommission = payload.commission
+                        }
+                        return {
                           my: (seller === coinbase()),
                           seller,
                           buyer,
                           sale_quantity: _.toNumber(quantitySale),
                           buy_quantity: _.toNumber(quantityBuy),
+                          sale_quantity_full: saleQuantityFull,
+                          buy_quantity_full: buyQuantityFull,
+                          sale_commission: saleCommission,
+                          buy_commission: buyCommission,
                           sale_address: sale,
-                          buy_address: buy
+                          buy_address: buy,
+                          commission_amount: _.toNumber(commissionAmount)
                         }
-                      )
+                      }
                     );
                   }
                   return false;
@@ -111,7 +148,7 @@ export function loadModule(marketAddress) {
             dispatch({
               type: LOAD_MODULE,
               payload: {
-                address: marketAddress,
+                ...payload,
                 lots
               }
             })
@@ -166,8 +203,13 @@ export function approveLot(marketAddress, lot, token, value) {
 }
 
 function run(dispatch, address, func, values) {
+  const params = values;
+  if (func === 'setCommission') {
+    params[0] *= 100;
+  }
+
   return getContractByAbiName('Market', address)
-    .then(contract => contract.send(func, values))
+    .then(contract => contract.send(func, params))
     .then((txId) => {
       dispatch(flashMessage('txId: ' + txId))
       return blockchain.subscribeTx(txId)
@@ -182,6 +224,12 @@ export function submit(marketAddress, action, form) {
     switch (action) {
       case 'lot':
         func = 'append'
+        break
+      case 'setCommissionToken':
+        func = 'setCommissionToken'
+        break
+      case 'setCommission':
+        func = 'setCommission'
         break
       default:
         func = false;

@@ -5,6 +5,8 @@ const initialState = {
   modules: [
     // {
     //   address: '0x0020281504ad36a39700414d7cb9fcc6b27d48c3',
+    //   commissionToken: '0x0020281504ad36a39700414d7cb9fcc6b27d48c3',
+    //   commission: 0,
     //   lots: [
     //     {
     //       sale_name: 'aaa',
@@ -15,7 +17,12 @@ const initialState = {
     //       buy_quantity: 2,
     //       approve_sale_quantity: 2,
     //       approve_buy_quantity: 2,
-    //       my: false
+    //       my: false,
+    //       sale_quantity_full: saleQuantityFull,
+    //       buy_quantity_full: buyQuantityFull,
+    //       sale_commission: saleCommission,
+    //       buy_commission: buyCommission,
+    //       commission_amount: 0
     //     }
     //   ]
     // }
@@ -32,6 +39,8 @@ export default function market(state = initialState, action) {
           if (item.address === action.payload.address) {
             return {
               ...item,
+              commissionToken: action.payload.commissionToken,
+              commission: action.payload.commission,
               lots: action.payload.lots
             }
           }

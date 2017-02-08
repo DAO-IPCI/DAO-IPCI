@@ -1,18 +1,25 @@
 {
   "titlePrefix": "Market",
   "menuAddLot": "Add lot",
+  "menuSetCommissionToken": "Commission Token",
+  "menuSetCommission": "Commission",
   "notApprove": "Unapporoved",
   "approve": "Approve",
   "buyLot": "Buy lot",
   "removeLot": "Remove lot",
   "sale": "Sale",
   "buy": "Buy",
+  "commission": "Commission",
 
   "titleAddLot": "Add lot",
+  "titleSetCommissionToken": "Commission Token",
+  "titleSetCommission": "Commission",
 
   "formSeller": "Seller address",
   "formTokenSale": "Token for sale",
   "formTokenBuy": "Token to buy",
   "formAmountSale": "Amount for sale",
-  "formAmountBuy": "Amount to buy"
+  "formAmountBuy": "Amount to buy",
+  "formCommissionToken": "Token address",
+  "formCommission": "Commission %"
 }

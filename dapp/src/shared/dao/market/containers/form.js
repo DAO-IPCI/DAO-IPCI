@@ -6,7 +6,24 @@ import Form from '../../../components/common/form';
 import { coinbase } from '../../../../utils/web3'
 
 function mapStateToProps(state, props) {
-  if (props.action === 'lot') {
+  if (props.action === 'setCommissionToken') {
+    return {
+      fields: ['address'],
+      selects: {},
+      labels: [i18next.t('market:formCommissionToken')],
+      placeholders: ['0x111111111111111'],
+      autocomplete: {
+        address: true
+      }
+    }
+  } else if (props.action === 'setCommission') {
+    return {
+      fields: ['value'],
+      selects: {},
+      labels: [i18next.t('market:formCommission')],
+      placeholders: ['1']
+    }
+  } else if (props.action === 'lot') {
     return {
       fields: ['seller', 'sale', 'buy', 'quantity_sale', 'quantity_buy'],
       selects: {},

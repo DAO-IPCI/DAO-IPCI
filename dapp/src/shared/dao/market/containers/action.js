@@ -7,6 +7,12 @@ function mapStateToProps(store, props) {
     case 'lot':
       title = 'titleAddLot'
       break
+    case 'setCommissionToken':
+      title = 'titleSetCommissionToken'
+      break
+    case 'setCommission':
+      title = 'titleSetCommission'
+      break
     default:
       title = '';
   }
