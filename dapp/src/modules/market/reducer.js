@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { LOAD_MODULE } from './actionTypes'
+import { LOAD_MODULE, ADD_LOT, UPDATE_LOT } from './actionTypes'
 
 const initialState = {
   modules: [
@@ -53,6 +53,44 @@ export default function market(state = initialState, action) {
         ]
       }
       return { ...state, modules }
+    }
+
+    case ADD_LOT: {
+      if (_.find(state.modules, ['address', action.payload.address])) {
+        const modules = state.modules.map((item) => {
+          if (item.address === action.payload.address) {
+            return {
+              ...item,
+              lots: [action.payload.lot, ...item.lots]
+            }
+          }
+          return item
+        })
+        return { ...state, modules }
+      }
+      return state;
+    }
+
+    case UPDATE_LOT: {
+      if (_.find(state.modules, ['address', action.payload.address])) {
+        const modules = state.modules.map((item) => {
+          if (item.address === action.payload.address) {
+            const lots = item.lots.map((lot) => {
+              if (lot.address === action.payload.lot.address) {
+                return action.payload.lot
+              }
+              return item
+            })
+            return {
+              ...item,
+              lots
+            }
+          }
+          return item
+        })
+        return { ...state, modules }
+      }
+      return state;
     }
 
     default:

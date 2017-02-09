@@ -1,19 +1,164 @@
 import { startSubmit, stopSubmit, reset } from 'redux-form'
 import _ from 'lodash'
 import Promise from 'bluebird'
-import { LOAD_MODULE } from './actionTypes'
+import { LOAD_MODULE, ADD_LOT, UPDATE_LOT } from './actionTypes'
 import { getContractByAbiName, loadAbiByName, getContract, blockchain, coinbase, listenAddress } from '../../utils/web3'
 import { promiseFor } from '../../utils/helper'
 import { flashMessage } from '../app/actions'
+
+export function loadLot(address, lotAbi, tokenAbi) {
+  const lot = getContract(lotAbi, address)
+  let item = {}
+  return lot.call('closed')
+    .then((closed) => {
+      if (!closed) {
+        // если лот открыт, то получаем данные по лоту
+        return Promise.join(
+          lot.call('seller'),
+          lot.call('buyer'),
+          lot.call('quantity_sale'),
+          lot.call('quantity_buy'),
+          lot.call('sale'),
+          lot.call('buy'),
+          lot.call('commissionToken'),
+          lot.call('commission'),
+          lot.call('commissionAmount'),
+          (seller, buyer, quantitySale, quantityBuy, sale, buy, commissionToken,
+            commission, commissionAmount) => {
+            const commissionNum = _.toNumber(commission);
+            let saleCommission = 0
+            let saleQuantityFull = _.toNumber(quantitySale)
+            if (sale === commissionToken) {
+              saleQuantityFull += _.toNumber(commissionAmount)
+              saleCommission = commissionNum
+            }
+            let buyCommission = 0
+            let buyQuantityFull = _.toNumber(quantityBuy)
+            if (buy === commissionToken) {
+              buyQuantityFull += _.toNumber(commissionAmount)
+              buyCommission = commissionNum
+            }
+            return {
+              my: (seller === coinbase()),
+              seller,
+              buyer,
+              sale_quantity: _.toNumber(quantitySale),
+              buy_quantity: _.toNumber(quantityBuy),
+              sale_quantity_full: saleQuantityFull,
+              buy_quantity_full: buyQuantityFull,
+              sale_commission: saleCommission,
+              buy_commission: buyCommission,
+              sale_address: sale,
+              buy_address: buy,
+              commission_amount: _.toNumber(commissionAmount)
+            }
+          }
+        );
+      }
+      return false;
+    })
+    .then((lotResult) => {
+      if (lotResult) {
+        // если данные по лоту получены, то получаем данные по токенам лота
+        item = { address, closed, ...lotResult }
+        const tokenSale = getContract(tokenAbi, item.sale_address)
+        const tokenBuy = getContract(tokenAbi, item.buy_address)
+        return Promise.join(
+          tokenSale.call('name'),
+          tokenSale.call('allowance', [item.seller, address]),
+          tokenSale.call('balanceOf', [item.seller]),
+          tokenSale.call('symbol'),
+          tokenBuy.call('name'),
+          tokenBuy.call('allowance', [coinbase(), address]),
+          tokenBuy.call('balanceOf', [coinbase()]),
+          tokenBuy.call('symbol'),
+          (saleName, saleApprove, saleBalance, saleSymbol,
+            buyName, buyApprove, buyBalance, buySymbol) => {
+            const saleApproveNum = _.toNumber(saleApprove)
+            const saleBalanceNum = _.toNumber(saleBalance)
+            const buyApproveNum = _.toNumber(buyApprove)
+            const buyBalanceNum = _.toNumber(buyBalance)
+            return {
+              sale_name: saleName,
+              approve_sale_quantity: saleApproveNum > saleBalanceNum ?
+                saleBalanceNum : saleApproveNum,
+              saleSymbol,
+              buy_name: buyName,
+              approve_buy_quantity: buyApproveNum > buyBalanceNum ?
+                buyBalanceNum : buyApproveNum,
+              buySymbol
+            }
+          }
+        );
+      }
+      return false;
+    })
+    .then((tokensInfoResult) => {
+      if (tokensInfoResult) {
+        return { ...item, ...tokensInfoResult }
+      }
+      return false;
+    })
+}
+
+export function updateLotModule(addressModule, address) {
+  return (dispatch) => {
+    let tokenAbi
+    let lotAbi
+    loadAbiByName('TokenEmission')
+      .then((abi) => {
+        tokenAbi = abi
+        return loadAbiByName('Lot')
+      })
+      .then((abi) => {
+        lotAbi = abi
+        return loadLot(address, lotAbi, tokenAbi)
+      })
+      .then((lot) => {
+        if (lot) {
+          dispatch({
+            type: UPDATE_LOT,
+            payload: {
+              address: addressModule,
+              lot
+            }
+          })
+        }
+      })
+  }
+}
+
+export function addLotModule(adressModule, address, lotAbi, tokenAbi) {
+  return (dispatch) => {
+    loadLot(address, lotAbi, tokenAbi)
+      .then((lot) => {
+        if (lot) {
+          dispatch({
+            type: ADD_LOT,
+            payload: {
+              address: adressModule,
+              lot
+            }
+          })
+          listenAddress(lot.address, 'loadModule', () => {
+            dispatch(loadModule(adressModule)) /* eslint no-use-before-define: 0 */
+          })
+          listenAddress(lot.sale_address, 'loadLotMarket' + lot.address, () => {
+            dispatch(updateLotModule(adressModule, lot.address))
+          })
+          listenAddress(lot.buy_address, 'loadLotMarket' + lot.address, () => {
+            dispatch(updateLotModule(adressModule, lot.address))
+          })
+        }
+      })
+  }
+}
 
 export function loadModule(marketAddress) {
   return (dispatch) => {
     let market
     let tokenAbi
     let lotAbi
-    let payload = {
-      address: marketAddress
-    }
     getContractByAbiName('Market', marketAddress)
       .then((contract) => {
         market = contract
@@ -29,10 +174,14 @@ export function loadModule(marketAddress) {
         )
       })
       .then((commission) => {
-        payload = {
-          ...payload,
-          ...commission
-        }
+        dispatch({
+          type: LOAD_MODULE,
+          payload: {
+            address: marketAddress,
+            ...commission,
+            lots: []
+          }
+        })
         return loadAbiByName('TokenEmission')
       })
       .then((abi) => {
@@ -43,120 +192,14 @@ export function loadModule(marketAddress) {
         lotAbi = abi
       })
       .then(() => {
-        const lots = [];
         market.call('first')
           .then(firstAddress => (
             promiseFor(address => address !== '0x0000000000000000000000000000000000000000', (address) => {
-              const lot = getContract(lotAbi, address)
-              let item = {}
-              let tokenSale
-              let tokenBuy
-
-              return lot.call('closed')
-                .then((closed) => {
-                  if (!closed) {
-                    // если лот открыт, то получаем данные по лоту
-                    return Promise.join(
-                      lot.call('seller'),
-                      lot.call('buyer'),
-                      lot.call('quantity_sale'),
-                      lot.call('quantity_buy'),
-                      lot.call('sale'),
-                      lot.call('buy'),
-                      lot.call('commissionAmount'),
-                      (seller, buyer, quantitySale, quantityBuy, sale, buy, commissionAmount) => {
-                        let saleCommission = 0
-                        let saleQuantityFull = _.toNumber(quantitySale)
-                        if (sale === payload.commissionToken) {
-                          saleQuantityFull += _.toNumber(commissionAmount)
-                          saleCommission = payload.commission
-                        }
-                        let buyCommission = 0
-                        let buyQuantityFull = _.toNumber(quantityBuy)
-                        if (buy === payload.commissionToken) {
-                          buyQuantityFull += _.toNumber(commissionAmount)
-                          buyCommission = payload.commission
-                        }
-                        return {
-                          my: (seller === coinbase()),
-                          seller,
-                          buyer,
-                          sale_quantity: _.toNumber(quantitySale),
-                          buy_quantity: _.toNumber(quantityBuy),
-                          sale_quantity_full: saleQuantityFull,
-                          buy_quantity_full: buyQuantityFull,
-                          sale_commission: saleCommission,
-                          buy_commission: buyCommission,
-                          sale_address: sale,
-                          buy_address: buy,
-                          commission_amount: _.toNumber(commissionAmount)
-                        }
-                      }
-                    );
-                  }
-                  return false;
-                })
-                .then((lotResult) => {
-                  if (lotResult) {
-                    // если данные по лоту получены, то получаем данные по токенам лота
-                    item = { ...lotResult, closed, address }
-                    tokenSale = getContract(tokenAbi, item.sale_address)
-                    tokenBuy = getContract(tokenAbi, item.buy_address)
-                    return Promise.join(
-                      tokenSale.call('name'),
-                      tokenSale.call('allowance', [item.seller, address]),
-                      tokenSale.call('balanceOf', [item.seller]),
-                      tokenSale.call('symbol'),
-                      tokenBuy.call('name'),
-                      tokenBuy.call('allowance', [coinbase(), address]),
-                      tokenBuy.call('balanceOf', [coinbase()]),
-                      tokenBuy.call('symbol'),
-                      (saleName, saleApprove, saleBalance, saleSymbol,
-                        buyName, buyApprove, buyBalance, buySymbol) => {
-                        const saleApproveNum = _.toNumber(saleApprove)
-                        const saleBalanceNum = _.toNumber(saleBalance)
-                        const buyApproveNum = _.toNumber(buyApprove)
-                        const buyBalanceNum = _.toNumber(buyBalance)
-                        return {
-                          sale_name: saleName,
-                          approve_sale_quantity: saleApproveNum > saleBalanceNum ?
-                            saleBalanceNum : saleApproveNum,
-                          saleSymbol,
-                          buy_name: buyName,
-                          approve_buy_quantity: buyApproveNum > buyBalanceNum ?
-                            buyBalanceNum : buyApproveNum,
-                          buySymbol
-                        }
-                      }
-                    );
-                  }
-                  return false;
-                })
-                .then((tokensInfoResult) => {
-                  if (tokensInfoResult) {
-                    lots.push({ ...item, ...tokensInfoResult })
-                    listenAddress(item.address, 'loadModuleMarket', () => {
-                      dispatch(loadModule(marketAddress))
-                    })
-                    listenAddress(item.sale_address, 'loadModuleMarket', () => {
-                      dispatch(loadModule(marketAddress))
-                    })
-                    listenAddress(item.buy_address, 'loadModuleMarket', () => {
-                      dispatch(loadModule(marketAddress))
-                    })
-                  }
-                })
-                .then(() => market.call('next', [address]))
+              dispatch(addLotModule(marketAddress, address, lotAbi, tokenAbi));
+              return market.call('next', [address]);
             }, firstAddress)
           ))
           .then(() => {
-            dispatch({
-              type: LOAD_MODULE,
-              payload: {
-                ...payload,
-                lots
-              }
-            })
             listenAddress(marketAddress, 'loadModule', (address) => {
               dispatch(loadModule(address))
             })
