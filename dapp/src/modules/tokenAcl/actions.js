@@ -16,7 +16,8 @@ export function loadModule(tokenAclAddress) {
           contract.call('balanceOf', [coinbase()]),
           contract.call('totalSupply'),
           (name, aclGroup, decimalsR, symbolR, balance, totalSupply) => {
-            let decimals = decimalsR
+            const decimalsFormat = _.toNumber(decimalsR)
+            let decimals = decimalsFormat
             if (decimals > 0) {
               decimals = Math.pow(10, decimals)
             } else {
@@ -29,8 +30,8 @@ export function loadModule(tokenAclAddress) {
             return {
               name,
               aclGroup,
-              balance: (_.toNumber(balance) / decimals) + ' ' + symbol,
-              totalSupply: (_.toNumber(totalSupply) / decimals) + ' ' + symbol
+              balance: (_.toNumber(balance) / decimals).toFixed(decimalsFormat) + ' ' + symbol,
+              totalSupply: (_.toNumber(totalSupply) / decimals).toFixed(decimalsFormat) + ' ' + symbol
             }
           }
         )
@@ -64,10 +65,12 @@ export function send(address, action, values) {
 
 function normalResultCall(contract, action, output) {
   if (action === 'balanceOf') {
+    let decimalsFormat
     let decimals
     return contract.call('decimals')
       .then((result) => {
-        decimals = result
+        decimalsFormat = _.toNumber(result)
+        decimals = decimalsFormat
         return contract.call('symbol')
       })
       .then((symbol) => {
@@ -76,7 +79,7 @@ function normalResultCall(contract, action, output) {
         } else {
           decimals = 1
         }
-        return (_.toNumber(output) / decimals) + ' ' + symbol
+        return (_.toNumber(output) / decimals).toFixed(decimalsFormat) + ' ' + symbol
       })
   }
   return output.toString()

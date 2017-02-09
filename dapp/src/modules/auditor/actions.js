@@ -41,13 +41,14 @@ export function loadModule(auditorAddress) {
           contract.call('symbol'),
           contract.call('balanceOf', [auditorAddress]),
           (decimalsR, symbol, balance) => {
-            let decimals = decimalsR
+            const decimalsFormat = _.toNumber(decimalsR)
+            let decimals = decimalsFormat
             if (decimals > 0) {
               decimals = Math.pow(10, decimals)
             } else {
               decimals = 1
             }
-            return (_.toNumber(balance) / decimals) + ' ' + symbol
+            return (_.toNumber(balance) / decimals).toFixed(decimalsFormat) + ' ' + symbol
           }
         )
       ))
