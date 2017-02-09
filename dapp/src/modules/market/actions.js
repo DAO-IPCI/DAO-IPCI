@@ -68,12 +68,28 @@ export function loadLot(address, lotAbi, tokenAbi) {
           tokenSale.call('allowance', [item.seller, address]),
           tokenSale.call('balanceOf', [item.seller]),
           tokenSale.call('symbol'),
+          tokenSale.call('decimals'),
           tokenBuy.call('name'),
           tokenBuy.call('allowance', [coinbase(), address]),
           tokenBuy.call('balanceOf', [coinbase()]),
           tokenBuy.call('symbol'),
-          (saleName, saleApprove, saleBalance, saleSymbol,
-            buyName, buyApprove, buyBalance, buySymbol) => {
+          tokenBuy.call('decimals'),
+          (saleName, saleApprove, saleBalance, saleSymbol, saleDecimals,
+            buyName, buyApprove, buyBalance, buySymbol, buyDecimals) => {
+            const saleDecimalsFormat = _.toNumber(saleDecimals)
+            let saleDecimalsNum = saleDecimalsFormat
+            if (saleDecimalsNum > 0) {
+              saleDecimalsNum = Math.pow(10, saleDecimalsNum)
+            } else {
+              saleDecimalsNum = 1
+            }
+            const buyDecimalsFormat = _.toNumber(buyDecimals)
+            let buyDecimalsNum = buyDecimalsFormat
+            if (buyDecimals > 0) {
+              buyDecimalsNum = Math.pow(10, buyDecimalsNum)
+            } else {
+              buyDecimalsNum = 1
+            }
             const saleApproveNum = _.toNumber(saleApprove)
             const saleBalanceNum = _.toNumber(saleBalance)
             const buyApproveNum = _.toNumber(buyApprove)
@@ -86,7 +102,11 @@ export function loadLot(address, lotAbi, tokenAbi) {
               buy_name: buyName,
               approve_buy_quantity: buyApproveNum > buyBalanceNum ?
                 buyBalanceNum : buyApproveNum,
-              buySymbol
+              buySymbol,
+              saleDecimalsFormat,
+              saleDecimalsNum,
+              buyDecimalsFormat,
+              buyDecimalsNum
             }
           }
         );
@@ -95,6 +115,14 @@ export function loadLot(address, lotAbi, tokenAbi) {
     })
     .then((tokensInfoResult) => {
       if (tokensInfoResult) {
+        item.sale_quantity = (item.sale_quantity / tokensInfoResult.saleDecimalsNum)
+          .toFixed(tokensInfoResult.saleDecimalsFormat);
+        item.buy_quantity = (item.buy_quantity / tokensInfoResult.buyDecimalsNum)
+          .toFixed(tokensInfoResult.buyDecimalsFormat);
+        item.sale_quantity_full = (item.sale_quantity_full / tokensInfoResult.saleDecimalsNum)
+          .toFixed(tokensInfoResult.saleDecimalsFormat);
+        item.buy_quantity_full = (item.buy_quantity_full / tokensInfoResult.buyDecimalsNum)
+          .toFixed(tokensInfoResult.buyDecimalsFormat);
         return { ...item, ...tokensInfoResult }
       }
       return false;
