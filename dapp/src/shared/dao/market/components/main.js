@@ -5,11 +5,16 @@ import { Layout } from '../../main/components'
 import Lot from './lot'
 
 const Main = (props) => {
-  const { address, lots, commissionToken, commission, approveLot, dealLot, removeLot, t } = props
+  const { address, lots, commissionToken, commission,
+    role, approveLot, dealLot, removeLot, t } = props
   const menu = (<div className="btn-group" style={{ marginBottom: 10 }}>
     <Link to={'/dao/market/lot/' + address} className="btn btn-default">{t('menuAddLot')}</Link>
-    <Link to={'/dao/market/set-commission-token/' + address} className="btn btn-default">{t('menuSetCommissionToken')}</Link>
-    <Link to={'/dao/market/set-commission/' + address} className="btn btn-default">{t('menuSetCommission')}</Link>
+    {role === 'operator' &&
+      <Link to={'/dao/market/set-commission-token/' + address} className="btn btn-default">{t('menuSetCommissionToken')}</Link>
+    }
+    {role === 'operator' &&
+      <Link to={'/dao/market/set-commission/' + address} className="btn btn-default">{t('menuSetCommission')}</Link>
+    }
   </div>)
   return (<Layout title={t('titlePrefix')} address={address} menu={menu}>
     <p><b>{t('commission')}</b>: {commissionToken} ({commission}%)</p>

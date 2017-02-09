@@ -23,6 +23,7 @@ function mapStateToProps(store, props) {
   return {
     ...module,
     address: props.address,
+    role: store.app.role,
     isModule: !_.isEmpty(module)
   }
 }

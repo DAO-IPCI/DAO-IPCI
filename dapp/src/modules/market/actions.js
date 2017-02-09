@@ -106,10 +106,13 @@ export function loadModule(marketAddress) {
                       tokenSale.call('name'),
                       tokenSale.call('allowance', [item.seller, address]),
                       tokenSale.call('balanceOf', [item.seller]),
+                      tokenSale.call('symbol'),
                       tokenBuy.call('name'),
                       tokenBuy.call('allowance', [coinbase(), address]),
                       tokenBuy.call('balanceOf', [coinbase()]),
-                      (saleName, saleApprove, saleBalance, buyName, buyApprove, buyBalance) => {
+                      tokenBuy.call('symbol'),
+                      (saleName, saleApprove, saleBalance, saleSymbol,
+                        buyName, buyApprove, buyBalance, buySymbol) => {
                         const saleApproveNum = _.toNumber(saleApprove)
                         const saleBalanceNum = _.toNumber(saleBalance)
                         const buyApproveNum = _.toNumber(buyApprove)
@@ -118,9 +121,11 @@ export function loadModule(marketAddress) {
                           sale_name: saleName,
                           approve_sale_quantity: saleApproveNum > saleBalanceNum ?
                             saleBalanceNum : saleApproveNum,
+                          saleSymbol,
                           buy_name: buyName,
                           approve_buy_quantity: buyApproveNum > buyBalanceNum ?
-                            buyBalanceNum : buyApproveNum
+                            buyBalanceNum : buyApproveNum,
+                          buySymbol
                         }
                       }
                     );
