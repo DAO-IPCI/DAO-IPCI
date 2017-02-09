@@ -25,7 +25,7 @@ export function loadLot(address, lotAbi, tokenAbi) {
           lot.call('commissionAmount'),
           (seller, buyer, quantitySale, quantityBuy, sale, buy, commissionToken,
             commission, commissionAmount) => {
-            const commissionNum = _.toNumber(commission);
+            const commissionNum = _.toNumber(commission) / 100;
             let saleCommission = 0
             let saleQuantityFull = _.toNumber(quantitySale)
             if (sale === commissionToken) {
