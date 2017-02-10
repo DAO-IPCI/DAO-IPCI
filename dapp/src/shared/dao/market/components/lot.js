@@ -36,14 +36,7 @@ const Lot = (props) => {
               <small className="pull-right"><span className="label label-success">{props.sale_address}</span></small>
             </li>
             <li className="list-group-item">
-              {props.sale_commission > 0 ?
-                <span>
-                  {props.sale_quantity} + {props.sale_commission}% =&nbsp;
-                  {props.sale_quantity_full} {props.saleSymbol}
-                </span>
-                :
-                <span>{props.sale_quantity} {props.saleSymbol}</span>
-              }
+              {props.sale_quantity} {props.saleSymbol}
             </li>
           </ul>
         </div>
@@ -55,14 +48,7 @@ const Lot = (props) => {
               <small className="pull-right"><span className="label label-success">{props.buy_address}</span></small>
             </li>
             <li className="list-group-item">
-              {props.buy_commission > 0 ?
-                <span>
-                  {props.buy_quantity} + {props.buy_commission}% =&nbsp;
-                  {props.buy_quantity_full} {props.buySymbol}
-                </span>
-                :
-                <span>{props.buy_quantity} {props.buySymbol}</span>
-              }
+              {props.buy_quantity} {props.buySymbol}
             </li>
           </ul>
         </div>

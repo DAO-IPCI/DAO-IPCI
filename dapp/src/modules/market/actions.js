@@ -26,31 +26,36 @@ export function loadLot(address, lotAbi, tokenAbi) {
           (seller, buyer, quantitySale, quantityBuy, sale, buy, commissionToken,
             commission, commissionAmount) => {
             const commissionNum = _.toNumber(commission) / 100;
+            const commissionAmountNum = _.toNumber(commissionAmount);
+            const saleQuantityFull = _.toNumber(quantitySale)
+            let quantitySaleView = saleQuantityFull
             let saleCommission = 0
-            let saleQuantityFull = _.toNumber(quantitySale)
             if (sale === commissionToken) {
-              saleQuantityFull += _.toNumber(commissionAmount)
+              quantitySaleView -= commissionAmountNum / 2
+              // saleQuantityFull += commissionAmountNum
               saleCommission = commissionNum
             }
+            const buyQuantityFull = _.toNumber(quantityBuy)
+            let quantityBuyView = buyQuantityFull
             let buyCommission = 0
-            let buyQuantityFull = _.toNumber(quantityBuy)
             if (buy === commissionToken) {
-              buyQuantityFull += _.toNumber(commissionAmount)
+              quantityBuyView -= commissionAmountNum / 2
+              // buyQuantityFull += commissionAmountNum
               buyCommission = commissionNum
             }
             return {
               my: (seller === coinbase()),
               seller,
               buyer,
-              sale_quantity: _.toNumber(quantitySale),
-              buy_quantity: _.toNumber(quantityBuy),
+              sale_quantity: quantitySaleView,
+              buy_quantity: quantityBuyView,
               sale_quantity_full: saleQuantityFull,
               buy_quantity_full: buyQuantityFull,
               sale_commission: saleCommission,
               buy_commission: buyCommission,
               sale_address: sale,
               buy_address: buy,
-              commission_amount: _.toNumber(commissionAmount)
+              commission_amount: commissionAmountNum
             }
           }
         );
@@ -196,7 +201,7 @@ export function loadModule(marketAddress) {
           (commissionToken, commission) => (
             {
               commissionToken,
-              commission: _.toNumber(commission) / 100
+              commission: _.toNumber(commission) / 100 / 2
             }
           )
         )
@@ -288,7 +293,7 @@ export function approveLot(marketAddress, lot, token, value) {
 function run(dispatch, address, func, values) {
   const params = values;
   if (func === 'setCommission') {
-    params[0] *= 100;
+    params[0] *= 100 * 2;
   }
 
   return getContractByAbiName('Market', address)
