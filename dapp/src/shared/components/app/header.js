@@ -26,6 +26,7 @@ const Header = function Header(props) {
                 <li><Link to="/issuer">{props.t('issuer')}</Link></li>
                 <li><Link to="/auditor">{props.t('auditor')}</Link></li>
                 <li><Link to="/complier">{props.t('complier')}</Link></li>
+                <li><Link to="/user">{props.t('user')}</Link></li>
               </ul>
             </li>
             <li className="dropdown">

@@ -7,6 +7,7 @@ import * as Operator from '../routes/operator'
 import * as Issuer from '../routes/issuer'
 import * as Auditor from '../routes/auditor'
 import * as Complier from '../routes/complier'
+import * as User from '../routes/user'
 import * as Log from '../routes/log'
 import * as Dao from '../routes/dao'
 import { setRole } from '../modules/app/actions'
@@ -26,6 +27,9 @@ export const routes = store =>
       </Route>
       <Route path="/complier" component={Complier.Page} onEnter={() => { store.dispatch(setRole('complier')) }}>
         <IndexRoute component={Complier.Main} />
+      </Route>
+      <Route path="/user" component={User.Page} onEnter={() => { store.dispatch(setRole('user')) }}>
+        <IndexRoute component={User.Main} />
       </Route>
       <Route path="/log" component={Log.Page}>
         <IndexRoute component={Log.Main} />
