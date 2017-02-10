@@ -20,9 +20,25 @@ class Container extends Component {
 
 function mapStateToProps(store, props) {
   const module = _.find(store.market.modules, ['address', props.address])
+  let lots = [];
+  if (!_.isEmpty(module)) {
+    lots = [...module.lots];
+    if (!_.isEmpty(store.market.search.sale)) {
+      lots = _.filter(lots, {
+        sale_address: store.market.search.sale
+      });
+    }
+    if (!_.isEmpty(store.market.search.buy)) {
+      lots = _.filter(lots, {
+        buy_address: store.market.search.buy
+      });
+    }
+  }
   return {
     ...module,
     address: props.address,
+    lots,
+    search: store.market.search,
     role: store.app.role,
     isModule: !_.isEmpty(module)
   }

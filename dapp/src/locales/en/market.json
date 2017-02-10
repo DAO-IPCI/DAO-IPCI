@@ -10,6 +10,7 @@
   "sale": "Sale",
   "buy": "Buy",
   "commission": "Commission",
+  "search": "Search",
 
   "titleAddLot": "Add lot",
   "titleSetCommissionToken": "Commission Token",
@@ -21,5 +22,7 @@
   "formAmountSale": "Amount for sale",
   "formAmountBuy": "Amount to buy",
   "formCommissionToken": "Token address",
-  "formCommission": "Commission %"
+  "formCommission": "Commission %",
+  "formSearchSale": "Sale",
+  "formSearchBuy": "Buy"
 }

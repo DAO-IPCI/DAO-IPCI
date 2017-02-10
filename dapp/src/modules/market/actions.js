@@ -1,7 +1,7 @@
 import { startSubmit, stopSubmit, reset } from 'redux-form'
 import _ from 'lodash'
 import Promise from 'bluebird'
-import { LOAD_MODULE, ADD_LOT, UPDATE_LOT } from './actionTypes'
+import { LOAD_MODULE, ADD_LOT, UPDATE_LOT, SEARCH } from './actionTypes'
 import { getContractByAbiName, loadAbiByName, getContract, blockchain, coinbase, listenAddress } from '../../utils/web3'
 import { promiseFor } from '../../utils/helper'
 import { flashMessage } from '../app/actions'
@@ -233,6 +233,13 @@ export function loadModule(marketAddress) {
             })
           });
       })
+  }
+}
+
+export function search(form) {
+  return {
+    type: SEARCH,
+    payload: form
   }
 }
 

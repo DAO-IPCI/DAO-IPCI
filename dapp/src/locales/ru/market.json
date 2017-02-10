@@ -10,6 +10,7 @@
   "sale": "Продается",
   "buy": "За",
   "commission": "Комиссия",
+  "search": "Поиск",
 
   "titleAddLot": "Добавить лот",
   "titleSetCommissionToken": "Токен комиссии",
@@ -21,5 +22,7 @@
   "formAmountSale": "Кол-во на продажу",
   "formAmountBuy": "Кол-во получаемого",
   "formCommissionToken": "Адрес токена",
-  "formCommission": "Комиссия %"
+  "formCommission": "Комиссия %",
+  "formSearchSale": "Продается",
+  "formSearchBuy": "За"
 }

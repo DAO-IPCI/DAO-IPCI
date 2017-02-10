@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { LOAD_MODULE, ADD_LOT, UPDATE_LOT } from './actionTypes'
+import { LOAD_MODULE, ADD_LOT, UPDATE_LOT, SEARCH } from './actionTypes'
 
 const initialState = {
   modules: [
@@ -26,7 +26,11 @@ const initialState = {
     //     }
     //   ]
     // }
-  ]
+  ],
+  search: {
+    sale: '',
+    buy: ''
+  }
 }
 
 export default function market(state = initialState, action) {
@@ -92,6 +96,9 @@ export default function market(state = initialState, action) {
       }
       return state;
     }
+
+    case SEARCH:
+      return { ...state, search: action.payload }
 
     default:
       return state;

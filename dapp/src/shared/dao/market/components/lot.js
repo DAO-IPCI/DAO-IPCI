@@ -77,10 +77,8 @@ const Lot = (props) => {
 Lot.propTypes = {
   sale_name: PropTypes.string.isRequired,
   sale_address: PropTypes.string.isRequired,
-  sale_quantity: PropTypes.number.isRequired,
   buy_name: PropTypes.string.isRequired,
   buy_address: PropTypes.string.isRequired,
-  buy_quantity: PropTypes.number.isRequired,
   approve_sale_quantity: PropTypes.number.isRequired,
   approve_buy_quantity: PropTypes.number.isRequired,
   my: PropTypes.bool.isRequired,
