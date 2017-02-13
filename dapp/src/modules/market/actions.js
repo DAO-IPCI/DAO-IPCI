@@ -124,10 +124,6 @@ export function loadLot(address, lotAbi, tokenAbi) {
           .toFixed(tokensInfoResult.saleDecimalsFormat);
         item.buy_quantity = (item.buy_quantity / tokensInfoResult.buyDecimalsNum)
           .toFixed(tokensInfoResult.buyDecimalsFormat);
-        item.sale_quantity_full = (item.sale_quantity_full / tokensInfoResult.saleDecimalsNum)
-          .toFixed(tokensInfoResult.saleDecimalsFormat);
-        item.buy_quantity_full = (item.buy_quantity_full / tokensInfoResult.buyDecimalsNum)
-          .toFixed(tokensInfoResult.buyDecimalsFormat);
         return { ...item, ...tokensInfoResult }
       }
       return false;
