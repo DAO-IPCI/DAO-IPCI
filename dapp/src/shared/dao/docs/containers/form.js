@@ -10,6 +10,7 @@ function mapStateToProps(state, props) {
       fields: ['tx', 'doc'],
       labels: [i18next.t('docs:formTx'), i18next.t('docs:formDoc')],
       initialValues: {
+        tx: props.param,
         doc: props.doc
       },
     }

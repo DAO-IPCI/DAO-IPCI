@@ -13,7 +13,8 @@ function mapStateToProps(store, props) {
   return {
     title,
     address: props.address,
-    action: props.action
+    action: props.action,
+    param: props.param
   }
 }
 

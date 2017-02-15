@@ -236,6 +236,7 @@ export function submit(dispatch, formName, address, abiName, action, form) {
     })
     .catch(() => {
       dispatch(stopSubmit(formName))
+      return Promise.reject();
     })
 }
 

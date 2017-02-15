@@ -38,7 +38,7 @@ export const routes = store =>
         <Route path="create/:module" component={Dao.CreateModule} />
         <Route path="link/:module(/:address)" component={Dao.LinkModule} />
         <Route path=":module/:address" component={Dao.Module} />
-        <Route path=":module/:action/:address" component={Dao.Action} />
+        <Route path=":module/:action/:address(/:param)" component={Dao.Action} />
       </Route>
     </Route>
     <Route path="*" component={NotFound} />

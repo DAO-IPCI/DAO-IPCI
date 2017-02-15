@@ -12,10 +12,10 @@ class Action extends Component {
     this.setState({ doc })
   }
   render() {
-    const { title, address, action, t } = this.props
+    const { title, address, param, action, t } = this.props
     return (<Layout title={t(title)} address={address} hideBack={false}>
       <Upload onUpload={doc => this.onUpload(doc)} />
-      <Form address={address} doc={this.state.doc} action={action} />
+      <Form address={address} doc={this.state.doc} action={action} param={param} />
     </Layout>)
   }
 }
