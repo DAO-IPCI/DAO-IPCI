@@ -1,8 +1,11 @@
 import _ from 'lodash'
 import Promise from 'bluebird'
+import { hashHistory } from 'react-router';
+import i18next from 'i18next'
 import { LOAD_MODULE } from './actionTypes'
 import { getContractByAbiName, listenAddress } from '../../utils/web3'
 import { submit as submitContract, send as sendContract } from '../dao/actions'
+import { flashMessage } from '../app/actions'
 
 export function loadModule(auditorAddress) {
   return (dispatch) => {
@@ -68,8 +71,25 @@ export function loadModule(auditorAddress) {
 }
 
 export function submit(address, action, form) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const state = getState()
+    // if (_.has(state, 'dao')) {
+    //   state.dao.blocks
+    // }
+    // console.log(state);
     submitContract(dispatch, 'FormAuditor', address, 'Auditor', action, form)
+      .then((transaction) => {
+        if (action === 'emission') {
+          dispatch(flashMessage(i18next.t('common:saveDoc') + ': ' + transaction.hash))
+          if (_.has(state, 'docs') && !_.isEmpty(state.docs.modules)) {
+            const docs = state.docs.modules[0].address
+            const url = '/dao/docs/append/' + docs + '/' + transaction.hash
+            setTimeout(() => {
+              hashHistory.push(url)
+            }, 3000);
+          }
+        }
+      })
   }
 }
 

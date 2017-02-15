@@ -222,16 +222,17 @@ function run(dispatch, address, abiName, action, values) {
       dispatch(flashMessage('txId: ' + txId))
       return blockchain.subscribeTx(txId)
     })
-    .then(transaction => transaction.blockNumber)
+    // .then(transaction => transaction.blockNumber)
 }
 
 export function submit(dispatch, formName, address, abiName, action, form) {
   dispatch(startSubmit(formName));
   return run(dispatch, address, abiName, action, _.values(form))
-    .then((blockNumber) => {
+    .then((transaction) => {
       dispatch(stopSubmit(formName))
       dispatch(reset(formName))
-      dispatch(flashMessage('blockNumber: ' + blockNumber))
+      dispatch(flashMessage('blockNumber: ' + transaction.blockNumber))
+      return transaction;
     })
     .catch(() => {
       dispatch(stopSubmit(formName))
@@ -240,8 +241,8 @@ export function submit(dispatch, formName, address, abiName, action, form) {
 
 export function send(dispatch, address, abiName, action, values) {
   return run(dispatch, address, abiName, action, values)
-    .then((blockNumber) => {
-      dispatch(flashMessage('blockNumber: ' + blockNumber))
+    .then((transaction) => {
+      dispatch(flashMessage('blockNumber: ' + transaction.blockNumber))
     })
 }
 

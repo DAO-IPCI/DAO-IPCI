@@ -28,13 +28,13 @@ function mapStateToProps(state, props) {
   const role = props.role
   let modules = []
   if (role === 'issuer') {
-    modules = ['token', 'token-acl', 'holder', 'market']
+    modules = ['token', 'token-acl', 'holder', 'market', 'docs']
   } else if (role === 'auditor') {
     modules = ['auditor', 'token', 'token-acl', 'holder', 'docs']
   } else if (role === 'complier') {
-    modules = ['complier', 'token', 'token-acl', 'market']
+    modules = ['complier', 'token', 'token-acl', 'market', 'docs']
   } else if (role === 'user') {
-    modules = ['token', 'token-acl', 'market']
+    modules = ['token', 'token-acl', 'market', 'docs']
   }
   let blocks = dao.blocks
   if (!_.isEmpty(modules)) {
