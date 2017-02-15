@@ -15,5 +15,6 @@
   "submit": "Submit",
   "menu": "Menu",
   "back": "Back",
-  "autocompletePlaceholder": "For search start input address or name"
+  "autocompletePlaceholder": "For search start input address or name",
+  "saveDoc": "Save doc for transaction"
 }

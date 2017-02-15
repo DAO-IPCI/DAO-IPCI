@@ -6,6 +6,7 @@
   "token": "Token",
   "carbonRegistry": "Carbon registry",
   "market": "Market",
+  "docs": "Docs",
   "action": "Action",
   "open": "Open",
   "remove": "Remove",
@@ -18,6 +19,7 @@
   "titleCreateAcl": "Create auditors group",
   "titleCreateToken": "Create carbon Token",
   "titleCreateTokenAcl": "Create ACL token",
+  "titleCreateDocs": "Create docs",
   "titleLinkModule": "Add module to DAO Core",
 
   "formCoreDaoName": "DAO name",
@@ -53,5 +55,6 @@
   "formLinkComplier": "Complier contract",
   "formLinkAcl": "Auditor group",
   "formLinkToken": "Token",
-  "formLinkMarket": "Market"
+  "formLinkMarket": "Market",
+  "formLinkDocs": "Docs"
 }

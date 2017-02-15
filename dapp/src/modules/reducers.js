@@ -8,6 +8,7 @@ import { default as tokenAcl } from './tokenAcl/reducer';
 import { default as auditor } from './auditor/reducer';
 import { default as complier } from './complier/reducer';
 import { default as market } from './market/reducer';
+import { default as docs } from './docs/reducer';
 
 export {
   app,
@@ -19,5 +20,6 @@ export {
   tokenAcl,
   auditor,
   complier,
-  market
+  market,
+  docs
 };

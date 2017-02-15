@@ -30,6 +30,10 @@ const config = {
       ],
       loaders: [
         {
+          test: /\.json$/,
+          loaders: ['json'],
+        },
+        {
           test: /\.css/,
           loader: ExtractTextPlugin.extract(
               'style-loader',

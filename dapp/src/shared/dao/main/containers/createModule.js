@@ -28,6 +28,9 @@ function mapStateToProps(store, props) {
     case 'tokenAcl':
       title = 'titleCreateTokenAcl'
       break
+    case 'docs':
+      title = 'titleCreateDocs'
+      break
     default:
       title = '';
   }

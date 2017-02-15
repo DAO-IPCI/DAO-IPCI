@@ -6,6 +6,7 @@
   "token": "Токен",
   "carbonRegistry": "Углеродный реестр",
   "market": "Рынок",
+  "docs": "Документы",
   "action": "Действия",
   "open": "Открыть",
   "remove": "Удалить",
@@ -18,6 +19,7 @@
   "titleCreateAcl": "Создать группу аудиторов",
   "titleCreateToken": "Создать токен",
   "titleCreateTokenAcl": "Создать токен ACL",
+  "titleCreateDocs": "Создать реестр документов",
   "titleLinkModule": "Добавить модуль в ядро",
 
   "formCoreDaoName": "Имя автономии",
@@ -53,5 +55,6 @@
   "formLinkComplier": "Контракт сomplier",
   "formLinkAcl": "Группа аудиторов",
   "formLinkToken": "Токен",
-  "formLinkMarket": "Рынок"
+  "formLinkMarket": "Рынок",
+  "formLinkDocs": "Документы"
 }
