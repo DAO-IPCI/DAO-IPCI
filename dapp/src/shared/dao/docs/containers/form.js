@@ -8,7 +8,7 @@ function mapStateToProps(state, props) {
   if (props.action === 'append') {
     return {
       fields: ['tx', 'doc'],
-      labels: [i18next.t('docs:formAddress'), i18next.t('docs:formAmount')],
+      labels: [i18next.t('docs:formTx'), i18next.t('docs:formDoc')],
       initialValues: {
         doc: props.doc
       },

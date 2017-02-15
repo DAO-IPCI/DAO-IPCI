@@ -5,7 +5,6 @@ import _ from 'lodash'
 import Form from '../containers/formSearch'
 import styles from './style.css'
 
-console.log(styles);
 class Search extends Component {
   constructor(props) {
     super(props);

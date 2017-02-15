@@ -14,7 +14,7 @@ export function loadModule(docsAddress) {
               return promiseFor(index => index < result, index => (
                 contract.call('list', [index])
                   .then((row) => {
-                    docs.push({
+                    docs.unshift({
                       txId: row[0],
                       doc: row[1],
                       owner: row[2]

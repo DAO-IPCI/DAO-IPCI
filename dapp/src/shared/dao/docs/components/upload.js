@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
+import { translate } from 'react-i18next'
 import Dropzone from 'react-dropzone'
 import Ipfs from 'ipfs-api'
+import { IPFS_HOST, IPFS_PORT } from '../../../../config/config'
+import styles from './style.css'
 
-const ipfs = new Ipfs('localhost', 5001)
+const ipfs = new Ipfs(IPFS_HOST, IPFS_PORT)
 
 class Upload extends Component {
-  state = { hash: false }
+  state = { doc: false }
 
   onDrop(acceptedFiles) {
     const reader = new window.FileReader()
@@ -18,8 +21,9 @@ class Upload extends Component {
           return false;
         }
         // console.log(res);
-        this.setState({ hash: res[0].hash })
-        this.props.onUpload(res[0].hash)
+        const url = 'http://ipfs.io/ipfs/' + res[0].hash;
+        this.setState({ doc: url })
+        this.props.onUpload(url)
         return true;
       })
     }
@@ -28,15 +32,15 @@ class Upload extends Component {
   render() {
     return (<div>
       <div className="panel panel-default">
-        <Dropzone className="panel-body" multiple={false} onDrop={files => this.onDrop(files)}>
-          <div>Try dropping some files here, or click to select files to upload.</div>
+        <Dropzone className={'panel-body ' + styles.dropzone} activeClassName={styles.dropzoneActive} multiple={false} onDrop={files => this.onDrop(files)}>
+          <div>{this.props.t('dropzoneText')}</div>
         </Dropzone>
       </div>
-      {this.state.hash !== false ? <div>
-        <h2>http://ipfs.io/ipfs/{this.state.hash}</h2>
+      {this.state.doc !== false ? <div>
+        <h2>{this.state.doc}</h2>
       </div> : null}
     </div>)
   }
 }
 
-export default Upload
+export default translate(['docs'])(Upload)

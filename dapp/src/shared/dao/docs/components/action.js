@@ -6,7 +6,7 @@ import { Layout } from '../../main/components'
 import Form from '../containers/form'
 
 class Action extends Component {
-  state = { doc: false }
+  state = { doc: '' }
 
   onUpload(doc) {
     this.setState({ doc })
