@@ -58,6 +58,11 @@ export function load(daoAddress) {
             name: i18next.t('dao:market'),
             type: 'market',
             modules: []
+          },
+          {
+            name: i18next.t('dao:docs'),
+            type: 'docs',
+            modules: []
           }
         ]
         core.call('first')
@@ -165,6 +170,9 @@ export function submitCreateModule(form, action) {
         break;
       case 'acl':
         builder = 'BuilderACLStorage'
+        break;
+      case 'docs':
+        builder = 'BuilderDocs'
         break;
       default:
         break;

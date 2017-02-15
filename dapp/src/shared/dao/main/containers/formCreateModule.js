@@ -61,7 +61,7 @@ function mapStateToProps(state, props) {
         acl: true
       }
     }
-  } else if (props.module === 'acl') {
+  } else if (props.module === 'acl' || props.module === 'docs') {
     return {
       fields: [],
       selects: {},

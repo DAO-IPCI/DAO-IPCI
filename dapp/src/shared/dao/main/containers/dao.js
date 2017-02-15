@@ -30,7 +30,7 @@ function mapStateToProps(state, props) {
   if (role === 'issuer') {
     modules = ['token', 'token-acl', 'holder', 'market']
   } else if (role === 'auditor') {
-    modules = ['auditor', 'token', 'token-acl', 'holder']
+    modules = ['auditor', 'token', 'token-acl', 'holder', 'docs']
   } else if (role === 'complier') {
     modules = ['complier', 'token', 'token-acl', 'market']
   } else if (role === 'user') {

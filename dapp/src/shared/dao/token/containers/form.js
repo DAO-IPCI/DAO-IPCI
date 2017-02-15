@@ -19,7 +19,7 @@ function mapStateToProps(state, props) {
     return {
       fields: ['value'],
       selects: {},
-      labels: [i18next.t('tokenAcl:formAmount')],
+      labels: [i18next.t('token:formAmount')],
       placeholders: ['10']
     }
   }
