@@ -43,7 +43,8 @@ const config = {
         {
           loaders: ['react-hot', 'babel-loader'],
           include: [
-            path.resolve(__dirname, 'src')
+            path.resolve(__dirname, 'src'),
+            /node_modules\/(promisify-es6|qs|ipfs*|is-ipfs|libp2p*|ipld*|multi*|cid|peer-id|peer-info)/,
           ],
           test: /\.js$/,
           plugins: ['transform-runtime']
