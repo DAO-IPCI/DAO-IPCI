@@ -89,12 +89,12 @@ export function getUrlAbi(contract) {
   let repo = 'core'
   if (_.indexOf(ipci, contract) >= 0) {
     repo = 'DAO-IPCI'
+  } else if (isBuilder) {
+    repo = 'DAO-Factory'
   }
   let url = 'https://raw.githubusercontent.com/airalab/' + repo + '/master/abi/'
-  if (isBuilder) {
+  if (isBuilder && repo === 'DAO-IPCI') {
     url += 'builder/'
-  } else if (repo === 'core') {
-    url += 'modules/'
   }
   url += contract + '.json'
   return url
