@@ -27,7 +27,8 @@ export default function tokenAcl(state = initialState, action) {
               name: action.payload.name,
               totalSupply: action.payload.totalSupply,
               balance: action.payload.balance,
-              aclGroup: action.payload.aclGroup
+              aclGroup: action.payload.aclGroup,
+              decimals: action.payload.decimals
             }
           }
           return item

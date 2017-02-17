@@ -31,7 +31,8 @@ export function loadModule(tokenAclAddress) {
               name,
               aclGroup,
               balance: (_.toNumber(balance) / decimals).toFixed(decimalsFormat) + ' ' + symbol,
-              totalSupply: (_.toNumber(totalSupply) / decimals).toFixed(decimalsFormat) + ' ' + symbol
+              totalSupply: (_.toNumber(totalSupply) / decimals).toFixed(decimalsFormat) + ' ' + symbol,
+              decimals
             }
           }
         )
@@ -53,7 +54,23 @@ export function loadModule(tokenAclAddress) {
 
 export function submit(address, action, form) {
   return (dispatch) => {
-    submitContract(dispatch, 'FormTokenAcl', address, 'TokenEmissionACL', action, form)
+    const formData = form;
+    if (action === 'emission' || action === 'transfer' || action === 'approve') {
+      getContractByAbiName('TokenEmissionACL', address)
+        .then(contract => contract.call('decimals'))
+        .then((result) => {
+          let decimals = _.toNumber(result)
+          if (decimals > 0) {
+            decimals = Math.pow(10, decimals)
+          } else {
+            decimals = 1
+          }
+          formData.value *= decimals
+          return submitContract(dispatch, 'FormTokenAcl', address, 'TokenEmissionACL', action, formData)
+        })
+    } else {
+      submitContract(dispatch, 'FormTokenAcl', address, 'TokenEmissionACL', action, formData)
+    }
   }
 }
 

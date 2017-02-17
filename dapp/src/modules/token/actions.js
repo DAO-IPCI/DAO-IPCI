@@ -47,7 +47,23 @@ export function loadModule(tokenAddress) {
 
 export function submit(address, action, form) {
   return (dispatch) => {
-    submitContract(dispatch, 'FormToken', address, 'TokenEmission', action, form)
+    const formData = form;
+    if (action === 'emission' || action === 'transfer' || action === 'approve') {
+      getContractByAbiName('TokenEmission', address)
+        .then(contract => contract.call('decimals'))
+        .then((result) => {
+          let decimals = _.toNumber(result)
+          if (decimals > 0) {
+            decimals = Math.pow(10, decimals)
+          } else {
+            decimals = 1
+          }
+          formData.value *= decimals
+          return submitContract(dispatch, 'FormToken', address, 'TokenEmission', action, formData)
+        })
+    } else {
+      submitContract(dispatch, 'FormToken', address, 'TokenEmission', action, formData)
+    }
   }
 }
 

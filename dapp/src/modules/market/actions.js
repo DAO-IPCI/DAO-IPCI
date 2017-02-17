@@ -274,8 +274,21 @@ export function removeLot(marketAddress, address) {
 
 export function approveLot(marketAddress, lot, token, value) {
   return (dispatch) => {
+    let tokenContract;
     getContractByAbiName('TokenEmission', token)
-      .then(contract => contract.send('approve', [lot, value]))
+      .then((contract) => {
+        tokenContract = contract;
+        return contract.call('decimals')
+      })
+      .then((result) => {
+        let decimals = _.toNumber(result)
+        if (decimals > 0) {
+          decimals = Math.pow(10, decimals)
+        } else {
+          decimals = 1
+        }
+        return tokenContract.send('approve', [lot, value * decimals])
+      })
       .then((txId) => {
         dispatch(flashMessage('tx: ' + txId))
         return blockchain.subscribeTx(txId)
@@ -319,15 +332,51 @@ export function submit(marketAddress, action, form) {
         func = false;
     }
     if (func) {
-      run(dispatch, marketAddress, func, _.values(form))
-        .then((blockNumber) => {
-          dispatch(stopSubmit('FormMarket'))
-          dispatch(reset('FormMarket'))
-          dispatch(flashMessage('blockNumber: ' + blockNumber))
-        })
-        .catch(() => {
-          dispatch(stopSubmit('FormMarket'))
-        })
+      const formData = form;
+      if (func === 'append') {
+        getContractByAbiName('TokenEmission', formData.sale)
+          .then(contract => contract.call('decimals'))
+          .then((result) => {
+            let decimals = _.toNumber(result)
+            if (decimals > 0) {
+              decimals = Math.pow(10, decimals)
+            } else {
+              decimals = 1
+            }
+            formData.quantity_sale *= decimals
+            return getContractByAbiName('TokenEmission', formData.buy)
+          })
+          .then(contract => contract.call('decimals'))
+          .then((result) => {
+            let decimals = _.toNumber(result)
+            if (decimals > 0) {
+              decimals = Math.pow(10, decimals)
+            } else {
+              decimals = 1
+            }
+            formData.quantity_buy *= decimals
+            console.log(formData);
+            return run(dispatch, marketAddress, func, _.values(formData))
+          })
+          .then((blockNumber) => {
+            dispatch(stopSubmit('FormMarket'))
+            dispatch(reset('FormMarket'))
+            dispatch(flashMessage('blockNumber: ' + blockNumber))
+          })
+          .catch(() => {
+            dispatch(stopSubmit('FormMarket'))
+          })
+      } else {
+        run(dispatch, marketAddress, func, _.values(form))
+          .then((blockNumber) => {
+            dispatch(stopSubmit('FormMarket'))
+            dispatch(reset('FormMarket'))
+            dispatch(flashMessage('blockNumber: ' + blockNumber))
+          })
+          .catch(() => {
+            dispatch(stopSubmit('FormMarket'))
+          })
+      }
     }
   }
 }
