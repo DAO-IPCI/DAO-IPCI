@@ -7,6 +7,6 @@
   "titleCreateGroup": "Create group",
   "titleAddMember": "Add auditor address",
 
-  "formName": "Audotor group name",
+  "formName": "Auditor group name",
   "formAddress": "Auditor contract address"
 }

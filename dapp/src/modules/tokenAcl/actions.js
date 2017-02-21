@@ -23,10 +23,7 @@ export function loadModule(tokenAclAddress) {
             } else {
               decimals = 1
             }
-            let symbol = symbolR
-            if (symbol === 'IPMU') {
-              symbol = 'testCER'
-            }
+            const symbol = symbolR
             return {
               name,
               aclGroup,
