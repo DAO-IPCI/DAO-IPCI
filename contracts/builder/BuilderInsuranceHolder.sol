@@ -35,7 +35,8 @@ contract BuilderInsuranceHolder is Builder {
         var inst = CreatorInsuranceHolder.create(_operator, _token);
         getContractsOf[_client].push(inst);
         Builded(_client, inst);
-        inst.delegate(_client);
+        inst.setOwner(_client);
+        inst.setHammer(_client);
         return inst;
     }
 }

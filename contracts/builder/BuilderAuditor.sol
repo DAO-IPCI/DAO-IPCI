@@ -37,7 +37,8 @@ contract BuilderAuditor is Builder {
         var inst = CreatorAuditor.create(_operator, _token, _holder);
         getContractsOf[_client].push(inst);
         Builded(_client, inst);
-        inst.delegate(_client);
+        inst.setOwner(_client);
+        inst.setHammer(_client);
         return inst;
     }
 }

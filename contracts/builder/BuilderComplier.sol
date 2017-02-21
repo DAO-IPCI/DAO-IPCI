@@ -33,7 +33,8 @@ contract BuilderComplier is Builder {
         var inst = CreatorComplier.create();
         getContractsOf[_client].push(inst);
         Builded(_client, inst);
-        inst.delegate(_client);
+        inst.setOwner(_client);
+        inst.setHammer(_client);
         return inst;
     }
 }

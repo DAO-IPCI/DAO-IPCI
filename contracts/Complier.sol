@@ -1,8 +1,8 @@
 pragma solidity ^0.4.4;
-import 'common/Mortal.sol';
+import 'common/Object.sol';
 import 'token/TokenEmission.sol';
 
-contract Complier is Mortal {
+contract Complier is Object {
     // Total burned value
     mapping(address => uint) public burnedValueOf;
 

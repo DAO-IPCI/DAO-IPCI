@@ -42,8 +42,10 @@ contract BuilderIssuerLedger is Builder {
         var operator = dao.first();
         var holder = CreatorInsuranceHolder.create(operator, token);
 
-        holder.delegate(_client);
-        token.delegate(_client);
+        holder.setOwner(_client);
+        holder.setHammer(_client);
+        token.setOwner(_client);
+        token.setHammer(_client);
         getContractsOf[_client].push(holder);
         Builded(_client, holder);
         return holder;

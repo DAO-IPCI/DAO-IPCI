@@ -1,7 +1,7 @@
 pragma solidity ^0.4.4;
-import 'common/Mortal.sol';
+import 'common/Object.sol';
 
-contract Operated is Mortal {
+contract Operated is Object {
     // Contract operator
     address public operator;
 

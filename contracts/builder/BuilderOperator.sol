@@ -44,11 +44,13 @@ contract BuilderOperator is Builder {
 
         // ACL Storage
         var acl  = CreatorACLStorage.create();
-        acl.delegate(_client);
+        acl.setOwner(_client);
+        acl.setHammer(_client);
         core.set("ACLStorage", acl,
             "https://github.com/airalab/core/blob/master/sol/acl/ACLStorage.sol", false);
 
-        core.delegate(_client);
+        core.setOwner(_client);
+        core.setHammer(_client);
         getContractsOf[_client].push(core);
         Builded(_client, core);
         return core;
