@@ -15,7 +15,7 @@ contract BuilderIssuerLedger is Builder {
      * @param _group is a emitent group of created ledger
      * @return address new contract
      */
-    function create(string _name, address _operator_core, string _group, address _client) payable returns (address) {
+    function create(string _name, string _symbol, address _operator_core, string _group, address _client) payable returns (address) {
         if (buildingCostWei > 0 && beneficiary != 0) {
             // Too low value
             if (msg.value < buildingCostWei) throw;
@@ -37,7 +37,7 @@ contract BuilderIssuerLedger is Builder {
  
         var dao = Core(_operator_core);
         var acl = dao.get("ACLStorage");
-        var token = CreatorTokenEmissionACL.create(_name, "IPMU", 0, 0, acl, _group);
+        var token = CreatorTokenEmissionACL.create(_name, _symbol, 0, 0, acl, _group);
  
         var operator = dao.first();
         var holder = CreatorInsuranceHolder.create(operator, token);

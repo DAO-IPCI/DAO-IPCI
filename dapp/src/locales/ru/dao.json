@@ -26,7 +26,8 @@
   "formCoreDaoDescription": "Описание автономии",
   "formCoreOperatorName": "Имя оператора",
 
-  "formIssuerName": "Название реестра",
+  "formRegistryName": "Название реестра",
+  "formRegistrySymbol": "Символ реестра",
   "formIssuerOperatorCore": "Адрес DAO",
   "formIssuerGroup": "Название группы аудиторов",
 

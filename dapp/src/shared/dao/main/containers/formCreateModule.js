@@ -18,10 +18,10 @@ function mapStateToProps(state, props) {
     }
   } else if (props.module === 'issuer') {
     return {
-      fields: ['name', 'operator_core', 'group'],
-      labels: [i18next.t('dao:formIssuerName'), i18next.t('dao:formIssuerOperatorCore'), i18next.t('dao:formIssuerGroup')],
+      fields: ['name', 'symbol', 'operator_core', 'group'],
+      labels: [i18next.t('dao:formRegistryName'), i18next.t('dao:formRegistrySymbol'), i18next.t('dao:formIssuerOperatorCore'), i18next.t('dao:formIssuerGroup')],
       initialValues: { operator_core: state.dao.address },
-      disableds: [false, true, false]
+      disableds: [false, false, true, false]
     }
   } else if (props.module === 'auditor') {
     return {

@@ -26,7 +26,8 @@
   "formCoreDaoDescription": "DAO description",
   "formCoreOperatorName": "Operator name",
 
-  "formIssuerName": "Registry name",
+  "formRegistryName": "Registry name",
+  "formRegistrySymbol": "Registry symbol",
   "formIssuerOperatorCore": "DAO address",
   "formIssuerGroup": "Auditor group",
 
