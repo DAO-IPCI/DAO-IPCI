@@ -88,8 +88,12 @@ export function load(daoAddress) {
                 })
                 .then((name) => {
                   if (name) {
+                    let nameNew = name;
+                    if (name === 'ipfs') {
+                      nameNew = 'IPFS'
+                    }
                     block.modules.push({
-                      name,
+                      name: nameNew,
                       address
                     })
                   }

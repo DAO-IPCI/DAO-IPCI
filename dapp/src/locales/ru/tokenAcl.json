@@ -1,11 +1,11 @@
 {
-  "titlePrefix": "Углеродный реестр",
+  "titlePrefix": "Реестр заверенных единиц",
   "menuSend": "Отправить",
   "menuApprove": "Апрув",
   "menuEmission": "Эмиссия",
   "allTokens": "Всего токенов",
   "myBalance": "Мой баланс",
-  "groupAuditors": "Группа аудиторов",
+  "groupAuditors": "Группа заверителей",
   "Balance": "Баланс",
 
   "titleSend": "Отправить",

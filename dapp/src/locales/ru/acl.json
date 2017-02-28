@@ -1,12 +1,12 @@
 {
-  "titlePrefix": "Группа аудиторов",
+  "titlePrefix": "Группы заверителей",
   "menuCreateGroup": "Создать группу",
   "menuAddMember": "Добавить адрес",
   "delete": "Удалить",
 
   "titleCreateGroup": "Создать группу",
-  "titleAddMember": "Добавить адрес аудитора",
+  "titleAddMember": "Добавить адрес заверителя",
 
-  "formName": "Название группы аудитора",
-  "formAddress": "Адрес контракта аудитора"
+  "formName": "Название группы заверителей",
+  "formAddress": "Адрес контракта заверителя"
 }

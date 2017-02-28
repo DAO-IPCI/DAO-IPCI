@@ -1,11 +1,11 @@
 {
-  "titlePrefix": "Carbon registry",
+  "titlePrefix": "Assured units registry",
   "menuSend": "Send",
   "menuApprove": "Approve",
   "menuEmission": "Emission",
   "allTokens": "All tokens",
   "myBalance": "My balance",
-  "groupAuditors": "Group auditors",
+  "groupAuditors": "Group assured by",
   "Balance": "Balance",
 
   "titleSend": "Send",

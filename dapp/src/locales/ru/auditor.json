@@ -1,5 +1,5 @@
 {
-  "titlePrefix": "Аудитор",
+  "titlePrefix": "Заверитель",
   "menuSetEmissionLimit": "Установить лимит",
   "menuSetHoldPercentage": "Установить размер страхового взноса",
   "menuEmission": "Эмиссия",
@@ -10,7 +10,7 @@
   "limit": "Лимит количества токенов",
   "percentage": "Процент страхового взноса",
 
-  "titleSetEmissionLimit": "Абсолютный предел количества токенов, эмиссируемых Аудитором",
+  "titleSetEmissionLimit": "Абсолютный предел количества токенов, эмиссируемых заверителем",
   "titleSetHoldPercentage": "Размер страхового взноса в процентах",
   "titleEmission": "Эмиссия",
   "titleTransfer": "Перевод эмитенту",
