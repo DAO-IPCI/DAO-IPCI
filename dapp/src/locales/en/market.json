@@ -18,9 +18,9 @@
 
   "formSeller": "Seller address",
   "formTokenSale": "Token for sale",
-  "formTokenBuy": "Token to buy",
+  "formTokenBuy": "In exchange for",
   "formAmountSale": "Amount for sale",
-  "formAmountBuy": "Amount to buy",
+  "formAmountBuy": "Amount to exchange",
   "formCommissionToken": "Token address",
   "formCommission": "Commission %",
   "formSearchSale": "Sale",
