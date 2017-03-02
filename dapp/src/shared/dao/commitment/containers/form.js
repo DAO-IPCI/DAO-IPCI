@@ -1,27 +1,24 @@
 import { bindActionCreators } from 'redux'
 import { reduxForm } from 'redux-form'
 import i18next from 'i18next'
-import { submit } from '../../../../modules/token/actions';
+import { submit } from '../../../../modules/commitment/actions';
 import Form from '../../../components/common/form';
 
 function mapStateToProps(state, props) {
-  if (props.action === 'transfer' || props.action === 'approve') {
+  if (props.action === 'setPercentage') {
     return {
-      fields: ['address', 'value'],
-      selects: {},
-      labels: [i18next.t('token:formAddress'), i18next.t('token:formAmount')],
-      placeholders: ['0x111111111111111', '1'],
-      autocomplete: {
-        address: true
-      },
-      initialValues: props.query
+      fields: ['value'],
+      labels: [i18next.t('commitment:formPercentage')]
     }
   } else if (props.action === 'emission') {
     return {
       fields: ['value'],
-      selects: {},
-      labels: [i18next.t('token:formAmount')],
-      placeholders: ['10']
+      labels: [i18next.t('commitment:formAmount')]
+    }
+  } else if (props.action === 'transfer') {
+    return {
+      fields: ['value'],
+      labels: [i18next.t('commitment:formAmount')]
     }
   }
   return {}
@@ -32,5 +29,5 @@ function mapDispatchToProps(dispatch, props) {
   }
 }
 export default reduxForm({
-  form: 'FormToken'
+  form: 'FormCommitment'
 }, mapStateToProps, mapDispatchToProps)(Form)

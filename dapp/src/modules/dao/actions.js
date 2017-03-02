@@ -40,6 +40,11 @@ export function load(daoAddress) {
             modules: []
           },
           {
+            name: i18next.t('dao:commitment'),
+            type: 'commitment',
+            modules: []
+          },
+          {
             name: i18next.t('dao:complier'),
             type: 'complier',
             modules: []
@@ -160,6 +165,9 @@ export function submitCreateModule(form, action) {
       case 'auditor':
         builder = 'BuilderAuditor'
         break;
+      case 'commitment':
+        builder = 'BuilderCommitment'
+        break;
       case 'complier':
         builder = 'BuilderComplier'
         break;
@@ -174,6 +182,9 @@ export function submitCreateModule(form, action) {
         break;
       case 'acl':
         builder = 'BuilderACLStorage'
+        break;
+      case 'holder':
+        builder = 'BuilderInsuranceHolder'
         break;
       case 'docs':
         builder = 'BuilderDocs'

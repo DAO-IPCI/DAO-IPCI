@@ -7,6 +7,7 @@
   "carbonRegistry": "Environmental units registry",
   "market": "Market",
   "docs": "Docs",
+  "commitment": "Commitment",
   "action": "Action",
   "open": "Open",
   "remove": "Remove",
@@ -20,6 +21,8 @@
   "titleCreateToken": "Create carbon Token",
   "titleCreateTokenAcl": "Create ACL token",
   "titleCreateDocs": "Create docs",
+  "titleCreateCommitment": "Create Commitment",
+  "titleCreateHolder": "Create Security Reserve Contract",
   "titleLinkModule": "Add module to DAO Core",
 
   "formCoreDaoName": "DAO name",
@@ -34,6 +37,9 @@
   "formAuditorOperator": "Operator address",
   "formAuditorToken": "Environmental units registry address",
   "formAuditorHolder": "Issuer contract address",
+
+  "formHolderOperator": "Operator address",
+  "formHolderToken": "Environmental units registry address",
 
   "formTokenName": "Name",
   "formTokenSymbol": "Symbol",
@@ -51,11 +57,12 @@
   "formLinkName": "Name",
   "formLinkAddress": "Contract address",
   "formLinkTokenAcl": "Environmental units registry",
-  "formLinkHolder": "Issuer contract",
+  "formLinkHolder": "Security Reserve Contract",
   "formLinkAuditor": "Independent Entities contract",
   "formLinkComplier": "Complier contract",
   "formLinkAcl": "Independent Entities group",
   "formLinkToken": "Token",
   "formLinkMarket": "Market",
+  "formLinkCommitment": "Commitment",
   "formLinkDocs": "Docs"
 }

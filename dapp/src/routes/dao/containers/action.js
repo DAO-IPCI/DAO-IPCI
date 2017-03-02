@@ -4,9 +4,9 @@ import _ from 'lodash'
 import * as Modules from '../../../shared/dao'
 
 const Container = (props) => {
-  const { address, module, action, param } = props
+  const { address, module, action, query, param } = props
   const Module = Modules[module + 'Action']
-  return (<Module address={address} action={action} param={param} />)
+  return (<Module address={address} action={action} query={query} param={param} />)
 }
 
 function mapStateToProps(store, props) {
@@ -14,6 +14,7 @@ function mapStateToProps(store, props) {
     module: _.camelCase(props.params.module),
     address: props.params.address,
     action: _.camelCase(props.params.action),
+    query: props.location.query,
     param: props.params.param
   }
 }

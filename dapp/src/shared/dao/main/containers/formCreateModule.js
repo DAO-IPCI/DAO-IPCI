@@ -23,10 +23,19 @@ function mapStateToProps(state, props) {
       initialValues: { operator_core: state.dao.address },
       disableds: [false, false, true, false]
     }
-  } else if (props.module === 'auditor') {
+  } else if (props.module === 'auditor' || props.module === 'commitment') {
     return {
       fields: ['operator', 'token', 'holder'],
       labels: [i18next.t('dao:formAuditorOperator'), i18next.t('dao:formAuditorToken'), i18next.t('dao:formAuditorHolder')],
+      autocomplete: {
+        token: true,
+        holder: true
+      }
+    }
+  } else if (props.module === 'holder') {
+    return {
+      fields: ['operator', 'token'],
+      labels: [i18next.t('dao:formHolderOperator'), i18next.t('dao:formHolderToken')],
       autocomplete: {
         token: true,
         holder: true

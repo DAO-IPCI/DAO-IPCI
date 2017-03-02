@@ -4,14 +4,14 @@ import { Action } from '../components';
 function mapStateToProps(store, props) {
   let title
   switch (props.action) {
-    case 'transfer':
-      title = 'titleSend'
-      break
-    case 'approve':
-      title = 'titleApprove'
+    case 'setPercentage':
+      title = 'titleSetPercentage'
       break
     case 'emission':
       title = 'titleEmission'
+      break
+    case 'transfer':
+      title = 'titleTransfer'
       break
     default:
       title = '';
@@ -19,8 +19,7 @@ function mapStateToProps(store, props) {
   return {
     title,
     address: props.address,
-    action: props.action,
-    query: props.query
+    action: props.action
   }
 }
 

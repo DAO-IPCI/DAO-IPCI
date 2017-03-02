@@ -38,8 +38,16 @@ function mapStateToProps(state) {
     title: i18next.t('issuer'),
     menu: [
       {
-        name: i18next.t('createCarbonRegistry'),
+        name: i18next.t('createComplectCarbonRegistry'),
         href: '/dao/create/issuer'
+      },
+      {
+        name: i18next.t('createCarbonRegistry'),
+        href: '/dao/create/token-acl'
+      },
+      {
+        name: i18next.t('createHolder'),
+        href: '/dao/create/holder'
       }
     ]
   }

@@ -4,10 +4,10 @@ import { Layout } from '../../main/components'
 import Form from '../containers/form'
 
 const Action = (props) => {
-  const { title, address, action, query, t } = props
+  const { title, address, action, t } = props
   return (<Layout title={t(title)} address={address} hideBack={false}>
-    <Form address={address} action={action} query={query} />
+    <Form address={address} action={action} />
   </Layout>)
 }
 
-export default translate(['token'])(Action)
+export default translate(['commitment'])(Action)

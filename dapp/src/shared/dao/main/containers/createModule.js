@@ -13,6 +13,9 @@ function mapStateToProps(store, props) {
     case 'auditor':
       title = 'titleCreateAuditor'
       break
+    case 'commitment':
+      title = 'titleCreateCommitment'
+      break
     case 'complier':
       title = 'titleCreateComplier'
       break
@@ -27,6 +30,9 @@ function mapStateToProps(store, props) {
       break
     case 'tokenAcl':
       title = 'titleCreateTokenAcl'
+      break
+    case 'holder':
+      title = 'titleCreateHolder'
       break
     case 'docs':
       title = 'titleCreateDocs'
