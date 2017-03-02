@@ -1,12 +1,12 @@
 {
-  "titlePrefix": "Groups assured by",
+  "titlePrefix": "Independent Entities' Groups",
   "menuCreateGroup": "Create group",
   "menuAddMember": "Add member",
   "delete": "Remove",
 
   "titleCreateGroup": "Create group",
-  "titleAddMember": "Add Assured by address",
+  "titleAddMember": "Add Independent Entities address",
 
-  "formName": "Assured by group name",
-  "formAddress": "Assured by contract address"
+  "formName": "Independent Entities group name",
+  "formAddress": "Independent Entities contract address"
 }
