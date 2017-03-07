@@ -170,7 +170,7 @@ export function submitCreateModule(form, action) {
         builder = 'BuilderTokenEmission'
         break;
       case 'tokenAcl':
-        builder = 'BuilderTokenEmissionACL'
+        builder = 'BuilderTokenWithValidityPeriod'
         break;
       case 'acl':
         builder = 'BuilderACLStorage'

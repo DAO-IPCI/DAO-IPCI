@@ -6,7 +6,7 @@ import { submit as submitContract, send as sendContract, call as callContract } 
 
 export function loadModule(tokenAclAddress) {
   return (dispatch) => {
-    getContractByAbiName('TokenEmissionACL', tokenAclAddress)
+    getContractByAbiName('TokenWithValidityPeriod', tokenAclAddress)
       .then(contract => (
         Promise.join(
           contract.call('name'),
@@ -15,7 +15,9 @@ export function loadModule(tokenAclAddress) {
           contract.call('symbol'),
           contract.call('balanceOf', [coinbase()]),
           contract.call('totalSupply'),
-          (name, aclGroup, decimalsR, symbolR, balance, totalSupply) => {
+          contract.call('timestamp'),
+          contract.call('period'),
+          (name, aclGroup, decimalsR, symbolR, balance, totalSupply, timestamp, period) => {
             const decimalsFormat = _.toNumber(decimalsR)
             let decimals = decimalsFormat
             if (decimals > 0) {
@@ -29,7 +31,9 @@ export function loadModule(tokenAclAddress) {
               aclGroup,
               balance: (_.toNumber(balance) / decimals).toFixed(decimalsFormat) + ' ' + symbol,
               totalSupply: (_.toNumber(totalSupply) / decimals).toFixed(decimalsFormat) + ' ' + symbol,
-              decimals
+              decimals,
+              timestamp: _.toNumber(timestamp),
+              period: _.toNumber(period)
             }
           }
         )
@@ -53,7 +57,7 @@ export function submit(address, action, form) {
   return (dispatch) => {
     const formData = form;
     if (action === 'emission' || action === 'transfer' || action === 'approve') {
-      getContractByAbiName('TokenEmissionACL', address)
+      getContractByAbiName('TokenWithValidityPeriod', address)
         .then(contract => contract.call('decimals'))
         .then((result) => {
           let decimals = _.toNumber(result)
@@ -63,17 +67,17 @@ export function submit(address, action, form) {
             decimals = 1
           }
           formData.value *= decimals
-          return submitContract(dispatch, 'FormTokenAcl', address, 'TokenEmissionACL', action, formData)
+          return submitContract(dispatch, 'FormTokenAcl', address, 'TokenWithValidityPeriod', action, formData)
         })
     } else {
-      submitContract(dispatch, 'FormTokenAcl', address, 'TokenEmissionACL', action, formData)
+      submitContract(dispatch, 'FormTokenAcl', address, 'TokenWithValidityPeriod', action, formData)
     }
   }
 }
 
 export function send(address, action, values) {
   return (dispatch) => {
-    sendContract(dispatch, address, 'TokenEmissionACL', action, values)
+    sendContract(dispatch, address, 'TokenWithValidityPeriod', action, values)
   }
 }
 
@@ -102,7 +106,7 @@ function normalResultCall(contract, action, output) {
 export function call(address, action, form) {
   return (dispatch) => {
     let contract
-    getContractByAbiName('TokenEmissionACL', address)
+    getContractByAbiName('TokenWithValidityPeriod', address)
       .then((result) => {
         contract = result
         return callContract(dispatch, 'FormTokenAclFunc', contract, action, form)

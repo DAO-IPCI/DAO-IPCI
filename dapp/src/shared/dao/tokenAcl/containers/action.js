@@ -13,6 +13,9 @@ function mapStateToProps(store, props) {
     case 'emission':
       title = 'titleEmission'
       break
+    case 'setPeriod':
+      title = 'titleSetPeriod'
+      break
     default:
       title = '';
   }

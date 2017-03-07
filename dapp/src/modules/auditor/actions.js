@@ -76,7 +76,7 @@ export function submit(address, action, form) {
     if (action === 'emission' || action === 'transfer' || action === 'setEmissionLimit') {
       getContractByAbiName('Auditor', address)
         .then(contract => contract.call('token'))
-        .then(token => getContractByAbiName('TokenEmissionACL', token))
+        .then(token => getContractByAbiName('TokenWithValidityPeriod', token))
         .then(contract => contract.call('decimals'))
         .then((result) => {
           let decimals = _.toNumber(result)
