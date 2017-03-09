@@ -17,7 +17,7 @@ contract TokenWithValidityPeriod is TokenEmissionACL {
              TokenEmissionACL(_name, _symbol, _decimals, _start_count, _acl_storage, 
 			 				  _emitent_group)
     {
-		operator = _operator
+		operator = _operator;
 	}
 	
     /**
@@ -25,7 +25,11 @@ contract TokenWithValidityPeriod is TokenEmissionACL {
      * @param _value in seconds
      */
     function setPeriod(uint _value) onlyOperator {
+        if (_value <= 0) throw;
         period = _value;
+		if (timestamp > 0) {
+			timestamp = now + period;
+		}
     }
 	
     /**

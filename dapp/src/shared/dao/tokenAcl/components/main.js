@@ -30,7 +30,7 @@ const Main = (props) => {
     <p><b>{t('myBalance')}</b>: {balance}</p>
     <p><b>{t('groupAuditors')}</b>: {aclGroup}</p>
     <p><b>{t('endDate')}</b>: {(timestamp > 0) ? timeConverter(timestamp) : '-'}</p>
-    <p><b>{t('period')}</b>: {(period > 0) ? (period / 60 / 24) + ' day' : '-'}</p>
+    <p><b>{t('period')}</b>: {(period > 0) ? (period / 60 / 60 / 24) + ' day' : '-'}</p>
     <div className="panel panel-default">
       <div className="panel-heading">{t('Balance')}</div>
       <div className="panel-body">

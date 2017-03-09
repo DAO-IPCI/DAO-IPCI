@@ -3,15 +3,20 @@
   "menuSend": "Отправить",
   "menuApprove": "Апрув",
   "menuEmission": "Эмиссия",
+  "menuSetPeriod": "Установить период",
   "allTokens": "Всего токенов",
   "myBalance": "Мой баланс",
   "groupAuditors": "Группа заверителей",
   "Balance": "Баланс",
+  "endDate": "Дата окончания",
+  "period": "Период",
 
   "titleSend": "Отправить",
   "titleApprove": "Апрув",
   "titleEmission": "Эмиссия",
+  "titleSetPeriod": "Set Period",
 
   "formAddress": "Адрес",
-  "formAmount": "Кол-во токенов"
+  "formAmount": "Кол-во токенов",
+  "formSetPeriod": "Период (дней)"
 }
