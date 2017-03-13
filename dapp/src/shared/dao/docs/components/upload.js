@@ -5,7 +5,7 @@ import Ipfs from 'ipfs-api'
 import { IPFS_HOST, IPFS_PORT } from '../../../../config/config'
 import styles from './style.css'
 
-const ipfs = new Ipfs(IPFS_HOST, IPFS_PORT)
+const ipfs = new Ipfs(IPFS_HOST, IPFS_PORT, { protocol: 'http' })
 
 class Upload extends Component {
   state = { doc: false }
