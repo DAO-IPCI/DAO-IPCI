@@ -20,6 +20,7 @@ export function addModule(type, name, address) {
 
 export function load(daoAddress) {
   return (dispatch) => {
+    let payload = {}
     loadAbiByName('Core')
       .then((abi) => {
         const core = getContract(abi, daoAddress);
@@ -103,12 +104,20 @@ export function load(daoAddress) {
           ))
           .then(() => core.call('name'))
           .then((name) => {
+            payload = {
+              ...payload,
+              address: daoAddress,
+              name,
+              blocks
+            }
+          })
+          .then(() => core.call('owner'))
+          .then((owner) => {
             dispatch({
               type: LOAD,
               payload: {
-                address: daoAddress,
-                name,
-                blocks
+                ...payload,
+                owner
               }
             })
           });
