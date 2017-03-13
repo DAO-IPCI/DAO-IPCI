@@ -1,1 +1,0 @@
-export const LOAD_MODULE = 'DOCS_LOAD_MODULE'
