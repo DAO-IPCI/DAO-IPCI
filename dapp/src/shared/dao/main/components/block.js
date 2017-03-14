@@ -9,14 +9,10 @@ const Block = (props) => {
   return (<div className="panel panel-default">
     <div className="panel-heading">
       {name}
-      {(role === 'operator' && (type === 'token' || type === 'market' || type === 'docs')) &&
-        <div className="btn-group pull-right" style={{ marginBottom: 10 }}>
-          <Link to={'/dao/create/' + type} className="btn btn-info btn-xs"><span className="glyphicon glyphicon-plus" /></Link>
-        </div>
-      }
-      {(role === 'operator') &&
+      {role === 'operator' &&
         <div className="btn-group pull-right" style={{ marginBottom: 10 }}>
           <Link to={'/dao/link/' + type} className="btn btn-info btn-xs"><span className="glyphicon glyphicon-link" /></Link>
+          <Link to={'/dao/create/' + type} className="btn btn-info btn-xs"><span className="glyphicon glyphicon-plus" /></Link>
         </div>
       }
     </div>
