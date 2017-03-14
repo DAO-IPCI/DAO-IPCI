@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import { translate } from 'react-i18next'
 import Dropzone from 'react-dropzone'
 import Ipfs from 'ipfs-api'
-import { IPFS_HOST, IPFS_PORT } from '../../../../config/config'
+import { IPFS_HOST, IPFS_PORT, IPFS_PROTOCOL } from '../../../../config/config'
 import styles from './style.css'
 
-const ipfs = new Ipfs(IPFS_HOST, IPFS_PORT, { protocol: 'http' })
+const ipfs = new Ipfs(IPFS_HOST, IPFS_PORT, { protocol: IPFS_PROTOCOL })
 
 class Upload extends Component {
   state = { doc: false }
@@ -21,7 +21,7 @@ class Upload extends Component {
           return false;
         }
         // console.log(res);
-        const url = 'http://ipfs.io/ipfs/' + res[0].hash;
+        const url = 'https://ipfs.io/ipfs/' + res[0].hash;
         this.setState({ doc: url })
         this.props.onUpload(url)
         return true;
