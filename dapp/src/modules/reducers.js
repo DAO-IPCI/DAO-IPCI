@@ -9,6 +9,7 @@ import { default as auditor } from './auditor/reducer';
 import { default as complier } from './complier/reducer';
 import { default as market } from './market/reducer';
 import { default as docs } from './docs/reducer';
+import { default as txs } from './txs/reducer';
 
 export {
   app,
@@ -21,5 +22,6 @@ export {
   auditor,
   complier,
   market,
-  docs
+  docs,
+  txs
 };

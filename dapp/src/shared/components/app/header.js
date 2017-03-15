@@ -39,6 +39,7 @@ const Header = function Header(props) {
               </ul>
             </li>
             <li><Link to="/log">{props.t('log')}</Link></li>
+            <li><Link to="/txs">{props.t('txs')}</Link></li>
           </ul>
           <p className="navbar-text navbar-right">
             Core: {props.dao_address ?

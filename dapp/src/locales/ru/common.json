@@ -5,6 +5,8 @@
   "issuer": "Эмитент",
   "auditor": "Заверитель",
   "complier": "Комплайер",
+  "Log": "Лог",
+  "Transactions": "Транзакции",
   "createDao": "Cоздать ДАО",
   "createCarbonRegistry": "Cоздать реестр заверенных единиц",
   "createComplier": "Cоздать контракт потребителя",
