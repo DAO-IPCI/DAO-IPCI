@@ -5,6 +5,8 @@
   "issuer": "Issuer",
   "auditor": "Independent Entity",
   "complier": "Complier",
+  "Log": "Log",
+  "Transactions": "Transactions",
   "createDao": "Create DAO",
   "createCarbonRegistry": "Create Environmental units registry",
   "createComplier": "Create contract complier",

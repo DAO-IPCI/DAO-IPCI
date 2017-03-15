@@ -1,15 +1,19 @@
-import { LOAD, ADD_MODULE } from './actionTypes'
+import { LOAD, LOAD_START, ADD_MODULE } from './actionTypes'
 
 const initialState = {
   name: '',
   address: '',
+  load: false,
   blocks: []
 }
 
 export default function dao(state = initialState, action) {
   switch (action.type) {
+    case LOAD_START:
+      return { ...state, load: true }
+
     case LOAD:
-      return { ...action.payload }
+      return { ...action.payload, load: false }
 
     case ADD_MODULE: {
       const blocks = state.blocks.map((item) => {
