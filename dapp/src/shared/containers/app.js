@@ -70,13 +70,13 @@ class App extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return {
     title: state.app.title,
     flash_message: state.app.flash_message,
     dao_address: state.app.dao_address,
     language: state.app.language,
-    isCoreLoad: state.dao.load
+    isCoreLoad: (props.location.pathname === '/') ? false : state.dao.load,
   }
 }
 function mapDispatchToProps(dispatch) {

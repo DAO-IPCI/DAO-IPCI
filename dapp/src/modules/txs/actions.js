@@ -29,7 +29,7 @@ export function load() {
       })
       let i = 0;
       _.forEach(registry, (name, address) => {
-        axios.get('http://api.etherscan.io/api?module=account&action=txlist&address=' + address + '&startblock=0&endblock=99999999&sort=asc&apikey=YourApiKeyToken')
+        axios.get('http://api.etherscan.io/api?module=account&action=txlist&address=' + address + '&startblock=0&endblock=99999999&sort=asc&apikey=M1KX26NG5RF9P7R27XETQEB31IPAYUPVMS')
           .then((result) => {
             _.forEach(result.data.result, (tx) => {
               dispatch(add(
