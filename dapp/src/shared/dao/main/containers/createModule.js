@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
@@ -6,21 +6,14 @@ import CreateModule from '../components/createModule';
 import Spin from '../../../../shared/components/common/spin'
 import { load } from '../../../../modules/dao/actions';
 
-class CreateModuleContainer extends Component {
-  componentWillMount() {
-    if (!_.isEmpty(this.props.address)) {
-      this.props.load(this.props.address)
-    }
+const CreateModuleContainer = (props) => {
+  if (_.isEmpty(props.address)) {
+    return <p>не выбрано dao</p>
   }
-  render() {
-    if (_.isEmpty(this.props.address)) {
-      return <p>не выбрано dao</p>
-    }
-    if (this.props.isLoad) {
-      return <CreateModule {...this.props} />
-    }
-    return <Spin />
+  if (props.isLoad) {
+    return <CreateModule {...props} />
   }
+  return <Spin />
 }
 
 function mapStateToProps(state, props) {

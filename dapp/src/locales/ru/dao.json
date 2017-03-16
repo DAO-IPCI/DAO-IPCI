@@ -7,6 +7,7 @@
   "carbonRegistry": "Реестр заверенных единиц",
   "market": "Рынок",
   "docs": "Документы",
+  "agents": "Агенты",
   "action": "Действия",
   "open": "Открыть",
   "remove": "Удалить",
@@ -57,5 +58,6 @@
   "formLinkAcl": "Группа заверителей",
   "formLinkToken": "Токен",
   "formLinkMarket": "Рынок",
-  "formLinkDocs": "Документы"
+  "formLinkDocs": "Документы",
+  "formLinkAgents": "Агенты"
 }

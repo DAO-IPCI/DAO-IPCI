@@ -13,13 +13,17 @@ export function add(tx) {
 export function load() {
   return (dispatch, getState) => {
     const state = getState();
-    const registry = _.reduce(state.dao.blocks, (result, item) => {
-      const r2 = _.reduce(item.modules, (r, module) => {
-        _.set(r, module.address, module.name);
-        return r;
-      }, {});
-      return _.merge(r2, result)
-    }, {});
+    const registry = {};
+    const agents = {};
+    _.forEach(state.dao.blocks, (item) => {
+      _.forEach(item.modules, (module) => {
+        if (item.type !== 'agents') {
+          _.set(registry, module.address, module.name);
+        } else {
+          _.set(agents, module.address, module.name);
+        }
+      });
+    });
     const count = _.keys(registry).length
     if (count > 0) {
       const web3 = getWeb3();
@@ -36,6 +40,7 @@ export function load() {
                 {
                   txId: tx.hash,
                   from: tx.from,
+                  fromName: (_.has(agents, tx.from)) ? agents[tx.from] : '',
                   to: tx.to,
                   toName: name,
                   timestamp: tx.timeStamp,
