@@ -68,6 +68,11 @@ export function load(daoAddress) {
             name: i18next.t('dao:docs'),
             type: 'docs',
             modules: []
+          },
+          {
+            name: i18next.t('dao:agents'),
+            type: 'agents',
+            modules: []
           }
         ]
         core.call('first')
