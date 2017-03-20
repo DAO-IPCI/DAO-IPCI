@@ -38,7 +38,6 @@ const Header = function Header(props) {
                 <li><button className="btn btn-link" onClick={() => props.setLanguage('ru')}>ru</button></li>
               </ul>
             </li>
-            <li><Link to="/log">{props.t('log')}</Link></li>
             <li><Link to="/txs">{props.t('txs')}</Link></li>
           </ul>
           <p className="navbar-text navbar-right">

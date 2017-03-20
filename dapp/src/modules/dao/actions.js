@@ -87,6 +87,9 @@ export function load(daoAddress) {
                   if (type === 'tokenAcl') {
                     return 'token-acl'
                   }
+                  if (type === '') {
+                    return 'agents'
+                  }
                   return type
                 })
                 .then((type) => {

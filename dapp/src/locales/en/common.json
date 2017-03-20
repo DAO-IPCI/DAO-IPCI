@@ -6,7 +6,8 @@
   "auditor": "Independent Entity",
   "complier": "Complier",
   "Log": "Log",
-  "Transactions": "Transactions",
+  "txs": "History",
+  "Transactions": "Transaction history",
   "createDao": "Create DAO",
   "createCarbonRegistry": "Create Environmental units registry",
   "createComplier": "Create contract complier",
@@ -18,5 +19,6 @@
   "menu": "Menu",
   "back": "Back",
   "autocompletePlaceholder": "For search start input address or name",
-  "saveDoc": "Save doc for transaction"
+  "saveDoc": "Save doc for transaction",
+  "Update": "Update"
 }
