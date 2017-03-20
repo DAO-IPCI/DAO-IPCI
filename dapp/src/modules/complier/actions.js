@@ -14,18 +14,12 @@ export function loadModule(complierAddress) {
 
 export function submit(address, action, form) {
   return (dispatch) => {
-    submitContract(dispatch, 'FormComplier', address, 'Complier', action, form)
-      .then(() => {
-        dispatch(loadModule(address))
-      })
+    dispatch(submitContract('FormComplier', address, 'Complier', action, form))
   }
 }
 
 export function send(address, action, values) {
   return (dispatch) => {
     sendContract(dispatch, address, 'Complier', action, values)
-      .then(() => {
-        dispatch(loadModule(address))
-      })
   }
 }

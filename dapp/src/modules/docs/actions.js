@@ -43,7 +43,7 @@ export function loadModule(docsAddress) {
 
 export function submit(address, action, form) {
   return (dispatch) => {
-    submitContract(dispatch, 'FormDocs', address, 'Docs', action, form)
+    dispatch(submitContract('FormDocs', address, 'Docs', action, form))
   }
 }
 

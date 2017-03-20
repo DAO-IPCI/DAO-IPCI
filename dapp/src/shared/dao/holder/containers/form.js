@@ -7,12 +7,12 @@ import Form from '../../../components/common/form';
 function mapStateToProps(state, props) {
   if (props.action === 'setHoldDuration') {
     return {
-      fields: ['duration_sec'],
+      fields: ['duration_sec', 'isIpfs'],
       labels: [i18next.t('holder:formDuration')]
     }
   } else if (props.action === 'withdraw') {
     return {
-      fields: ['index'],
+      fields: ['index', 'isIpfs'],
       labels: [i18next.t('holder:formIndexRecord')]
     }
   }

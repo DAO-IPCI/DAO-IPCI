@@ -7,7 +7,7 @@ import Form from '../../../components/common/form';
 function mapStateToProps(state, props) {
   if (props.action === 'burn') {
     return {
-      fields: ['token', 'value'],
+      fields: ['token', 'value', 'isIpfs'],
       labels: [i18next.t('auditor:formAddress'), i18next.t('complier:formAmount')],
       autocomplete: {
         token: true
