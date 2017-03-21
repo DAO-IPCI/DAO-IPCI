@@ -19,8 +19,8 @@ const Item = (props) => {
     <div className="panel panel-default">
       <div className="panel-body">
         <span className="label label-primary pull-right">{timeConverter(timestamp)}</span>
-        <p>Contract: <b>{toName}</b> <span className="label label-info">{to}</span></p>
-        <p>txId: <a href={'https://etherscan.io/tx/' + txId}>{txId}</a></p>
+        <p>Smart contract: <b>{toName}</b> <span className="label label-info">{to}</span></p>
+        <p>Transaction ID: <a href={'https://etherscan.io/tx/' + txId}>{txId}</a></p>
         <p>from: <b>{fromName}</b> <span className="label label-success">{from}</span></p>
         <ul className="nav nav-tabs">
           <li className="active"><a href={'#input' + txId} data-toggle="tab">Input</a></li>
