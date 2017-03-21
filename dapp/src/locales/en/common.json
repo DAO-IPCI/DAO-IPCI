@@ -21,6 +21,9 @@
   "menu": "Menu",
   "back": "Back",
   "autocompletePlaceholder": "For search start input address or name",
+  "isSaveIpfs": "Add Document to IPFS",
+  "saveDoc": "Save doc for transaction",
+  "noSaveDoc": "Not found module IPFS",
   "saveDoc": "Save doc for transaction",
   "Update": "Update"
 }

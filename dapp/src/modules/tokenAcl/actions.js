@@ -67,13 +67,13 @@ export function submit(address, action, form) {
             decimals = 1
           }
           formData.value *= decimals
-          return submitContract(dispatch, 'FormTokenAcl', address, 'TokenWithValidityPeriod', action, formData)
+          dispatch(submitContract('FormTokenAcl', address, 'TokenWithValidityPeriod', action, formData))
         })
     } else if (action === 'setPeriod') {
       formData.value = formData.value * 24 * 60 * 60;
       submitContract(dispatch, 'FormTokenAcl', address, 'TokenWithValidityPeriod', action, formData)
     } else {
-      submitContract(dispatch, 'FormTokenAcl', address, 'TokenWithValidityPeriod', action, formData)
+      dispatch(submitContract('FormTokenAcl', address, 'TokenWithValidityPeriod', action, formData))
     }
   }
 }
