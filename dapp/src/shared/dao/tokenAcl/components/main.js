@@ -20,7 +20,7 @@ const timeConverter = (timestamp) => {
 const Main = (props) => {
   const { address, name, totalSupply, balance, aclGroup, timestamp, period, t } = props
   const menu = (<div className="btn-group" style={{ marginBottom: 10 }}>
-    <Link to={'/dao/token-acl/emission/' + address} className="btn btn-default">{t('emission')}</Link>
+    <Link to={'/dao/token-acl/emission/' + address} className="btn btn-default">{t('menuEmission')}</Link>
     <Link to={'/dao/token-acl/transfer/' + address} className="btn btn-default">{t('menuSend')}</Link>
     <Link to={'/dao/token-acl/approve/' + address} className="btn btn-default">{t('menuApprove')}</Link>
     <Link to={'/dao/token-acl/set-period/' + address} className="btn btn-default">{t('menuSetPeriod')}</Link>
