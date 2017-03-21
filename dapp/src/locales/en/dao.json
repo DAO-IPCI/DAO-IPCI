@@ -7,6 +7,7 @@
   "carbonRegistry": "Environmental units registry",
   "market": "Market",
   "docs": "Docs",
+  "agents": "Agents",
   "action": "Action",
   "open": "Open",
   "remove": "Remove",
@@ -57,5 +58,6 @@
   "formLinkAcl": "Independent Entities group",
   "formLinkToken": "Token",
   "formLinkMarket": "Market",
-  "formLinkDocs": "Docs"
+  "formLinkDocs": "Docs",
+  "formLinkAgents": "Agents"
 }

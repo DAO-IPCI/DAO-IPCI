@@ -7,7 +7,9 @@ import { getWeb3, isAccounts, runListener } from '../../utils/web3'
 import Header from '../components/app/header'
 import Footer from '../components/app/footer'
 import Notification from '../components/app/notification'
+import Spin from '../components/common/spin'
 import { flashMessage, setDaoAddress, setLanguage } from '../../modules/app/actions';
+import { load as loadCore } from '../../modules/dao/actions';
 import { load } from '../../modules/log/actions';
 
 import './style.css'
@@ -18,6 +20,9 @@ class App extends Component {
     const address = cookie.load('dao_address')
     if (address) {
       this.props.setDaoAddress(address)
+      if (!this.props.isCoreLoad) {
+        this.props.loadCore(address);
+      }
     }
     const language = cookie.load('language')
     if (language) {
@@ -27,11 +32,21 @@ class App extends Component {
     runListener();
   }
 
+  componentWillReceiveProps(next) {
+    if (this.props.dao_address !== next.dao_address) {
+      this.props.loadCore(next.dao_address);
+    }
+  }
+
   render() {
     let content
     if (getWeb3()) {
       if (isAccounts()) {
-        content = this.props.children
+        if (this.props.isCoreLoad) {
+          content = <Spin />
+        } else {
+          content = this.props.children
+        }
       } else {
         content = <p>нет аккаунтов</p>
       }
@@ -43,6 +58,7 @@ class App extends Component {
       <Header
         title={this.props.title}
         dao_address={this.props.dao_address}
+        role={this.props.role}
         language={this.props.language}
         setLanguage={this.props.setLanguage}
       />
@@ -55,12 +71,14 @@ class App extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return {
     title: state.app.title,
     flash_message: state.app.flash_message,
     dao_address: state.app.dao_address,
-    language: state.app.language
+    role: state.app.role,
+    language: state.app.language,
+    isCoreLoad: (props.location.pathname === '/') ? false : state.dao.load,
   }
 }
 function mapDispatchToProps(dispatch) {
@@ -68,13 +86,15 @@ function mapDispatchToProps(dispatch) {
     flashMessage,
     setDaoAddress,
     setLanguage,
-    load
+    load,
+    loadCore
   }, dispatch)
   return {
     flashMessage: actions.flashMessage,
     setDaoAddress: actions.setDaoAddress,
     setLanguage: actions.setLanguage,
-    loadLog: actions.load
+    loadLog: actions.load,
+    loadCore: actions.loadCore
   }
 }
 
