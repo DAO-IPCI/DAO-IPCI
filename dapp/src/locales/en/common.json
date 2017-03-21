@@ -1,14 +1,16 @@
 {
-  "lng": "lng",
   "user": "User",
   "operator": "Operator",
   "issuer": "Issuer",
-  "auditor": "Independent Entities",
+  "auditor": "Independent Entity",
   "complier": "Complier",
+  "Log": "Log",
+  "txs": "History",
+  "Transactions": "Transaction history",
   "createDao": "Create DAO",
   "createCarbonRegistry": "Create Environmental units registry",
   "createComplier": "Create contract complier",
-  "createAuditor": "Create contract Independent Entities",
+  "createAuditor": "Create Independent entity contract",
   "createCommitment": "Create contract Commitment",
   "createHolder": "Create contract Security Reserve",
   "createComplectCarbonRegistry": "Create contracts Security and Environmental units registry",
@@ -19,5 +21,6 @@
   "menu": "Menu",
   "back": "Back",
   "autocompletePlaceholder": "For search start input address or name",
-  "saveDoc": "Save doc for transaction"
+  "saveDoc": "Save doc for transaction",
+  "Update": "Update"
 }

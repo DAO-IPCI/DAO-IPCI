@@ -10,6 +10,7 @@ import { default as complier } from './complier/reducer';
 import { default as market } from './market/reducer';
 import { default as docs } from './docs/reducer';
 import { default as commitment } from './commitment/reducer';
+import { default as txs } from './txs/reducer';
 
 export {
   app,
@@ -23,5 +24,6 @@ export {
   complier,
   market,
   docs,
-  commitment
+  commitment,
+  txs
 };

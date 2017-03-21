@@ -16,7 +16,7 @@ const Container = (props) => {
 
 function mapStateToProps() {
   return {
-    title: i18next.t('Log'),
+    title: i18next.t('Transactions'),
     menu: []
   }
 }

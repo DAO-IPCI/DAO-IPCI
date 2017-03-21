@@ -1,7 +1,7 @@
 import { FLASH_MESSAGE, SET_DAO_ADDRESS, SET_ROLE, SET_LANGUAGE } from './actionTypes'
 
 const initialState = {
-  title: 'dApp IPCI',
+  title: 'dApp DAO IPCI',
   flash_message: '',
   dao_address: '',
   role: '',

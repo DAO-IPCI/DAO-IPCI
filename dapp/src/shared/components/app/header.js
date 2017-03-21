@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import { translate } from 'react-i18next'
+import _ from 'lodash'
 
 const Header = function Header(props) {
   return (
@@ -19,7 +20,7 @@ const Header = function Header(props) {
           <ul className="nav navbar-nav navbar-right">
             <li className="dropdown">
               <a href="/" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                {props.t('user')} <span className="caret" />
+                {(props.role !== '') ? props.t(props.role) : props.t('user')} <span className="caret" />
               </a>
               <ul className="dropdown-menu">
                 <li><Link to="/operator">{props.t('operator')}</Link></li>
@@ -31,14 +32,14 @@ const Header = function Header(props) {
             </li>
             <li className="dropdown">
               <a href="/" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                {props.t('lng')} <span className="caret" />
+                {_.upperFirst(props.language)} <span className="caret" />
               </a>
               <ul className="dropdown-menu">
                 <li><button className="btn btn-link" onClick={() => props.setLanguage('en')}>en</button></li>
                 <li><button className="btn btn-link" onClick={() => props.setLanguage('ru')}>ru</button></li>
               </ul>
             </li>
-            <li><Link to="/log">{props.t('log')}</Link></li>
+            <li><Link to="/txs">{props.t('txs')}</Link></li>
           </ul>
           <p className="navbar-text navbar-right">
             Core: {props.dao_address ?

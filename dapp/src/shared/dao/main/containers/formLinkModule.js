@@ -44,6 +44,10 @@ function mapStateToProps(state, props) {
         {
           name: i18next.t('dao:formLinkDocs'),
           value: 'docs'
+        },
+        {
+          name: i18next.t('dao:formLinkAgents'),
+          value: 'agents'
         }
       ]
     },

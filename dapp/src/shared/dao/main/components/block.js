@@ -9,16 +9,14 @@ const Block = (props) => {
   return (<div className="panel panel-default">
     <div className="panel-heading">
       {name}
-      {(role === 'operator' && (type === 'token' || type === 'market' || type === 'docs')) &&
-        <div className="btn-group pull-right" style={{ marginBottom: 10 }}>
-          <Link to={'/dao/create/' + type} className="btn btn-info btn-xs"><span className="glyphicon glyphicon-plus" /></Link>
-        </div>
-      }
-      {(role === 'operator') &&
-        <div className="btn-group pull-right" style={{ marginBottom: 10 }}>
+      <div className="btn-group pull-right" style={{ marginBottom: 10 }}>
+        {role === 'operator' &&
           <Link to={'/dao/link/' + type} className="btn btn-info btn-xs"><span className="glyphicon glyphicon-link" /></Link>
-        </div>
-      }
+        }
+        {(role === 'operator' && type !== 'agents') &&
+          <Link to={'/dao/create/' + type} className="btn btn-info btn-xs"><span className="glyphicon glyphicon-plus" /></Link>
+        }
+      </div>
     </div>
     <div className="panel-body">
       <div className="list-group" style={{ marginBottom: 0 }}>
@@ -29,15 +27,22 @@ const Block = (props) => {
                 {t('action')} <span className="caret" />
               </button>
               <ul className="dropdown-menu">
-                <li><Link to={'/dao/' + type + '/' + item.address}>{t('open')}</Link></li>
+                {type !== 'agents' &&
+                  <li><Link to={'/dao/' + type + '/' + item.address}>{t('open')}</Link></li>
+                }
                 {(role === 'operator') &&
                   <li><a onClick={() => onRemoveModule(item.name)}>{t('remove')}</a></li>
                 }
               </ul>
             </div>
-            <Link to={'/dao/' + type + '/' + item.address}>
-              {item.name}
-            </Link><br />
+            {type !== 'agents' ?
+              <Link to={'/dao/' + type + '/' + item.address}>
+                {item.name}
+              </Link>
+              :
+              <span>{item.name}</span>
+            }
+            <br />
             <small>{item.address}</small>
           </div>
         )}

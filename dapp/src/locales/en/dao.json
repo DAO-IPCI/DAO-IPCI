@@ -8,17 +8,18 @@
   "market": "Market",
   "docs": "Docs",
   "commitment": "Commitment",
+  "agents": "Agents",
   "action": "Action",
   "open": "Open",
   "remove": "Remove",
 
   "titleCreateCore": "Create DAO Core",
   "titleCreateIssuer": "Create Environmental units registry",
-  "titleCreateAuditor": "Create Independent Entities contract",
+  "titleCreateAuditor": "Create Independent entity contract",
   "titleCreateComplier": "Create complier contract",
   "titleCreateMarket": "Create Market",
   "titleCreateAcl": "Create Independent Entities group",
-  "titleCreateToken": "Create carbon Token",
+  "titleCreateToken": "Create Token",
   "titleCreateTokenAcl": "Create ACL token",
   "titleCreateDocs": "Create docs",
   "titleCreateCommitment": "Create Commitment",
@@ -64,5 +65,6 @@
   "formLinkToken": "Token",
   "formLinkMarket": "Market",
   "formLinkCommitment": "Commitment",
-  "formLinkDocs": "Docs"
+  "formLinkDocs": "Docs",
+  "formLinkAgents": "Agents"
 }

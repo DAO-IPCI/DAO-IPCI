@@ -8,6 +8,7 @@
   "market": "Рынок",
   "docs": "Документы",
   "commitment": "Обязательство",
+  "agents": "Агенты",
   "action": "Действия",
   "open": "Открыть",
   "remove": "Удалить",
@@ -64,5 +65,6 @@
   "formLinkToken": "Токен",
   "formLinkMarket": "Рынок",
   "formLinkCommitment": "Обязательство",
-  "formLinkDocs": "Документы"
+  "formLinkDocs": "Документы",
+  "formLinkAgents": "Агенты"
 }

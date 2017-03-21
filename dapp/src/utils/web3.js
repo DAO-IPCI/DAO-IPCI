@@ -87,12 +87,15 @@ export function getUrlAbi(contract) {
     'InsuranceHolder',
   ]
   let repo = 'core'
+  let version = '64e36c8ea43bb06ae8dd81a65af6d769b366f3c1';
   if (_.indexOf(ipci, contract) >= 0) {
     repo = 'DAO-IPCI'
+    version = 'e3ecf975b7661ca1cafa13c11ba65a6f97380ec1';
   } else if (isBuilder) {
     repo = 'DAO-Factory'
+    version = 'cb5b7c0ad9203e773b1db058540846e62a2931ff';
   }
-  let url = 'https://raw.githubusercontent.com/airalab/' + repo + '/master/abi/'
+  let url = 'https://raw.githubusercontent.com/airalab/' + repo + '/' + version + '/abi/'
   if (isBuilder && repo === 'DAO-IPCI') {
     url += 'builder/'
   }

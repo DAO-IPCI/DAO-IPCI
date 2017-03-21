@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
@@ -6,21 +6,14 @@ import { Dao } from '../components';
 import Spin from '../../../../shared/components/common/spin'
 import { load, removeModule } from '../../../../modules/dao/actions';
 
-class Container extends Component {
-  componentWillMount() {
-    if (!_.isEmpty(this.props.address)) {
-      this.props.load(this.props.address)
-    }
+const Container = (props) => {
+  if (_.isEmpty(props.address)) {
+    return <p>не выбрано dao</p>
   }
-  render() {
-    if (_.isEmpty(this.props.address)) {
-      return <p>не выбрано dao</p>
-    }
-    if (this.props.isLoad) {
-      return <Dao {...this.props} />
-    }
-    return <Spin />
+  if (props.isLoad) {
+    return <Dao {...props} />
   }
+  return <Spin />
 }
 
 function mapStateToProps(state, props) {

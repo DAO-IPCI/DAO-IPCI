@@ -1,6 +1,7 @@
 import { bindActionCreators } from 'redux'
 import { reduxForm } from 'redux-form'
 import i18next from 'i18next'
+import _ from 'lodash'
 import { submitCreateModule } from '../../../../modules/dao/actions';
 import Form from '../../../../shared/components/common/form';
 
@@ -24,13 +25,16 @@ function mapStateToProps(state, props) {
       disableds: [false, false, true, false]
     }
   } else if (props.module === 'auditor' || props.module === 'commitment') {
+    const operatorAddress = state.dao.owner;
     return {
       fields: ['operator', 'token', 'holder'],
       labels: [i18next.t('dao:formAuditorOperator'), i18next.t('dao:formAuditorToken'), i18next.t('dao:formAuditorHolder')],
       autocomplete: {
         token: true,
         holder: true
-      }
+      },
+      initialValues: { operator: operatorAddress },
+      disableds: [(!_.isEmpty(operatorAddress)), false, false]
     }
   } else if (props.module === 'holder') {
     return {

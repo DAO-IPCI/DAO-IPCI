@@ -2,7 +2,7 @@ import { startSubmit, stopSubmit, reset } from 'redux-form';
 import _ from 'lodash'
 import { hashHistory } from 'react-router';
 import i18next from 'i18next'
-import { LOAD, ADD_MODULE } from './actionTypes'
+import { LOAD_START, LOAD, ADD_MODULE } from './actionTypes'
 import { loadAbiByName, getContract, blockchain, createModule, createModuleWatch, getModuleAddress } from '../../utils/web3'
 import { promiseFor } from '../../utils/helper'
 import { flashMessage } from '../app/actions'
@@ -20,6 +20,11 @@ export function addModule(type, name, address) {
 
 export function load(daoAddress) {
   return (dispatch) => {
+    dispatch({
+      type: LOAD_START,
+      payload: true
+    })
+    let payload = {}
     loadAbiByName('Core')
       .then((abi) => {
         const core = getContract(abi, daoAddress);
@@ -68,6 +73,11 @@ export function load(daoAddress) {
             name: i18next.t('dao:docs'),
             type: 'docs',
             modules: []
+          },
+          {
+            name: i18next.t('dao:agents'),
+            type: 'agents',
+            modules: []
           }
         ]
         core.call('first')
@@ -81,6 +91,9 @@ export function load(daoAddress) {
                   }
                   if (type === 'tokenAcl') {
                     return 'token-acl'
+                  }
+                  if (type === '') {
+                    return 'agents'
                   }
                   return type
                 })
@@ -108,12 +121,20 @@ export function load(daoAddress) {
           ))
           .then(() => core.call('name'))
           .then((name) => {
+            payload = {
+              ...payload,
+              address: daoAddress,
+              name,
+              blocks
+            }
+          })
+          .then(() => core.call('owner'))
+          .then((owner) => {
             dispatch({
               type: LOAD,
               payload: {
-                address: daoAddress,
-                name,
-                blocks
+                ...payload,
+                owner
               }
             })
           });
