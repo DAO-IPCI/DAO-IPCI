@@ -58,6 +58,7 @@ class App extends Component {
       <Header
         title={this.props.title}
         dao_address={this.props.dao_address}
+        role={this.props.role}
         language={this.props.language}
         setLanguage={this.props.setLanguage}
       />
@@ -75,6 +76,7 @@ function mapStateToProps(state, props) {
     title: state.app.title,
     flash_message: state.app.flash_message,
     dao_address: state.app.dao_address,
+    role: state.app.role,
     language: state.app.language,
     isCoreLoad: (props.location.pathname === '/') ? false : state.dao.load,
   }
