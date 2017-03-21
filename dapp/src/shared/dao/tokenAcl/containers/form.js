@@ -22,6 +22,13 @@ function mapStateToProps(state, props) {
       labels: [i18next.t('tokenAcl:formAmount')],
       placeholders: ['10']
     }
+  } else if (props.action === 'setPeriod') {
+    return {
+      fields: ['value'],
+      selects: {},
+      labels: [i18next.t('tokenAcl:formSetPeriod')],
+      placeholders: ['10']
+    }
   }
   return {}
 }

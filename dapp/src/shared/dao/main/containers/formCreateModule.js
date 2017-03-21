@@ -66,10 +66,10 @@ function mapStateToProps(state, props) {
     }
   } else if (props.module === 'tokenAcl') {
     return {
-      fields: ['name', 'symbol', 'decimals', 'start_count', 'acl', 'acl_group'],
+      fields: ['name', 'symbol', 'decimals', 'start_count', 'acl', 'acl_group', 'operator'],
       selects: {},
-      labels: [i18next.t('dao:formTokenAclName'), i18next.t('dao:formTokenAclSymbol'), i18next.t('dao:formTokenAclDecimals'), i18next.t('dao:formTokenAclStartCount'), i18next.t('dao:formTokenAclAcl'), i18next.t('dao:formTokenAclAclGroup')],
-      placeholders: [i18next.t('dao:formTokenAclName'), 'S', 0, 0, '0x111111111', 'name'],
+      labels: [i18next.t('dao:formTokenAclName'), i18next.t('dao:formTokenAclSymbol'), i18next.t('dao:formTokenAclDecimals'), i18next.t('dao:formTokenAclStartCount'), i18next.t('dao:formTokenAclAcl'), i18next.t('dao:formTokenAclAclGroup'), i18next.t('dao:formTokenAclAclOperator')],
+      placeholders: [i18next.t('dao:formTokenAclName'), 'S', 0, 0, '0x111111111', 'name', '0x111111111'],
       autocomplete: {
         acl: true
       }
