@@ -71,7 +71,7 @@ export function submit(address, action, form) {
         })
     } else if (action === 'setPeriod') {
       formData.value = formData.value * 24 * 60 * 60;
-      submitContract(dispatch, 'FormTokenAcl', address, 'TokenWithValidityPeriod', action, formData)
+      dispatch(submitContract('FormTokenAcl', address, 'TokenWithValidityPeriod', action, formData))
     } else {
       dispatch(submitContract('FormTokenAcl', address, 'TokenWithValidityPeriod', action, formData))
     }

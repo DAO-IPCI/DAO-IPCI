@@ -119,7 +119,7 @@ export function submit(address, action, form) {
             decimals = 1
           }
           formData.value *= decimals
-          return submitContract(dispatch, 'FormCommitment', address, 'Commitment', action, formData)
+          dispatch(submitContract('FormCommitment', address, 'Commitment', action, formData))
         })
         .then((transaction) => {
           if (action === 'emission') {
@@ -143,10 +143,7 @@ export function submit(address, action, form) {
           console.log('reject');
         })
     } else {
-      submitContract(dispatch, 'FormCommitment', address, 'Commitment', action, formData)
-        .catch(() => {
-          console.log('reject');
-        })
+      dispatch(submitContract('FormCommitment', address, 'Commitment', action, formData))
     }
   }
 }
