@@ -90,7 +90,7 @@ export function getUrlAbi(contract) {
   let version = '64e36c8ea43bb06ae8dd81a65af6d769b366f3c1';
   if (_.indexOf(ipci, contract) >= 0) {
     repo = 'DAO-IPCI'
-    version = 'e3ecf975b7661ca1cafa13c11ba65a6f97380ec1';
+    version = '79c192ff18abe5c78f1d1ec607dee03b5641dbcc';
   } else if (isBuilder) {
     repo = 'DAO-Factory'
     version = 'cb5b7c0ad9203e773b1db058540846e62a2931ff';
