@@ -19,10 +19,10 @@ function mapStateToProps(state, props) {
     }
   } else if (props.module === 'issuer') {
     return {
-      fields: ['name', 'symbol', 'operator_core', 'group'],
-      labels: [i18next.t('dao:formRegistryName'), i18next.t('dao:formRegistrySymbol'), i18next.t('dao:formIssuerOperatorCore'), i18next.t('dao:formIssuerGroup')],
-      initialValues: { operator_core: state.dao.address },
-      disableds: [false, false, true, false]
+      fields: ['name', 'symbol', 'decimalc', 'operator_core', 'group'],
+      labels: [i18next.t('dao:formRegistryName'), i18next.t('dao:formRegistrySymbol'), i18next.t('dao:formRegistryDecimals'), i18next.t('dao:formIssuerOperatorCore'), i18next.t('dao:formIssuerGroup')],
+      initialValues: { operator_core: state.dao.address, decimalc: 3 },
+      disableds: [false, false, false, true, false]
     }
   } else if (props.module === 'auditor' || props.module === 'commitment') {
     const operatorAddress = state.dao.owner;

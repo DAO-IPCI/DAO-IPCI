@@ -32,6 +32,7 @@
 
   "formRegistryName": "Название реестра",
   "formRegistrySymbol": "Символ реестра",
+  "formRegistryDecimals": "Кол-во знаков",
   "formIssuerOperatorCore": "Адрес DAO",
   "formIssuerGroup": "Название группы заверителей",
 
