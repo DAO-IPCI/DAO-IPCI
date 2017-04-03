@@ -29,6 +29,7 @@
 
   "formRegistryName": "Registry name",
   "formRegistrySymbol": "Registry symbol",
+  "formRegistryDecimals": "Registry decimals",
   "formIssuerOperatorCore": "DAO address",
   "formIssuerGroup": "Independent Entities group",
 
