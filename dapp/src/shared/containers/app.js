@@ -62,6 +62,8 @@ class App extends Component {
         role={this.props.role}
         language={this.props.language}
         setLanguage={this.props.setLanguage}
+        programms={this.props.programms}
+        setDaoAddress={this.props.setDaoAddress}
       />
       <div className="container" id="maincontainer">
         {content}
@@ -73,6 +75,20 @@ class App extends Component {
 }
 
 function mapStateToProps(state, props) {
+  const programms = [
+    {
+      address: '0x9ee8b04a4a5e301eabdb791fb6ed4e7d815cf90d',
+      name: 'IPCI',
+    },
+    // {
+    //   address: '0x2',
+    //   name: 'VCS',
+    // },
+    // {
+    //   address: '0x3',
+    //   name: 'Gold Standard',
+    // },
+  ];
   return {
     title: state.app.title,
     flash_message: state.app.flash_message,
@@ -80,6 +96,7 @@ function mapStateToProps(state, props) {
     role: state.app.role,
     language: state.app.language,
     isCoreLoad: (props.location.pathname === '/') ? false : state.dao.load,
+    programms
   }
 }
 function mapDispatchToProps(dispatch) {

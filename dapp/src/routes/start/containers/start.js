@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Link } from 'react-router'
-import i18next from 'i18next'
 import _ from 'lodash'
 import { loadModule } from '../../../modules/tokenAcl/actions';
+import { Slider, Roles } from '../components/start';
+import Spin from '../../../shared/components/common/spin'
 
 class Container extends Component {
   constructor(props) {
@@ -45,69 +45,21 @@ class Container extends Component {
   render() {
     let slider;
     if (this.props.load) {
-      slider = <div>load...</div>
+      slider = <Spin />
     } else if (this.props.tokens.length <= 0) {
       slider = <div>-</div>
     } else {
-      slider = (
-        <div className="carousel slide" data-ride="carousel" id="carousel-1">
-          <div className="carousel-inner" role="listbox">
-            {this.props.tokens.map((item, index) =>
-              <div key={index} className={index === 0 ? 'item active' : 'item'}>
-                {item.load ?
-                  <div>load...</div>
-                  :
-                  <div>
-                    <img src="assets/img/project-bambous-01.jpg" alt="Solar Park in Mauritus" />
-                    <div className="carousel-caption">
-                      <h3>{item.info.name}</h3>
-                      <p>Quantity: {item.info.totalSupply}</p>
-                      <Link className="btn btn-primary" role="button" data-bs-hover-animate="pulse" to={'/dao/market/' + this.props.market}>Buy units</Link>
-                    </div>
-                  </div>
-                }
-              </div>
-            )}
-          </div>
-          <div className="carousel-controls">
-            <a className="left carousel-control" href="#carousel-1" role="button" data-slide="prev">
-              <i className="glyphicon glyphicon-chevron-left" />
-              <span className="sr-only">Previous</span>
-            </a>
-            <a className="right carousel-control" href="#carousel-1" role="button" data-slide="next">
-              <i className="glyphicon glyphicon-chevron-right" />
-              <span className="sr-only">Next</span>
-            </a>
-          </div>
-          <ol className="carousel-indicators">
-            {this.props.tokens.map((item, index) =>
-              <li key={index} data-target="#carousel-1" data-slide-to={index} className={index === 0 ? 'active' : ''} />
-            )}
-          </ol>
-        </div>
-      )
+      slider = <Slider tokens={this.props.tokens} market={this.props.market} />
     }
     return (<div>
       <h1>Welcome to dApp IPCI</h1>
       <h2>Meet our projects</h2>
       {slider}
-      <h2>Go to advanced interace</h2>
-      <div className="col-md-4 col-md-offset-4 box">
-        <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <select className="form-control" required="" value={this.state.role} onChange={this.handleChange}>
-              <optgroup label="Select type of interface">
-                <option value="operator">{i18next.t('operator')}</option>
-                <option value="issuer">{i18next.t('issuer')}</option>
-                <option value="auditor">{i18next.t('auditor')}</option>
-                <option value="complier">{i18next.t('complier')}</option>
-                <option value="user">{i18next.t('user')}</option>
-              </optgroup>
-            </select>
-          </div>
-          <button className="btn btn-primary btn-block btn-lg" type="submit">Go</button>
-        </form>
-      </div>
+      <Roles
+        handleSubmit={this.handleSubmit}
+        handleChange={this.handleChange}
+        role={this.state.role}
+      />
     </div>)
   }
 }
