@@ -9,11 +9,13 @@ import i18n from './config/i18n';
 
 const store = configureStore()
 
-render(
-  <I18nextProvider i18n={i18n}>
-    <Provider store={store}>
-      <Router history={hashHistory} routes={routes(store)} />
-    </Provider>
-  </I18nextProvider>,
-  document.getElementById('root')
-)
+setTimeout(() => {
+  render(
+    <I18nextProvider i18n={i18n}>
+      <Provider store={store}>
+        <Router history={hashHistory} routes={routes(store)} />
+      </Provider>
+    </I18nextProvider>,
+    document.getElementById('root')
+  )
+}, 2000);

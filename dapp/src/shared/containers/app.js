@@ -8,6 +8,7 @@ import Header from '../components/app/header'
 import Footer from '../components/app/footer'
 import Notification from '../components/app/notification'
 import Spin from '../components/common/spin'
+import Plugin from '../components/app/plugin'
 import { flashMessage, setDaoAddress, setLanguage } from '../../modules/app/actions';
 import { load as loadCore } from '../../modules/dao/actions';
 import { load } from '../../modules/log/actions';
@@ -51,7 +52,7 @@ class App extends Component {
         content = <p>нет аккаунтов</p>
       }
     } else {
-      content = <p>нужен mist</p>
+      content = <Plugin />
     }
 
     return (<div>
@@ -62,7 +63,7 @@ class App extends Component {
         language={this.props.language}
         setLanguage={this.props.setLanguage}
       />
-      <div className="container">
+      <div className="container" id="maincontainer">
         {content}
       </div>
       <Footer />
