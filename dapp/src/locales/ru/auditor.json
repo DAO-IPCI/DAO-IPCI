@@ -2,7 +2,7 @@
   "titlePrefix": "Заверитель",
   "menuSetEmissionLimit": "Установить лимит",
   "menuSetHoldPercentage": "Установить размер страхового взноса",
-  "menuEmission": "Эмиссия",
+  "menuEmission": "Регистрация",
   "menuTransfer": "Перевод эмитенту",
   "token": "Токен",
   "holder": "Страховка",
@@ -12,7 +12,7 @@
 
   "titleSetEmissionLimit": "Абсолютный предел количества токенов, эмиссируемых заверителем",
   "titleSetHoldPercentage": "Размер страхового взноса в процентах",
-  "titleEmission": "Эмиссия",
+  "titleEmission": "Регистрация",
   "titleTransfer": "Перевод эмитенту",
 
   "formLimit": "Лимит",
