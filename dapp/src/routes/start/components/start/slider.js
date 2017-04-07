@@ -22,7 +22,7 @@ const Slider = (props) => {
             <div key={index} className={index === 0 ? 'item active' : 'item'}>
               <img src="assets/img/project-bambous-01.jpg" alt="Solar Park in Mauritus" />
               <div className="carousel-caption">
-                <h3>{item.info.name}</h3>
+                <h3>{item.name}</h3>
                 <p>Quantity: {item.info.totalSupply}</p>
                 <Link className="btn btn-primary" role="button" data-bs-hover-animate="pulse" to={'/dao/market/' + market}>Buy units</Link>
               </div>

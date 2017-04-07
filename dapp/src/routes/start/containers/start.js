@@ -89,6 +89,7 @@ function mapStateToProps(state) {
       _.forEach(block.modules, (item) => {
         const token = {
           address: item.address,
+          name: item.name,
           load: true,
           info: {}
         };
