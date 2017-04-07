@@ -81,7 +81,7 @@ function mapStateToProps(state, props) {
       name: 'IPCI',
     },
     // {
-    //   address: '0x2',
+    //   address: '0x950b1e622af76081cd9bc81c0a54be51c9ac932d',
     //   name: 'VCS',
     // },
     // {

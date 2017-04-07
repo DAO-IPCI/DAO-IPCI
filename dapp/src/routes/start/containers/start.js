@@ -51,16 +51,19 @@ class Container extends Component {
     } else {
       slider = <Slider tokens={this.props.tokens} market={this.props.market} />
     }
-    return (<div>
-      <h1>Welcome to dApp IPCI</h1>
-      <h2>Meet our projects</h2>
-      {slider}
-      <Roles
-        handleSubmit={this.handleSubmit}
-        handleChange={this.handleChange}
-        role={this.state.role}
-      />
-    </div>)
+    return (
+      <div>
+        <h1>Welcome to dApp IPCI</h1>
+        <h2>Meet our projects</h2>
+        {slider}
+        <h2>Go to advanced interace</h2>
+        <Roles
+          handleSubmit={this.handleSubmit}
+          handleChange={this.handleChange}
+          role={this.state.role}
+        />
+      </div>
+    )
   }
 }
 

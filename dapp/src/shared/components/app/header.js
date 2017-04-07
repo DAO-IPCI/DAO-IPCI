@@ -29,7 +29,7 @@ const Header = function Header(props) {
                 <ul className="dropdown-menu" role="menu">
                   {props.programms.map((item, index) =>
                     <li key={index} className={(item.address === props.dao_address) ? 'disabled' : ''} role="presentation">
-                      <button onClick={() => props.setDaoAddress(item.address)}>{item.name}</button>
+                      <a href="" onClick={(e) => { e.preventDefault(); props.setDaoAddress(item.address); }}>{item.name}</a>
                     </li>
                   )}
                   <li role="separator" className="divider">
@@ -51,8 +51,12 @@ const Header = function Header(props) {
                   {props.t('language')} <span className="caret" />
                 </a>
                 <ul className="dropdown-menu" role="menu">
-                  <li className={(props.language === 'en') ? 'disabled' : ''} role="presentation"><button onClick={() => props.setLanguage('en')}>English</button></li>
-                  <li className={(props.language === 'ru') ? 'disabled' : ''} role="presentation"><button onClick={() => props.setLanguage('ru')}>Русский</button></li>
+                  <li className={(props.language === 'en') ? 'disabled' : ''} role="presentation">
+                    <a href="" onClick={(e) => { e.preventDefault(); props.setLanguage('en'); }}>English</a>
+                  </li>
+                  <li className={(props.language === 'ru') ? 'disabled' : ''} role="presentation">
+                    <a href="" onClick={(e) => { e.preventDefault(); props.setLanguage('ru'); }}>Русский</a>
+                  </li>
                 </ul>
               </li>
               <li className="dropdown">
