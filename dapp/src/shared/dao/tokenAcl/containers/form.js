@@ -7,7 +7,7 @@ import Form from '../../../components/common/form';
 function mapStateToProps(state, props) {
   if (props.action === 'transfer' || props.action === 'approve') {
     return {
-      fields: ['address', 'value'],
+      fields: ['address', 'value', 'isIpfs'],
       selects: {},
       labels: [i18next.t('tokenAcl:formAddress'), i18next.t('tokenAcl:formAmount')],
       placeholders: ['0x111111111111111', '1'],
@@ -17,9 +17,16 @@ function mapStateToProps(state, props) {
     }
   } else if (props.action === 'emission') {
     return {
-      fields: ['value'],
+      fields: ['value', 'isIpfs'],
       selects: {},
       labels: [i18next.t('tokenAcl:formAmount')],
+      placeholders: ['10']
+    }
+  } else if (props.action === 'setPeriod') {
+    return {
+      fields: ['value'],
+      selects: {},
+      labels: [i18next.t('tokenAcl:formSetPeriod')],
       placeholders: ['10']
     }
   }

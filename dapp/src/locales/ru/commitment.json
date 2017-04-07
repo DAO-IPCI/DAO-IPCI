@@ -1,0 +1,19 @@
+{
+  "titlePrefix": "Обязательство",
+  "menuSetPercentage": "Установить процент обязательства",
+  "menuSend": "Пополнить баланс обязательства",
+  "menuEmission": "Эмиссия",
+  "menuTransfer": "Перевод эмитенту",
+  "tokenEmission": "Токен для эмиссии",
+  "token": "Токен обязательства",
+  "holder": "Контракт резервирования",
+  "limit": "Лимит эмиссии",
+  "percentage": "Процент обязательства",
+
+  "titleSetPercentage": "Процент обязательства",
+  "titleEmission": "Эмиссия",
+  "titleTransfer": "Перевод эмитенту",
+
+  "formPercentage": "Процент",
+  "formAmount": "Кол-во"
+}

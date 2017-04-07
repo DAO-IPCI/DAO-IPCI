@@ -7,22 +7,22 @@ import Form from '../../../components/common/form';
 function mapStateToProps(state, props) {
   if (props.action === 'setEmissionLimit') {
     return {
-      fields: ['limit'],
+      fields: ['limit', 'isIpfs'],
       labels: [i18next.t('auditor:formLimit')]
     }
   } else if (props.action === 'setHoldPercentage') {
     return {
-      fields: ['hold'],
+      fields: ['hold', 'isIpfs'],
       labels: [i18next.t('auditor:formPercentage')]
     }
   } else if (props.action === 'emission') {
     return {
-      fields: ['value'],
+      fields: ['value', 'isIpfs'],
       labels: [i18next.t('auditor:formAmount')]
     }
   } else if (props.action === 'transfer') {
     return {
-      fields: ['value'],
+      fields: ['value', 'isIpfs'],
       labels: [i18next.t('auditor:formAmount')]
     }
   }

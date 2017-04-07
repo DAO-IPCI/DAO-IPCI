@@ -22,6 +22,10 @@ function mapStateToProps(state, props) {
           value: 'auditor'
         },
         {
+          name: i18next.t('dao:formLinkCommitment'),
+          value: 'commitment'
+        },
+        {
           name: i18next.t('dao:formLinkComplier'),
           value: 'complier'
         },

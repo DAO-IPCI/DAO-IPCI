@@ -24,7 +24,7 @@ function mapStateToProps(state, props) {
       initialValues: { operator_core: state.dao.address, decimalc: 3 },
       disableds: [false, false, false, true, false]
     }
-  } else if (props.module === 'auditor') {
+  } else if (props.module === 'auditor' || props.module === 'commitment') {
     const operatorAddress = state.dao.owner;
     return {
       fields: ['operator', 'token', 'holder'],
@@ -35,6 +35,17 @@ function mapStateToProps(state, props) {
       },
       initialValues: { operator: operatorAddress },
       disableds: [(!_.isEmpty(operatorAddress)), false, false]
+    }
+  } else if (props.module === 'holder') {
+    const operatorAddress = state.dao.owner;
+    return {
+      fields: ['operator', 'token'],
+      labels: [i18next.t('dao:formHolderOperator'), i18next.t('dao:formHolderToken')],
+      initialValues: { operator: operatorAddress },
+      autocomplete: {
+        token: true
+      },
+      disableds: [(!_.isEmpty(operatorAddress)), false]
     }
   } else if (props.module === 'complier') {
     return {
@@ -56,14 +67,17 @@ function mapStateToProps(state, props) {
       placeholders: [i18next.t('dao:formTokenName'), 'S', 0, 0]
     }
   } else if (props.module === 'tokenAcl') {
+    const operatorAddress = state.dao.owner;
     return {
-      fields: ['name', 'symbol', 'decimals', 'start_count', 'acl', 'acl_group'],
+      fields: ['name', 'symbol', 'decimals', 'start_count', 'acl', 'acl_group', 'operator'],
       selects: {},
-      labels: [i18next.t('dao:formTokenAclName'), i18next.t('dao:formTokenAclSymbol'), i18next.t('dao:formTokenAclDecimals'), i18next.t('dao:formTokenAclStartCount'), i18next.t('dao:formTokenAclAcl'), i18next.t('dao:formTokenAclAclGroup')],
-      placeholders: [i18next.t('dao:formTokenAclName'), 'S', 0, 0, '0x111111111', 'name'],
+      labels: [i18next.t('dao:formTokenAclName'), i18next.t('dao:formTokenAclSymbol'), i18next.t('dao:formTokenAclDecimals'), i18next.t('dao:formTokenAclStartCount'), i18next.t('dao:formTokenAclAcl'), i18next.t('dao:formTokenAclAclGroup'), i18next.t('dao:formTokenAclAclOperator')],
+      placeholders: [i18next.t('dao:formTokenAclName'), 'S', 0, 0, '0x111111111', 'name', '0x111111111'],
+      initialValues: { operator: operatorAddress },
       autocomplete: {
         acl: true
-      }
+      },
+      disableds: [false, false, false, false, false, false, (!_.isEmpty(operatorAddress))]
     }
   } else if (props.module === 'acl' || props.module === 'docs') {
     return {

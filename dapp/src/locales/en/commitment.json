@@ -1,0 +1,19 @@
+{
+  "titlePrefix": "Commitment",
+  "menuSetPercentage": "Set percentage",
+  "menuSend": "Send to balance commitment",
+  "menuEmission": "Issue",
+  "menuTransfer": "Transfer to issuer",
+  "tokenEmission": "Emission Token",
+  "token": "Commitment Token",
+  "holder": "Security Reserve Contract",
+  "limit": "Emission limit",
+  "percentage": "Commitment percentage",
+
+  "titleSetPercentage": "Commitment percentage",
+  "titleEmission": "Issue",
+  "titleTransfer": "Transfer to issuer",
+
+  "formPercentage": "Percentage",
+  "formAmount": "Amount"
+}

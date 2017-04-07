@@ -40,6 +40,10 @@ function mapStateToProps(state) {
       {
         name: i18next.t('createAuditor'),
         href: '/dao/create/auditor'
+      },
+      {
+        name: i18next.t('createCommitment'),
+        href: '/dao/create/commitment'
       }
     ]
   }

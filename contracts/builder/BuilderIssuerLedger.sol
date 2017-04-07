@@ -1,5 +1,5 @@
 pragma solidity ^0.4.4;
-import 'creator/CreatorTokenEmissionACL.sol';
+import 'creator/CreatorTokenWithValidityPeriod.sol';
 import 'creator/CreatorInsuranceHolder.sol';
 import 'builder/Builder.sol';
 import 'dao/Core.sol';
@@ -37,7 +37,7 @@ contract BuilderIssuerLedger is Builder {
  
         var dao = Core(_operator_core);
         var acl = dao.get("ACLStorage");
-        var token = CreatorTokenEmissionACL.create(_name, _symbol, _decimals, 0, acl, _group);
+        var token = CreatorTokenWithValidityPeriod.create(_name, _symbol, _decimals, 0, acl, _group, dao.owner());
  
         var operator = dao.first();
         var holder = CreatorInsuranceHolder.create(operator, token);

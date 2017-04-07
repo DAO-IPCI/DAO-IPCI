@@ -21,6 +21,9 @@ const Form = (props) => {
   return (
     <form onSubmit={handleSubmit}>
       {Object.keys(fields).map((name, index) => {
+        if (name === 'isIpfs') {
+          return null;
+        }
         const field = fields[name]
         return (
           <div key={index} className="form-group">
@@ -52,14 +55,45 @@ const Form = (props) => {
       {output !== '' &&
         <div><b>{props.t('result')}</b>:<div dangerouslySetInnerHTML={{ __html: output }} /></div>
       }
-      <div className="form-group">
-        <div className="text-center">
-          <button
-            type="submit"
-            className="btn btn-default"
-            disabled={submitting}
-          >{submitting ? <Spin btn /> : props.t('submit')}</button>
+      <div className="row">
+        <div className="col-md-2 col-md-offset-5">
+          <div className="form-group">
+            <div className="text-center">
+              <div className="form-group">
+                <div className="text-center">
+                  <button
+                    type="submit"
+                    className="btn btn-default"
+                    disabled={submitting}
+                  >{submitting ? <Spin btn /> : props.t('submit')}</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+        {_.has(fields, 'isIpfs') &&
+          <div className="col-md-2">
+            <div className="checkbox" style={{ textAlign: 'center' }}>
+              <span
+                style={{
+                  minHeight: 20,
+                  paddingLeft: 20,
+                  marginBottom: '0',
+                  fontWeight: '400',
+                  display: 'inline-block',
+                  maxWidth: '100%'
+                }}
+              >
+                <input
+                  type="checkbox"
+                  {...fields.isIpfs}
+                />
+                {props.t('isSaveIpfs')}
+              </span>
+              {fields.isIpfs.touched && fields.isIpfs.error ? fields.isIpfs.error : ''}
+            </div>
+          </div>
+        }
       </div>
       {error && <div>{error}</div>}
     </form>

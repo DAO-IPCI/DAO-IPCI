@@ -3,15 +3,20 @@
   "menuSend": "Send",
   "menuApprove": "Approve",
   "menuEmission": "Emission",
+  "menuSetPeriod": "Set period",
   "allTokens": "All tokens",
   "myBalance": "My balance",
   "groupAuditors": "Independent Entities' Group",
   "Balance": "Balance",
+  "endDate": "End date",
+  "period": "Period",
 
   "titleSend": "Send",
   "titleApprove": "Approve",
   "titleEmission": "Emission",
+  "titleSetPeriod": "Set Period",
 
   "formAddress": "Address",
-  "formAmount": "Amount token"
+  "formAmount": "Amount token",
+  "formSetPeriod": "Period (day)"
 }

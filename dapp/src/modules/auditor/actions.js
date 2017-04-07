@@ -1,11 +1,8 @@
 import _ from 'lodash'
 import Promise from 'bluebird'
-import { hashHistory } from 'react-router';
-import i18next from 'i18next'
 import { LOAD_MODULE } from './actionTypes'
 import { getContractByAbiName, listenAddress } from '../../utils/web3'
 import { submit as submitContract, send as sendContract } from '../dao/actions'
-import { flashMessage } from '../app/actions'
 
 export function loadModule(auditorAddress) {
   return (dispatch) => {
@@ -71,12 +68,12 @@ export function loadModule(auditorAddress) {
 }
 
 export function submit(address, action, form) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     const formData = form;
     if (action === 'emission' || action === 'transfer' || action === 'setEmissionLimit') {
       getContractByAbiName('Auditor', address)
         .then(contract => contract.call('token'))
-        .then(token => getContractByAbiName('TokenEmissionACL', token))
+        .then(token => getContractByAbiName('TokenWithValidityPeriod', token))
         .then(contract => contract.call('decimals'))
         .then((result) => {
           let decimals = _.toNumber(result)
@@ -90,52 +87,10 @@ export function submit(address, action, form) {
           } else {
             formData.value *= decimals
           }
-          return submitContract(dispatch, 'FormAuditor', address, 'Auditor', action, formData)
-        })
-        .then((transaction) => {
-          if (action === 'emission') {
-            dispatch(flashMessage(i18next.t('common:saveDoc') + ': ' + transaction.hash))
-            const state = getState()
-            let docs = null;
-            if (_.has(state, 'dao') && _.has(state.dao, 'blocks') && !_.isEmpty(state.dao.blocks)) {
-              const block = _.find(state.dao.blocks, { type: 'docs' });
-              if (block && !_.isEmpty(block.modules)) {
-                docs = block.modules[0];
-              }
-            }
-            if (docs) {
-              setTimeout(() => {
-                hashHistory.push('/dao/docs/append/' + docs.address + '/' + transaction.hash)
-              }, 3000);
-            }
-          }
-        })
-        .catch(() => {
-          console.log('reject');
+          dispatch(submitContract('FormAuditor', address, 'Auditor', action, formData))
         })
     } else {
-      submitContract(dispatch, 'FormAuditor', address, 'Auditor', action, formData)
-        .then((transaction) => {
-          if (action === 'emission') {
-            dispatch(flashMessage(i18next.t('common:saveDoc') + ': ' + transaction.hash))
-            const state = getState()
-            let docs = null;
-            if (_.has(state, 'dao') && _.has(state.dao, 'blocks') && !_.isEmpty(state.dao.blocks)) {
-              const block = _.find(state.dao.blocks, { type: 'docs' });
-              if (block && !_.isEmpty(block.modules)) {
-                docs = block.modules[0];
-              }
-            }
-            if (docs) {
-              setTimeout(() => {
-                hashHistory.push('/dao/docs/append/' + docs.address + '/' + transaction.hash)
-              }, 3000);
-            }
-          }
-        })
-        .catch(() => {
-          console.log('reject');
-        })
+      dispatch(submitContract('FormAuditor', address, 'Auditor', action, formData))
     }
   }
 }

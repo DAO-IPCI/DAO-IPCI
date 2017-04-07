@@ -4,9 +4,9 @@ import { Layout } from '../../main/components'
 import Form from '../containers/form'
 
 const Action = (props) => {
-  const { title, address, action, t } = props
+  const { title, address, action, query, t } = props
   return (<Layout title={t(title)} address={address} hideBack={false}>
-    <Form address={address} action={action} />
+    <Form address={address} action={action} query={query} />
   </Layout>)
 }
 

@@ -52,7 +52,7 @@ export function loadModule(aclAddress) {
 
 export function submit(address, action, form) {
   return (dispatch) => {
-    submitContract(dispatch, 'FormAcl', address, 'ACLStorage', action, form)
+    dispatch(submitContract('FormAcl', address, 'ACLStorage', action, form))
   }
 }
 

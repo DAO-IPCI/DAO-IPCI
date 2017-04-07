@@ -59,10 +59,10 @@ export function submit(address, action, form) {
             decimals = 1
           }
           formData.value *= decimals
-          return submitContract(dispatch, 'FormToken', address, 'TokenEmission', action, formData)
+          dispatch(submitContract('FormToken', address, 'TokenEmission', action, formData))
         })
     } else {
-      submitContract(dispatch, 'FormToken', address, 'TokenEmission', action, formData)
+      dispatch(submitContract('FormToken', address, 'TokenEmission', action, formData))
     }
   }
 }

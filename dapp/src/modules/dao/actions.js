@@ -45,6 +45,11 @@ export function load(daoAddress) {
             modules: []
           },
           {
+            name: i18next.t('dao:commitment'),
+            type: 'commitment',
+            modules: []
+          },
+          {
             name: i18next.t('dao:complier'),
             type: 'complier',
             modules: []
@@ -181,6 +186,9 @@ export function submitCreateModule(form, action) {
       case 'auditor':
         builder = 'BuilderAuditor'
         break;
+      case 'commitment':
+        builder = 'BuilderCommitment'
+        break;
       case 'complier':
         builder = 'BuilderComplier'
         break;
@@ -191,10 +199,13 @@ export function submitCreateModule(form, action) {
         builder = 'BuilderTokenEmission'
         break;
       case 'tokenAcl':
-        builder = 'BuilderTokenEmissionACL'
+        builder = 'BuilderTokenWithValidityPeriod'
         break;
       case 'acl':
         builder = 'BuilderACLStorage'
+        break;
+      case 'holder':
+        builder = 'BuilderInsuranceHolder'
         break;
       case 'docs':
         builder = 'BuilderDocs'
@@ -250,19 +261,47 @@ function run(dispatch, address, abiName, action, values) {
     // .then(transaction => transaction.blockNumber)
 }
 
-export function submit(dispatch, formName, address, abiName, action, form) {
-  dispatch(startSubmit(formName));
-  return run(dispatch, address, abiName, action, _.values(form))
-    .then((transaction) => {
-      dispatch(stopSubmit(formName))
-      dispatch(reset(formName))
-      dispatch(flashMessage('blockNumber: ' + transaction.blockNumber))
-      return transaction;
-    })
-    .catch(() => {
-      dispatch(stopSubmit(formName))
-      return Promise.reject();
-    })
+export function submit(formName, address, abiName, action, form) {
+  return (dispatch, getState) => {
+    dispatch(startSubmit(formName));
+    let values = _.values(form);
+    let isIpfs = false;
+    if (_.has(form, 'isIpfs')) {
+      isIpfs = form.isIpfs;
+      values = _.values(_.omit(form, 'isIpfs'));
+    }
+    return run(dispatch, address, abiName, action, values)
+      .then((transaction) => {
+        dispatch(stopSubmit(formName))
+        dispatch(reset(formName))
+        dispatch(flashMessage('blockNumber: ' + transaction.blockNumber))
+        return transaction;
+      })
+      .then((transaction) => {
+        if (isIpfs) {
+          const state = getState()
+          let docs = null;
+          if (_.has(state, 'dao') && _.has(state.dao, 'blocks') && !_.isEmpty(state.dao.blocks)) {
+            const block = _.find(state.dao.blocks, { type: 'docs' });
+            if (block && !_.isEmpty(block.modules)) {
+              docs = block.modules[0];
+            }
+          }
+          if (docs) {
+            dispatch(flashMessage(i18next.t('common:saveDoc') + ': ' + transaction.hash))
+            setTimeout(() => {
+              hashHistory.push('/dao/docs/append/' + docs.address + '/' + transaction.hash)
+            }, 3000);
+          } else {
+            dispatch(flashMessage(i18next.t('common:noSaveDoc')))
+          }
+        }
+      })
+      .catch(() => {
+        dispatch(stopSubmit(formName))
+        return Promise.reject();
+      })
+  }
 }
 
 export function send(dispatch, address, abiName, action, values) {

@@ -7,7 +7,7 @@ import Form from '../../../components/common/form';
 function mapStateToProps(state, props) {
   if (props.action === 'createGroup' || props.action === 'addMember') {
     return {
-      fields: ['group', 'address'],
+      fields: ['group', 'address', 'isIpfs'],
       selects: {},
       labels: [i18next.t('acl:formName'), i18next.t('acl:formAddress')],
       placeholders: ['Group', '0x111111111111111'],

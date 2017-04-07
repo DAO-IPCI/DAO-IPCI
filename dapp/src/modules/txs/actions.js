@@ -15,6 +15,9 @@ export function load() {
     const state = getState();
     const registry = {};
     const agents = {};
+    if (!_.isEmpty(state.dao.address)) {
+      _.set(registry, state.dao.address, state.dao.name);
+    }
     _.forEach(state.dao.blocks, (item) => {
       _.forEach(item.modules, (module) => {
         if (item.type !== 'agents') {
