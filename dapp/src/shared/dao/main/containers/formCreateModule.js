@@ -37,13 +37,15 @@ function mapStateToProps(state, props) {
       disableds: [(!_.isEmpty(operatorAddress)), false, false]
     }
   } else if (props.module === 'holder') {
+    const operatorAddress = state.dao.owner;
     return {
       fields: ['operator', 'token'],
       labels: [i18next.t('dao:formHolderOperator'), i18next.t('dao:formHolderToken')],
+      initialValues: { operator: operatorAddress },
       autocomplete: {
-        token: true,
-        holder: true
-      }
+        token: true
+      },
+      disableds: [(!_.isEmpty(operatorAddress)), false]
     }
   } else if (props.module === 'complier') {
     return {
