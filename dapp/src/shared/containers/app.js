@@ -8,6 +8,7 @@ import Header from '../components/app/header'
 import Footer from '../components/app/footer'
 import Notification from '../components/app/notification'
 import Spin from '../components/common/spin'
+import Plugin from '../components/app/plugin'
 import { flashMessage, setDaoAddress, setLanguage } from '../../modules/app/actions';
 import { load as loadCore } from '../../modules/dao/actions';
 import { load } from '../../modules/log/actions';
@@ -51,7 +52,7 @@ class App extends Component {
         content = <p>нет аккаунтов</p>
       }
     } else {
-      content = <p>нужен mist</p>
+      content = <Plugin />
     }
 
     return (<div>
@@ -61,8 +62,10 @@ class App extends Component {
         role={this.props.role}
         language={this.props.language}
         setLanguage={this.props.setLanguage}
+        programms={this.props.programms}
+        setDaoAddress={this.props.setDaoAddress}
       />
-      <div className="container">
+      <div className="container" id="maincontainer">
         {content}
       </div>
       <Footer />
@@ -72,6 +75,20 @@ class App extends Component {
 }
 
 function mapStateToProps(state, props) {
+  const programms = [
+    {
+      address: '0x9ee8b04a4a5e301eabdb791fb6ed4e7d815cf90d',
+      name: 'IPCI',
+    },
+    // {
+    //   address: '0x950b1e622af76081cd9bc81c0a54be51c9ac932d',
+    //   name: 'VCS',
+    // },
+    // {
+    //   address: '0x3',
+    //   name: 'Gold Standard',
+    // },
+  ];
   return {
     title: state.app.title,
     flash_message: state.app.flash_message,
@@ -79,6 +96,7 @@ function mapStateToProps(state, props) {
     role: state.app.role,
     language: state.app.language,
     isCoreLoad: (props.location.pathname === '/') ? false : state.dao.load,
+    programms
   }
 }
 function mapDispatchToProps(dispatch) {

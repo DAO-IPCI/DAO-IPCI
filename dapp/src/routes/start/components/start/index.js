@@ -1,1 +1,2 @@
-export { default as Form } from './main';
+export { default as Slider } from './slider';
+export { default as Roles } from './roles';

@@ -9,15 +9,11 @@ const Form = (props) => {
 
   return (<form onSubmit={handleSubmit}>
     <div className="input-group">
-      <input type="text" className="form-control" placeholder="Адрес DAO" {...address} />
-      <span className="input-group-btn">
-        <input
-          type="submit"
-          className="btn btn-default"
-          disabled={submitting}
-          value={submitting ? '...' : 'Открыть'}
-        />
-      </span>
+      <div className="input-group-addon"><span>DAO address</span></div>
+      <input type="text" className="form-control" {...address} />
+      <div className="input-group-btn">
+        <button className="btn btn-default" type="submit" disabled={submitting}>{submitting ? '...' : 'Go!'}</button>
+      </div>
     </div>
     {address.touched && address.error ? <div className="alert alert-danger">{address.error}</div> : ''}
   </form>)

@@ -5,6 +5,7 @@
   "auditor": "Independent Entity",
   "complier": "Complier",
   "Log": "Log",
+  "language": "Language",
   "txs": "History",
   "Transactions": "Transaction history",
   "createDao": "Create DAO",

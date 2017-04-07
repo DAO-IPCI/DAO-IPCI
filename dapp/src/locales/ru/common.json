@@ -5,6 +5,7 @@
   "auditor": "Заверитель",
   "complier": "Комплайер",
   "Log": "Лог",
+  "language": "Язык",
   "txs": "История",
   "Transactions": "История транзакций",
   "createDao": "Cоздать ДАО",
