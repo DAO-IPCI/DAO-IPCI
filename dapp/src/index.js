@@ -18,4 +18,4 @@ setTimeout(() => {
     </I18nextProvider>,
     document.getElementById('root')
   )
-}, 2000);
+}, 1500);

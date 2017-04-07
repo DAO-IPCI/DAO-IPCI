@@ -53,7 +53,9 @@ class Container extends Component {
     }
     return (
       <div>
-        <h1>Welcome to dApp IPCI</h1>
+        <h1>
+          Decentralized application for "Integral Platform for Climate Initiatives" (DApp IPCI)
+        </h1>
         <h2>Meet our projects</h2>
         {slider}
         <h2>Go to advanced interace</h2>

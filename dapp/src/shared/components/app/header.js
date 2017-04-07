@@ -21,6 +21,7 @@ const Header = function Header(props) {
             </button>
           </div>
           <div className="collapse navbar-collapse" id="navcol-1">
+            <p className="navbar-text">Program:</p>
             <ul className="nav navbar-nav">
               <li className="dropdown">
                 <a className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="">
