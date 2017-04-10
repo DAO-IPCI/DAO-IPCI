@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 import { translate } from 'react-i18next'
+import _ from 'lodash'
 import Add from '../../containers/add'
 
 const Header = function Header(props) {
@@ -49,7 +50,7 @@ const Header = function Header(props) {
             <ul className="nav navbar-nav navbar-right">
               <li className="dropdown">
                 <a className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="">
-                  {props.t('language')} <span className="caret" />
+                  {_.upperFirst(props.language)} <span className="caret" />
                 </a>
                 <ul className="dropdown-menu" role="menu">
                   <li className={(props.language === 'en') ? 'disabled' : ''} role="presentation">
@@ -62,7 +63,7 @@ const Header = function Header(props) {
               </li>
               <li className="dropdown">
                 <a className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="">
-                  {props.t('user')} <span className="caret" />
+                  {(props.role !== '') ? props.t(props.role) : props.t('user')} <span className="caret" />
                 </a>
                 <ul className="dropdown-menu" role="menu">
                   <li className={(props.role === 'operator') ? 'disabled' : ''} role="presentation"><Link to="/operator">{props.t('operator')}</Link></li>
