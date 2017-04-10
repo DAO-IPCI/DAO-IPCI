@@ -58,7 +58,7 @@ class Container extends Component {
         </h1>
         <h2>Meet our projects</h2>
         {slider}
-        <h2>Go to advanced interace</h2>
+        <h2>Go to advanced interface</h2>
         <Roles
           handleSubmit={this.handleSubmit}
           handleChange={this.handleChange}
