@@ -2,7 +2,7 @@
   "titlePrefix": "Independent Entity",
   "menuSetEmissionLimit": "Set issue limit",
   "menuSetHoldPercentage": "Set hold percentage",
-  "menuEmission": "Registry",
+  "menuEmission": "Register",
   "menuTransfer": "Transfer to issuer",
   "token": "Token",
   "holder": "Hold",
@@ -12,7 +12,7 @@
 
   "titleSetEmissionLimit": "Token issue limit",
   "titleSetHoldPercentage": "Hold percentage",
-  "titleEmission": "Registry",
+  "titleEmission": "Register",
   "titleTransfer": "Transfer to issuer",
 
   "formLimit": "Limit",
