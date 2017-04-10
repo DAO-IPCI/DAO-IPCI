@@ -74,41 +74,65 @@ Container.contextTypes = {
 }
 
 function mapStateToProps(state) {
-  const tokens = [];
-  let load = false;
+  const market = '0xc6f6426670851374bd975d8eb1b2faee3f88e677';
   let count = 0;
-  let market = '';
-  if (!state.dao.load) {
-    const markets = _.find(state.dao.blocks, { type: 'market' });
-    if (_.has(markets, 'modules') && markets.modules.length > 0) {
-      market = markets.modules[0].address;
+  let load = true;
+
+  const tokens = [{
+    address: '0x259e4b009a1611f47231975bf9f5a585c70fe591',
+    name: 'Aera Group Mauritius VCU',
+    load: true,
+    info: {}
+  }];
+
+  _.forEach(tokens, (item, index) => {
+    const info = _.find(state.tokenAcl.modules, { address: item.address });
+    if (info) {
+      tokens[index].info = info;
+      tokens[index].load = false;
+      count += 1;
     }
-    const block = _.find(state.dao.blocks, { type: 'token-acl' });
-    if (_.has(block, 'modules')) {
-      load = true;
-      _.forEach(block.modules, (item) => {
-        const token = {
-          address: item.address,
-          name: item.name,
-          load: true,
-          info: {}
-        };
-        const info = _.find(state.tokenAcl.modules, { address: item.address });
-        if (info) {
-          token.info = info;
-          token.load = false;
-          count += 1;
-        }
-        tokens.push(token);
-      });
-    }
-  }
+  });
+
   if (tokens.length === count) {
     load = false;
   }
-  if (state.dao.load) {
-    load = true;
-  }
+
+  // const tokens = [];
+  // let load = false;
+  // let count = 0;
+  // let market = '';
+  // if (!state.dao.load) {
+  //   const markets = _.find(state.dao.blocks, { type: 'market' });
+  //   if (_.has(markets, 'modules') && markets.modules.length > 0) {
+  //     market = markets.modules[0].address;
+  //   }
+  //   const block = _.find(state.dao.blocks, { type: 'token-acl' });
+  //   if (_.has(block, 'modules')) {
+  //     load = true;
+  //     _.forEach(block.modules, (item) => {
+  //       const token = {
+  //         address: item.address,
+  //         name: item.name,
+  //         load: true,
+  //         info: {}
+  //       };
+  //       const info = _.find(state.tokenAcl.modules, { address: item.address });
+  //       if (info) {
+  //         token.info = info;
+  //         token.load = false;
+  //         count += 1;
+  //       }
+  //       tokens.push(token);
+  //     });
+  //   }
+  // }
+  // if (tokens.length === count) {
+  //   load = false;
+  // }
+  // if (state.dao.load) {
+  //   load = true;
+  // }
   return {
     tokens,
     market,
