@@ -2,7 +2,7 @@
   "titlePrefix": "Commitment",
   "menuSetPercentage": "Set percentage",
   "menuSend": "Send to balance commitment",
-  "menuEmission": "Issue",
+  "menuEmission": "Register",
   "menuTransfer": "Transfer to issuer",
   "tokenEmission": "Emission Token",
   "token": "Commitment Token",
@@ -11,7 +11,7 @@
   "percentage": "Commitment percentage",
 
   "titleSetPercentage": "Commitment percentage",
-  "titleEmission": "Issue",
+  "titleEmission": "Register",
   "titleTransfer": "Transfer to issuer",
 
   "formPercentage": "Percentage",

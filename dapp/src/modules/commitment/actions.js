@@ -1,11 +1,8 @@
 import _ from 'lodash'
 import Promise from 'bluebird'
-import { hashHistory } from 'react-router';
-import i18next from 'i18next'
 import { LOAD_MODULE } from './actionTypes'
 import { getContractByAbiName, listenAddress } from '../../utils/web3'
 import { submit as submitContract, send as sendContract } from '../dao/actions'
-import { flashMessage } from '../app/actions'
 
 export function loadModule(commitmentAddress) {
   return (dispatch) => {
@@ -84,16 +81,22 @@ export function loadModule(commitmentAddress) {
             } else {
               decimals = 1
             }
-            return (_.toNumber(balance) / decimals).toFixed(decimalsFormat) + ' ' + symbol
+            return {
+              balance,
+              decimals,
+              decimalsFormat,
+              symbol
+            }
           }
         )
       ))
-      .then((balanceTokenEmission) => {
+      .then((tokenInfo) => {
         dispatch({
           type: LOAD_MODULE,
           payload: {
             ...payload,
-            balanceTokenEmission
+            balanceTokenEmission: (_.toNumber(tokenInfo.balance) / tokenInfo.decimals).toFixed(tokenInfo.decimalsFormat) + ' ' + tokenInfo.symbol,
+            limit: (_.toNumber(payload.limit) / tokenInfo.decimals).toFixed(tokenInfo.decimalsFormat) + ' ' + tokenInfo.symbol
           }
         })
         listenAddress(commitmentAddress, 'loadModule', (address) => {
@@ -104,7 +107,7 @@ export function loadModule(commitmentAddress) {
 }
 
 export function submit(address, action, form) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     const formData = form;
     if (action === 'emission' || action === 'transfer') {
       getContractByAbiName('Commitment', address)
@@ -120,27 +123,6 @@ export function submit(address, action, form) {
           }
           formData.value *= decimals
           dispatch(submitContract('FormCommitment', address, 'Commitment', action, formData))
-        })
-        .then((transaction) => {
-          if (action === 'emission') {
-            dispatch(flashMessage(i18next.t('common:saveDoc') + ': ' + transaction.hash))
-            const state = getState()
-            let docs = null;
-            if (_.has(state, 'dao') && _.has(state.dao, 'blocks') && !_.isEmpty(state.dao.blocks)) {
-              const block = _.find(state.dao.blocks, { type: 'docs' });
-              if (block && !_.isEmpty(block.modules)) {
-                docs = block.modules[0];
-              }
-            }
-            if (docs) {
-              setTimeout(() => {
-                hashHistory.push('/dao/docs/append/' + docs.address + '/' + transaction.hash)
-              }, 3000);
-            }
-          }
-        })
-        .catch(() => {
-          console.log('reject');
         })
     } else {
       dispatch(submitContract('FormCommitment', address, 'Commitment', action, formData))

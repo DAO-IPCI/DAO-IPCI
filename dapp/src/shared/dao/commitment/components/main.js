@@ -18,8 +18,10 @@ const Main = (props) => {
   const menu = (<div className="btn-group" style={{ marginBottom: 10 }}>
     <Link to={'/dao/commitment/set-percentage/' + address} className="btn btn-default">{t('menuSetPercentage')}</Link>
     <Link to={{ pathname: '/dao/token/transfer/' + token, query: { address } }} className="btn btn-default">{t('menuSend')}</Link>
-    {limit > 0 &&
+    {limit > 0 ?
       <Link to={'/dao/commitment/emission/' + address} className="btn btn-default">{t('menuEmission')}</Link>
+      :
+      <button className="btn btn-default" disabled>{t('menuEmission')}</button>
     }
     <Link to={'/dao/commitment/transfer/' + address} className="btn btn-default">{t('menuTransfer')}</Link>
   </div>)
