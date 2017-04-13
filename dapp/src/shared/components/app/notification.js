@@ -7,12 +7,14 @@ export default class Notification extends Component {
   }
 
   componentWillUpdate(next) {
-    this.close(next.message)
+    if (this.props.message !== next.message) {
+      this.close(next.message)
+    }
   }
 
   close(message) {
     const { onClose } = this.props
-    if (!_.isEmpty(message) !== '') {
+    if (!_.isEmpty(message)) {
       setTimeout(onClose, 10000)
     }
   }

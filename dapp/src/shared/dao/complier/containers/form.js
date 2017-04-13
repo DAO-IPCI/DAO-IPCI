@@ -8,7 +8,7 @@ function mapStateToProps(state, props) {
   if (props.action === 'burn') {
     return {
       fields: ['token', 'value', 'isIpfs'],
-      labels: [i18next.t('auditor:formAddress'), i18next.t('complier:formAmount')],
+      labels: [i18next.t('complier:formAddress'), i18next.t('complier:formAmount')],
       autocomplete: {
         token: true
       }

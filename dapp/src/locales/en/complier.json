@@ -4,6 +4,6 @@
 
   "titleBurn": "Burning",
 
-  "formAddress": "Token address",
+  "formAddress": "Token to burn",
   "formAmount": "Amount"
 }
