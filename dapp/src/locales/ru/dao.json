@@ -7,7 +7,7 @@
   "carbonRegistry": "Реестр заверенных единиц",
   "market": "Рынок",
   "docs": "Документы",
-  "commitment": "Обязательство",
+  "commitment": "Залоговый контракт",
   "agents": "Агенты",
   "action": "Действия",
   "open": "Открыть",
@@ -23,7 +23,7 @@
   "titleCreateTokenAcl": "Создать токен ACL",
   "titleCreateDocs": "Создать реестр документов",
   "titleCreateHolder": "Создать контракт резервирования",
-  "titleCreateCommitment": "Создать обязательство",
+  "titleCreateCommitment": "Создать залоговый контракт",
   "titleLinkModule": "Добавить модуль в ядро",
 
   "formCoreDaoName": "Имя автономии",
@@ -65,7 +65,7 @@
   "formLinkAcl": "Группа заверителей",
   "formLinkToken": "Токен",
   "formLinkMarket": "Рынок",
-  "formLinkCommitment": "Обязательство",
+  "formLinkCommitment": "Залоговый контракт",
   "formLinkDocs": "Документы",
   "formLinkAgents": "Агенты"
 }

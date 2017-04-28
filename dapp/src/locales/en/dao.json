@@ -7,7 +7,7 @@
   "carbonRegistry": "Environmental units registry",
   "market": "Market",
   "docs": "Docs",
-  "commitment": "Commitment",
+  "commitment": "Security Deposit Contract",
   "agents": "Agents",
   "action": "Action",
   "open": "Open",
@@ -22,7 +22,7 @@
   "titleCreateToken": "Create Token",
   "titleCreateTokenAcl": "Create ACL token",
   "titleCreateDocs": "Create docs",
-  "titleCreateCommitment": "Create Commitment",
+  "titleCreateCommitment": "Create Security Deposit Contract",
   "titleCreateHolder": "Create Security Reserve Contract",
   "titleLinkModule": "Add module to DAO Core",
 
@@ -65,7 +65,7 @@
   "formLinkAcl": "Independent Entities group",
   "formLinkToken": "Token",
   "formLinkMarket": "Market",
-  "formLinkCommitment": "Commitment",
+  "formLinkCommitment": "Security Deposit Contract",
   "formLinkDocs": "Docs",
   "formLinkAgents": "Agents"
 }

@@ -12,7 +12,7 @@
   "createCarbonRegistry": "Cоздать реестр заверенных единиц",
   "createComplier": "Cоздать контракт потребителя",
   "createAuditor": "Cоздать контракт заверителя",
-  "createCommitment": "Cоздать контракт обязательства",
+  "createCommitment": "Cоздать залоговый контракт",
   "createHolder": "Cоздать контракт резервирования",
   "createComplectCarbonRegistry": "Cоздать контракты резервирования и реестр заверенных единиц",
   "selectDao": "указать",

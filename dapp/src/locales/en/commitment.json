@@ -1,16 +1,16 @@
 {
-  "titlePrefix": "Commitment",
+  "titlePrefix": "Security Deposit Contract",
   "menuSetPercentage": "Set percentage",
-  "menuSend": "Send to balance commitment",
+  "menuSend": "Send to balance Security Deposit Contract",
   "menuEmission": "Register",
   "menuTransfer": "Transfer to issuer",
   "tokenEmission": "Emission Token",
-  "token": "Commitment Token",
+  "token": "Security Deposit Contract Token",
   "holder": "Security Reserve Contract",
   "limit": "Emission limit",
-  "percentage": "Commitment percentage",
+  "percentage": "Security Deposit Contract percentage",
 
-  "titleSetPercentage": "Commitment percentage",
+  "titleSetPercentage": "Security Deposit Contract percentage",
   "titleEmission": "Register",
   "titleTransfer": "Transfer to issuer",
 
