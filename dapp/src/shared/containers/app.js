@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import cookie from 'react-cookie'
 import { getWeb3, isAccounts, runListener } from '../../utils/web3'
+import { PROGRAMMS } from '../../config/config'
 
 import Header from '../components/app/header'
 import Footer from '../components/app/footer'
@@ -18,12 +19,14 @@ import './style.css'
 // @translate(['view', 'nav'], { wait: true })
 class App extends Component {
   componentWillMount() {
-    const address = cookie.load('dao_address')
-    if (address) {
-      this.props.setDaoAddress(address)
-      if (!this.props.isCoreLoad) {
-        this.props.loadCore(address);
-      }
+    let address = cookie.load('dao_address')
+    if (!address) {
+      address = PROGRAMMS[0].address;
+      console.log('address default', address);
+    }
+    this.props.setDaoAddress(address)
+    if (!this.props.isCoreLoad) {
+      this.props.loadCore(address);
     }
     const language = cookie.load('language')
     if (language) {
@@ -75,20 +78,6 @@ class App extends Component {
 }
 
 function mapStateToProps(state, props) {
-  const programms = [
-    {
-      address: '0x9ee8b04a4a5e301eabdb791fb6ed4e7d815cf90d',
-      name: 'IPCI',
-    },
-    // {
-    //   address: '0x950b1e622af76081cd9bc81c0a54be51c9ac932d',
-    //   name: 'VCS',
-    // },
-    // {
-    //   address: '0x3',
-    //   name: 'Gold Standard',
-    // },
-  ];
   return {
     title: state.app.title,
     flash_message: state.app.flash_message,
@@ -96,7 +85,7 @@ function mapStateToProps(state, props) {
     role: state.app.role,
     language: state.app.language,
     isCoreLoad: (props.location.pathname === '/') ? false : state.dao.load,
-    programms
+    programms: PROGRAMMS
   }
 }
 function mapDispatchToProps(dispatch) {
