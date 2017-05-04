@@ -11,6 +11,7 @@
   "buy": "За",
   "commission": "Комиссия",
   "search": "Поиск",
+  "lot": "Лот",
 
   "titleAddLot": "Добавить лот",
   "titleSetCommissionToken": "Токен комиссии",

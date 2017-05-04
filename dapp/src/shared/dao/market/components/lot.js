@@ -24,7 +24,7 @@ const Lot = (props) => {
 
   return (<div className="panel panel-default">
     <div className="panel-heading">
-      Лот: <span className="label label-primary">{address}</span>
+      {t('lot')}: <span className="label label-primary">{address}</span>
     </div>
     <div className="panel-body">
       <div className="row">

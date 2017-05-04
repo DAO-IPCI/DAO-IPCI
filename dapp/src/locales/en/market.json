@@ -11,6 +11,7 @@
   "buy": "Buy",
   "commission": "Commission",
   "search": "Search",
+  "lot": "Lot",
 
   "titleAddLot": "Add lot",
   "titleSetCommissionToken": "Commission Token",
