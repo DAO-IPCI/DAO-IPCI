@@ -82,7 +82,7 @@ export function load(daoAddress) {
         ]
         core.call('first')
           .then(firstAddress => (
-            promiseFor(address => address !== '0x0000000000000000000000000000000000000000', (address) => {
+            promiseFor(address => (address !== '0x0000000000000000000000000000000000000000' && address !== '0x'), (address) => {
               let block;
               return core.call('abiOf', [address])
                 .then((type) => {
@@ -248,11 +248,11 @@ export function submitLinkModule(daoAddress, form) {
   }
 }
 
-function run(dispatch, address, abiName, action, values) {
+function run(dispatch, address, abiName, action, values, txArgs = {}) {
   return loadAbiByName(abiName)
     .then((abi) => {
       const contract = getContract(abi, address);
-      return contract.send(action, values)
+      return contract.send(action, values, txArgs)
     })
     .then((txId) => {
       dispatch(flashMessage('txId: ' + txId))
@@ -261,7 +261,7 @@ function run(dispatch, address, abiName, action, values) {
     // .then(transaction => transaction.blockNumber)
 }
 
-export function submit(formName, address, abiName, action, form) {
+export function submit(formName, address, abiName, action, form, txArgs = {}) {
   return (dispatch, getState) => {
     dispatch(startSubmit(formName));
     let values = _.values(form);
@@ -270,7 +270,7 @@ export function submit(formName, address, abiName, action, form) {
       isIpfs = form.isIpfs;
       values = _.values(_.omit(form, 'isIpfs'));
     }
-    return run(dispatch, address, abiName, action, values)
+    return run(dispatch, address, abiName, action, values, txArgs)
       .then((transaction) => {
         dispatch(stopSubmit(formName))
         dispatch(reset(formName))
