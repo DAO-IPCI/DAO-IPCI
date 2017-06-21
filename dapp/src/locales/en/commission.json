@@ -1,0 +1,8 @@
+{
+  "title": "Commission payment",
+  "balance": "Your balance",
+  "titlePay": "Payment",
+  "downBalance": "There are not enough funds on your account :(",
+  "formAddress": "Address",
+  "formAmount": "Amount"
+}

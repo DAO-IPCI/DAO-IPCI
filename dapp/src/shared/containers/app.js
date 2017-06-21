@@ -10,7 +10,8 @@ import Footer from '../components/app/footer'
 import Notification from '../components/app/notification'
 import Spin from '../components/common/spin'
 import Plugin from '../components/app/plugin'
-import { flashMessage, setDaoAddress, setLanguage } from '../../modules/app/actions';
+import Lock from './lock'
+import { flashMessage, setDaoAddress, setLanguage, updateBalance } from '../../modules/app/actions';
 import { load as loadCore } from '../../modules/dao/actions';
 import { load } from '../../modules/log/actions';
 
@@ -19,10 +20,10 @@ import './style.css'
 // @translate(['view', 'nav'], { wait: true })
 class App extends Component {
   componentWillMount() {
+    // this.props.updateBalance()
     let address = cookie.load('dao_address')
     if (!address) {
       address = PROGRAMMS[0].address;
-      console.log('address default', address);
     }
     this.props.setDaoAddress(address)
     if (!this.props.isCoreLoad) {
@@ -48,6 +49,8 @@ class App extends Component {
       if (isAccounts()) {
         if (this.props.isCoreLoad) {
           content = <Spin />
+        } else if (this.props.lockApp) {
+          content = <Lock />
         } else {
           content = this.props.children
         }
@@ -84,6 +87,7 @@ function mapStateToProps(state, props) {
     dao_address: state.app.dao_address,
     role: state.app.role,
     language: state.app.language,
+    lockApp: state.app.lockApp,
     isCoreLoad: (props.location.pathname === '/') ? false : state.dao.load,
     programms: PROGRAMMS
   }
@@ -94,14 +98,16 @@ function mapDispatchToProps(dispatch) {
     setDaoAddress,
     setLanguage,
     load,
-    loadCore
+    loadCore,
+    updateBalance
   }, dispatch)
   return {
     flashMessage: actions.flashMessage,
     setDaoAddress: actions.setDaoAddress,
     setLanguage: actions.setLanguage,
     loadLog: actions.load,
-    loadCore: actions.loadCore
+    loadCore: actions.loadCore,
+    updateBalance: actions.updateBalance
   }
 }
 
