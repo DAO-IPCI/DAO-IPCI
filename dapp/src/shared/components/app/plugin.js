@@ -8,7 +8,7 @@ const Plugin = function Plugin() {
       <div className="row">
         <div className="col-md-6 col-sm-6 box-item">
           <div className="box">
-            <figure><img src="assets/img/metamask.png" role="presentation" /></figure>
+            <figure><img src="assets/img/metamask.png" alt="" /></figure>
             <h3 className="name">Metamask </h3>
             <p className="title textcol-gray">Chrome plugin</p>
             <p className="description">
@@ -24,7 +24,7 @@ const Plugin = function Plugin() {
         </div>
         <div className="col-md-6 col-sm-6 box-item">
           <div className="box">
-            <figure><img src="assets/img/ethereum.png" role="presentation" /></figure>
+            <figure><img src="assets/img/ethereum.png" alt="" /></figure>
             <h3 className="name">Ethereum Mist</h3>
             <p className="title textcol-gray">Browser for using Ðapps</p>
             <p className="description">

@@ -1,19 +1,19 @@
 import _ from 'lodash'
 import Promise from 'bluebird'
+import hett from 'hett'
 import { LOAD_MODULE, CALL_FUNC } from './actionTypes'
-import { getContractByAbiName, coinbase, listenAddress } from '../../utils/web3'
 import { submit as submitContract, send as sendContract, call as callContract } from '../dao/actions'
 
 export function loadModule(tokenAclAddress) {
   return (dispatch) => {
-    getContractByAbiName('TokenWithValidityPeriod', tokenAclAddress)
+    hett.getContractByName('TokenWithValidityPeriod', tokenAclAddress)
       .then(contract => (
         Promise.join(
           contract.call('name'),
           contract.call('emitentGroup'),
           contract.call('decimals'),
           contract.call('symbol'),
-          contract.call('balanceOf', [coinbase()]),
+          contract.call('balanceOf', [hett.web3h.coinbase()]),
           contract.call('totalSupply'),
           contract.call('timestamp'),
           contract.call('period'),
@@ -46,7 +46,7 @@ export function loadModule(tokenAclAddress) {
             ...token
           }
         })
-        listenAddress(tokenAclAddress, 'loadModule', (address) => {
+        hett.watcher.addAddress(tokenAclAddress, 'loadModule', (address) => {
           dispatch(loadModule(address))
         })
       })
@@ -57,7 +57,7 @@ export function submit(address, action, form) {
   return (dispatch) => {
     const formData = form;
     if (action === 'emission' || action === 'transfer' || action === 'approve') {
-      getContractByAbiName('TokenWithValidityPeriod', address)
+      hett.getContractByName('TokenWithValidityPeriod', address)
         .then(contract => contract.call('decimals'))
         .then((result) => {
           let decimals = _.toNumber(result)
@@ -109,7 +109,7 @@ function normalResultCall(contract, action, output) {
 export function call(address, action, form) {
   return (dispatch) => {
     let contract
-    getContractByAbiName('TokenWithValidityPeriod', address)
+    hett.getContractByName('TokenWithValidityPeriod', address)
       .then((result) => {
         contract = result
         return callContract(dispatch, 'FormTokenAclFunc', contract, action, form)

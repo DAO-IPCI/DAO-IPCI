@@ -1,36 +1,23 @@
 import React, { Component } from 'react'
 import { translate } from 'react-i18next'
 import Dropzone from 'react-dropzone'
-import IPFS from 'ipfs'
-import hett from 'hett'
+import Ipfs from 'ipfs-api'
+import { IPFS_HOST, IPFS_PORT, IPFS_PROTOCOL } from '../../../../config/config'
 import styles from './style.css'
 
 let ipfs = null;
+try {
+  ipfs = new Ipfs(IPFS_HOST, IPFS_PORT, { protocol: IPFS_PROTOCOL })
+} catch (e) {
+  console.log(e);
+}
 
 class Upload extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ready: false,
       doc: false
     };
-  }
-
-  componentDidMount() {
-    ipfs = new IPFS({
-      repo: String('ipfs_repo_' + hett.web3h.coinbase())
-    })
-    ipfs.on('ready', () => {
-      console.log('IPFS node is ready')
-      ipfs.id((err) => {
-        if (err) {
-          throw err
-        }
-        this.setState({
-          ready: true
-        })
-      })
-    })
   }
 
   onDrop(acceptedFiles) {
@@ -38,7 +25,7 @@ class Upload extends Component {
     reader.onload = () => {
       let data = reader.result
       data = new Buffer(data.substr(data.indexOf(',') + 1), 'base64')
-      ipfs.files.add(data, (err, res) => {
+      ipfs.add(data, (err, res) => {
         if (err || !res) {
           console.error(err)
           return false;
@@ -46,15 +33,14 @@ class Upload extends Component {
         // console.log(res);
         const url = 'https://ipfs.io/ipfs/' + res[0].hash;
         this.setState({ doc: url })
-        this.props.onUpload(res[0].hash)
+        this.props.onUpload(url)
         return true;
       })
     }
     reader.readAsDataURL(acceptedFiles[0])
   }
-
   render() {
-    if (ipfs === null || this.state.ready === false) {
+    if (ipfs === null) {
       return <div />
     }
     return (<div>

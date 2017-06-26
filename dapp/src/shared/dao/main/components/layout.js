@@ -1,5 +1,6 @@
 /* eslint react/prefer-stateless-function: 0*/
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { translate } from 'react-i18next'
 
 class Layout extends Component {

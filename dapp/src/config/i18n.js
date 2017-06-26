@@ -1,8 +1,10 @@
 /* eslint import/no-unresolved: 0 */
 /* eslint import/no-extraneous-dependencies: 0 */
+/* eslint import/no-webpack-loader-syntax: 0 */
+/* eslint import/extensions: 0 */
 import i18n from 'i18next';
 // import XHR from 'i18next-xhr-backend';
-import resBundle from 'i18next-resource-store-loader!../locales/index.js'
+import resBundle from 'i18next-resource-store-loader!../locales/index'
 
 i18n
   // .use(XHR)

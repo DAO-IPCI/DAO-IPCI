@@ -1,14 +1,20 @@
 import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import i18next from 'i18next'
+import _ from 'lodash'
 import { submitLinkModule } from '../../../../modules/dao/actions';
 import Form from '../../../../shared/components/common/form';
+import { validate } from '../../../../utils/helper';
 
 function mapStateToProps(state, props) {
-  return {
-    fields: ['type', 'name', 'address'],
-    selects: {
-      type: [
+  const fields = [
+    {
+      name: 'type',
+      type: 'select',
+      label: i18next.t('dao:formLinkType'),
+      value: props.module,
+      options: [
         {
           name: i18next.t('dao:formLinkTokenAcl'),
           value: 'token-acl'
@@ -49,11 +55,25 @@ function mapStateToProps(state, props) {
           name: i18next.t('dao:formLinkAgents'),
           value: 'agents'
         }
-      ]
+      ],
+      validation: 'required'
     },
-    initialValues: { type: props.module, address: props.address },
-    labels: [i18next.t('dao:formLinkType'), i18next.t('dao:formLinkName'), i18next.t('dao:formLinkAddress')],
-    placeholders: []
+    {
+      name: 'name',
+      label: i18next.t('dao:formLinkName'),
+      validation: 'required'
+    },
+    {
+      name: 'address',
+      type: 'autocomplete',
+      label: i18next.t('dao:formLinkAddress'),
+      value: props.address,
+      validation: 'address'
+    }
+  ]
+  return {
+    fields,
+    initialValues: _.zipObject(_.map(fields, 'name'), _.map(fields, 'value'))
   }
 }
 function mapDispatchToProps(dispatch, props) {
@@ -61,6 +81,11 @@ function mapDispatchToProps(dispatch, props) {
     onSubmit: bindActionCreators(form => submitLinkModule(props.daoAddress, form), dispatch)
   }
 }
-export default reduxForm({
-  form: 'FormLinkModule'
-}, mapStateToProps, mapDispatchToProps)(Form)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(reduxForm({
+  form: 'FormLinkModule',
+  validate,
+})(Form))

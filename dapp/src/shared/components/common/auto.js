@@ -38,15 +38,15 @@ class Container extends Component {
     };
   }
 
-  onSuggestionsFetchRequested = ({ value }) => {
+  onSuggestionsFetchRequested({ value }) {
     this.getSuggestions(value);
-  };
+  }
 
-  onSuggestionsClearRequested = () => {
+  onSuggestionsClearRequested() {
     this.setState({
       suggestions: []
     });
-  };
+  }
 
   getSuggestions(value) {
     const escapedValue = escapeRegexCharacters(value.trim());
@@ -62,7 +62,7 @@ class Container extends Component {
           )
         }
       ))
-      .filter(section => section.modules.length > 0);
+        .filter(section => section.modules.length > 0);
     }
     this.setState({
       suggestions

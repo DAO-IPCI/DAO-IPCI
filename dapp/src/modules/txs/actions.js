@@ -1,7 +1,7 @@
 import axios from 'axios'
 import _ from 'lodash'
+import hett from 'hett'
 import { ADD, LOAD } from './actionTypes'
-import { getWeb3 } from '../../utils/web3'
 
 export function add(tx) {
   return {
@@ -29,7 +29,6 @@ export function load() {
     });
     const count = _.keys(registry).length
     if (count > 0) {
-      const web3 = getWeb3();
       dispatch({
         type: LOAD,
         payload: true
@@ -48,7 +47,7 @@ export function load() {
                   toName: name,
                   timestamp: tx.timeStamp,
                   input: tx.input,
-                  ascii: web3.toAscii(tx.input),
+                  ascii: hett.web3.toAscii(tx.input),
                 }
               ))
             });

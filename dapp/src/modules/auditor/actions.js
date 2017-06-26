@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import Promise from 'bluebird'
+import hett from 'hett'
 import { LOAD_MODULE } from './actionTypes'
-import { getContractByAbiName, listenAddress } from '../../utils/web3'
 import { submit as submitContract, send as sendContract } from '../dao/actions'
 
 export function loadModule(auditorAddress) {
@@ -9,7 +9,7 @@ export function loadModule(auditorAddress) {
     let payload = {
       address: auditorAddress
     }
-    getContractByAbiName('Auditor', auditorAddress)
+    hett.getContractByName('Auditor', auditorAddress)
       .then(contract => (
         Promise.join(
           contract.call('token'),
@@ -34,7 +34,7 @@ export function loadModule(auditorAddress) {
           ...auditor
         }
       })
-      .then(() => getContractByAbiName('TokenEmission', payload.token))
+      .then(() => hett.getContractByName('TokenEmission', payload.token))
       .then(contract => (
         Promise.join(
           contract.call('decimals'),
@@ -60,7 +60,7 @@ export function loadModule(auditorAddress) {
             balance
           }
         })
-        listenAddress(auditorAddress, 'loadModule', (address) => {
+        hett.watcher.addAddress(auditorAddress, 'loadModule', (address) => {
           dispatch(loadModule(address))
         })
       })
@@ -71,9 +71,9 @@ export function submit(address, action, form) {
   return (dispatch) => {
     const formData = form;
     if (action === 'emission' || action === 'transfer' || action === 'setEmissionLimit') {
-      getContractByAbiName('Auditor', address)
+      hett.getContractByName('Auditor', address)
         .then(contract => contract.call('token'))
-        .then(token => getContractByAbiName('TokenWithValidityPeriod', token))
+        .then(token => hett.getContractByName('TokenWithValidityPeriod', token))
         .then(contract => contract.call('decimals'))
         .then((result) => {
           let decimals = _.toNumber(result)

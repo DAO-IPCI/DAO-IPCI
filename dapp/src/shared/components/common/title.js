@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router'
 import _ from 'lodash'
 import { translate } from 'react-i18next'
@@ -38,6 +39,11 @@ Title.propTypes = {
   title: PropTypes.string.isRequired,
   menu: PropTypes.array,
   back: PropTypes.string
+}
+
+Title.defaultProps = {
+  menu: [],
+  back: ''
 }
 
 export default translate()(Title)

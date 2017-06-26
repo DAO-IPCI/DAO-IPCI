@@ -1,9 +1,11 @@
 import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import _ from 'lodash'
 import i18next from 'i18next'
 import { call } from '../../../../modules/tokenAcl/actions';
 import Form from '../../../components/common/form';
+import { validate } from '../../../../utils/helper';
 
 function mapStateToProps(state, props) {
   if (props.action === 'balanceOf') {
@@ -15,14 +17,19 @@ function mapStateToProps(state, props) {
       input = funcs[props.action].input
       output = funcs[props.action].output
     }
-    return {
-      fields: ['address'],
-      labels: [i18next.t('tokenAcl:formAddress')],
-      initialValues: input,
-      output,
-      autocomplete: {
-        address: true
+    const fields = [
+      {
+        name: 'address',
+        type: 'autocomplete',
+        label: i18next.t('tokenAcl:formAddress'),
+        value: (_.has(input, 'address')) ? input.address : '',
+        validation: 'address'
       }
+    ]
+    return {
+      fields,
+      initialValues: _.zipObject(_.map(fields, 'name'), _.map(fields, 'value')),
+      output
     }
   }
   return {}
@@ -32,6 +39,11 @@ function mapDispatchToProps(dispatch, props) {
     onSubmit: bindActionCreators(form => call(props.address, props.action, form), dispatch)
   }
 }
-export default reduxForm({
-  form: 'FormTokenAclFunc'
-}, mapStateToProps, mapDispatchToProps)(Form)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(reduxForm({
+  form: 'FormTokenAclFunc',
+  validate,
+})(Form))

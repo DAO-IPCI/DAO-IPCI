@@ -1,15 +1,25 @@
+import Notifications from 'react-notification-system-redux';
 import i18next from 'i18next'
 import _ from 'lodash'
-import cookie from 'react-cookie'
-import { FLASH_MESSAGE, SET_DAO_ADDRESS, SET_ROLE, SET_LANGUAGE } from './actionTypes'
+import { Cookies } from 'react-cookie'
+import { SET_DAO_ADDRESS, SET_ROLE, SET_LANGUAGE } from './actionTypes'
 import { add } from '../log/actions'
 
-export function flashMessage(message) {
+const cookies = new Cookies();
+
+export function flashMessage(message, type = 'info') {
   return (dispatch) => {
-    dispatch({
-      type: FLASH_MESSAGE,
-      payload: message
-    })
+    const notificationOpts = {
+      // title: 'Hey, it\'s good to see you!',
+      message,
+      position: 'tr',
+      autoDismiss: 10
+    };
+    if (type === 'error') {
+      dispatch(Notifications.error(notificationOpts))
+    } else {
+      dispatch(Notifications.info(notificationOpts))
+    }
     if (!_.isEmpty(message)) {
       dispatch(add(message))
     }
@@ -17,7 +27,7 @@ export function flashMessage(message) {
 }
 
 export function setDaoAddress(address) {
-  cookie.save('dao_address', address);
+  cookies.set('dao_address', address);
   return {
     type: SET_DAO_ADDRESS,
     payload: address
@@ -33,7 +43,7 @@ export function setRole(role) {
 
 export function setLanguage(language) {
   i18next.changeLanguage(language)
-  cookie.save('language', language);
+  cookies.set('language', language);
   return {
     type: SET_LANGUAGE,
     payload: language
