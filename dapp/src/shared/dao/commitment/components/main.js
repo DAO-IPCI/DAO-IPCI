@@ -11,6 +11,7 @@ const Main = (props) => {
     holder,
     balanceContact,
     limit,
+    limitStr,
     percentage,
     balanceTokenEmission,
     t
@@ -29,7 +30,7 @@ const Main = (props) => {
     <p><b>{t('tokenEmission')}</b>: <Link to={'/dao/token-acl/' + tokenEmission}>{tokenEmission}</Link> ({balanceTokenEmission})</p>
     <p><b>{t('token')}</b>: <Link to={'/dao/token/' + token}>{token}</Link> ({balanceContact})</p>
     <p><b>{t('holder')}</b>: <Link to={'/dao/holder/' + holder}>{holder}</Link></p>
-    <p><b>{t('limit')}</b>: {limit}</p>
+    <p><b>{t('limit')}</b>: {limitStr}</p>
     <p><b>{t('percentage')}</b>: {percentage}</p>
   </Layout>)
 }

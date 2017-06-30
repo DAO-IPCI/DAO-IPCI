@@ -96,7 +96,10 @@ export function loadModule(commitmentAddress) {
           payload: {
             ...payload,
             balanceTokenEmission: (_.toNumber(tokenInfo.balance) / tokenInfo.decimals).toFixed(tokenInfo.decimalsFormat) + ' ' + tokenInfo.symbol,
-            limit: (_.toNumber(payload.limit) / tokenInfo.decimals).toFixed(tokenInfo.decimalsFormat) + ' ' + tokenInfo.symbol
+            limit: (_.toNumber(payload.limit) / tokenInfo.decimals)
+              .toFixed(tokenInfo.decimalsFormat),
+            limitStr: (_.toNumber(payload.limit) / tokenInfo.decimals)
+              .toFixed(tokenInfo.decimalsFormat) + ' ' + tokenInfo.symbol
           }
         })
         hett.watcher.addAddress(commitmentAddress, 'loadModule', (address) => {
