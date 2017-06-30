@@ -7,20 +7,20 @@ import { PROGRAMMS } from '../../config/config'
 
 import Header from '../components/app/header'
 import Footer from '../components/app/footer'
-import { flashMessage, setDaoAddress, setLanguage } from '../../modules/app/actions';
+import Lock from './lock'
+import { flashMessage, setDaoAddress, setLanguage, updateBalance } from '../../modules/app/actions';
 import { load as loadCore } from '../../modules/dao/actions';
-import { load } from '../../modules/log/actions';
 
 import './style.css'
 
 // @translate(['view', 'nav'], { wait: true })
 class App extends Component {
   componentWillMount() {
+    this.props.updateBalance()
     const cookies = new Cookies();
     let address = cookies.get('dao_address')
     if (!address) {
       address = PROGRAMMS[0].address;
-      console.log('address default', address);
     }
     this.props.setDaoAddress(address)
     if (!this.props.isCoreLoad) {
@@ -30,7 +30,6 @@ class App extends Component {
     if (language) {
       this.props.setLanguage(language)
     }
-    this.props.loadLog()
   }
 
   componentWillReceiveProps(next) {
@@ -40,6 +39,12 @@ class App extends Component {
   }
 
   render() {
+    let content
+    if (this.props.lockApp) {
+      content = <Lock />
+    } else {
+      content = this.props.children
+    }
     const style = {
       Containers: {
         DefaultStyle: {
@@ -63,7 +68,7 @@ class App extends Component {
         setDaoAddress={this.props.setDaoAddress}
       />
       <div className="container" id="maincontainer">
-        {this.props.children}
+        {content}
       </div>
       <Footer />
       <Notifications
@@ -81,6 +86,7 @@ function mapStateToProps(state, props) {
     dao_address: state.app.dao_address,
     role: state.app.role,
     language: state.app.language,
+    lockApp: state.app.lockApp,
     isCoreLoad: (props.location.pathname === '/') ? false : state.dao.load,
     programms: PROGRAMMS,
     notifications: state.notifications,
@@ -91,15 +97,15 @@ function mapDispatchToProps(dispatch) {
     flashMessage,
     setDaoAddress,
     setLanguage,
-    load,
-    loadCore
+    loadCore,
+    updateBalance
   }, dispatch)
   return {
     flashMessage: actions.flashMessage,
     setDaoAddress: actions.setDaoAddress,
     setLanguage: actions.setLanguage,
-    loadLog: actions.load,
-    loadCore: actions.loadCore
+    loadCore: actions.loadCore,
+    updateBalance: actions.updateBalance
   }
 }
 

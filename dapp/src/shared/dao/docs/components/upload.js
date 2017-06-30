@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { translate } from 'react-i18next'
 import Dropzone from 'react-dropzone'
-import IPFS from 'ipfs'
+// import IPFS from 'ipfs'
 import hett from 'hett'
 import styles from './style.css'
 
@@ -17,7 +17,7 @@ class Upload extends Component {
   }
 
   componentDidMount() {
-    ipfs = new IPFS({
+    ipfs = new Ipfs({
       repo: String('ipfs_repo_' + hett.web3h.coinbase())
     })
     ipfs.on('ready', () => {

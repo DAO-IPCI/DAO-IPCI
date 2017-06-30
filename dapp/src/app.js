@@ -8,7 +8,7 @@ import configureStore from './config/store'
 import { routes } from './config/routes'
 import i18n from './config/i18n';
 import { ProviderAbi, ProviderAddress } from './utils/helper'
-import abis from './config/abi'
+import * as abis from './abi'
 import addresses from './config/address'
 
 hett.init(web3, new ProviderAbi(abis), new ProviderAddress(addresses));

@@ -3,6 +3,7 @@ import hett from 'hett'
 import { LOAD_MODULE } from './actionTypes'
 import { submit as submitContract, send as sendContract } from '../dao/actions'
 import { promiseFor } from '../../utils/helper'
+import { pin as ipfsPin } from '../../utils/ipfsApi'
 
 export function loadModule(docsAddress) {
   return (dispatch) => {
@@ -54,6 +55,14 @@ export function submit(address, action, form) {
       .then(() => {
         if (action === 'append') {
           console.log('Pin cluster', hash);
+          ipfsPin(hash, (err, res) => {
+            if (err || !res) {
+              console.error(err)
+              return false;
+            }
+            console.log('Pin cluster', hash, res);
+            return true;
+          })
         }
       })
   }

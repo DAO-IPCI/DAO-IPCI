@@ -8,7 +8,6 @@ import * as Issuer from '../routes/issuer'
 import * as Auditor from '../routes/auditor'
 import * as Complier from '../routes/complier'
 import * as User from '../routes/user'
-import * as Log from '../routes/log'
 import * as Txs from '../routes/txs'
 import * as Dao from '../routes/dao'
 import { setRole } from '../modules/app/actions'
@@ -34,9 +33,6 @@ export const routes = store =>
       </Route>
       <Route path="/txs" component={Txs.Page}>
         <IndexRoute component={Txs.Main} />
-      </Route>
-      <Route path="/log" component={Log.Page}>
-        <IndexRoute component={Log.Main} />
       </Route>
       <Route path="/dao">
         <Route path="create/:module" component={Dao.CreateModule} />

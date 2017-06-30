@@ -1,5 +1,4 @@
 import app from './app/reducer';
-import log from './log/reducer';
 import dao from './dao/reducer';
 import acl from './acl/reducer';
 import holder from './holder/reducer';
@@ -14,7 +13,6 @@ import txs from './txs/reducer';
 
 export {
   app,
-  log,
   dao,
   acl,
   holder,

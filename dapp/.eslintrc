@@ -33,6 +33,7 @@
     "jasmine": true
   },
   "globals": {
+    "Ipfs": true,
     "Web3": true,
     "web3": true
   }
