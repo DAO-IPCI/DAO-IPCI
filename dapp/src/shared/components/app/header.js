@@ -11,7 +11,7 @@ const Header = function Header(props) {
         <div className="container">
           <div className="navbar-header">
             <Link className="navbar-brand navbar-link" to="/">
-              <img src="assets/img/ipci-logo.svg" className="inline-mid" role="presentation" />
+              <img src="assets/img/ipci-logo.svg" className="inline-mid" alt="" />
               <span className="inline-mid"><strong>DAO</strong> IPCI</span>
             </Link>
             <button className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navcol-1">

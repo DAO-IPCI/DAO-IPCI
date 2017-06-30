@@ -6,15 +6,15 @@ const initialState = {
     // {
     //   // name: 'asdasd',
     //   address: '0444444444444444',
-        //  funcs: {
-        //    nameFunc: {
-        //      input: {
-        //        a: '',
-        //        b: '',
-        //      },
-        //      output: ???
-        //    }
-        //  },
+    //  funcs: {
+    //    nameFunc: {
+    //      input: {
+    //        a: '',
+    //        b: '',
+    //      },
+    //      output: ???
+    //    }
+    //  },
     //   groups: [
     //     {
     //       name: 'asd',

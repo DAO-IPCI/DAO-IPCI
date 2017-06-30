@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import Promise from 'bluebird'
+import hett from 'hett'
 import { LOAD_MODULE, CALL_FUNC } from './actionTypes'
-import { getContractByAbiName, listenAddress } from '../../utils/web3'
 import { submit as submitContract, send as sendContract, call as callContract } from '../dao/actions'
 
 export function loadModule(holderAddress) {
@@ -9,7 +9,7 @@ export function loadModule(holderAddress) {
     let payload = {
       address: holderAddress
     }
-    getContractByAbiName('InsuranceHolder', holderAddress)
+    hett.getContractByName('InsuranceHolder', holderAddress)
       .then(contract => (
         Promise.join(
           contract.call('token'),
@@ -28,7 +28,7 @@ export function loadModule(holderAddress) {
           ...holder
         }
       })
-      .then(() => getContractByAbiName('TokenEmission', payload.token))
+      .then(() => hett.getContractByName('TokenEmission', payload.token))
       .then(contract => (
         Promise.join(
           contract.call('decimals'),
@@ -54,7 +54,7 @@ export function loadModule(holderAddress) {
             balance
           }
         })
-        listenAddress(holderAddress, 'loadModule', (address) => {
+        hett.watcher.addAddress(holderAddress, 'loadModule', (address) => {
           dispatch(loadModule(address))
         })
       })
@@ -87,7 +87,7 @@ function normalResultCall(contract, action, result) {
 export function call(address, action, form) {
   return (dispatch) => {
     let contract
-    getContractByAbiName('InsuranceHolder', address)
+    hett.getContractByName('InsuranceHolder', address)
       .then((result) => {
         contract = result
         return callContract(dispatch, 'FormHolderFunc', contract, action, form)

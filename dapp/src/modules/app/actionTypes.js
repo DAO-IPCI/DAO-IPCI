@@ -1,4 +1,3 @@
-export const FLASH_MESSAGE = 'APP_FLASH_MESSAGE'
 export const SET_DAO_ADDRESS = 'APP_SET_DAO_ADDRESS'
 export const SET_ROLE = 'APP_SET_ROLE'
 export const SET_LANGUAGE = 'APP_SET_LANGUAGE'

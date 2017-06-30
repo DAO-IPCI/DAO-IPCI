@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import Promise from 'bluebird'
+import hett from 'hett'
 import { LOAD_MODULE } from './actionTypes'
-import { getContractByAbiName, listenAddress } from '../../utils/web3'
 import { submit as submitContract, send as sendContract } from '../dao/actions'
 
 export function loadModule(commitmentAddress) {
@@ -9,7 +9,7 @@ export function loadModule(commitmentAddress) {
     let payload = {
       address: commitmentAddress
     }
-    getContractByAbiName('Commitment', commitmentAddress)
+    hett.getContractByName('Commitment', commitmentAddress)
       .then(contract => (
         Promise.join(
           contract.call('tokenEmission'),
@@ -38,7 +38,7 @@ export function loadModule(commitmentAddress) {
       })
       .then(() => {
         if (payload.token) {
-          return getContractByAbiName('TokenEmission', payload.token)
+          return hett.getContractByName('TokenEmission', payload.token)
         }
         return false
       })
@@ -67,7 +67,7 @@ export function loadModule(commitmentAddress) {
           balanceContact
         }
       })
-      .then(() => getContractByAbiName('TokenEmission', payload.tokenEmission))
+      .then(() => hett.getContractByName('TokenEmission', payload.tokenEmission))
       .then(contract => (
         Promise.join(
           contract.call('decimals'),
@@ -99,7 +99,7 @@ export function loadModule(commitmentAddress) {
             limit: (_.toNumber(payload.limit) / tokenInfo.decimals).toFixed(tokenInfo.decimalsFormat) + ' ' + tokenInfo.symbol
           }
         })
-        listenAddress(commitmentAddress, 'loadModule', (address) => {
+        hett.watcher.addAddress(commitmentAddress, 'loadModule', (address) => {
           dispatch(loadModule(address))
         })
       })
@@ -110,9 +110,9 @@ export function submit(address, action, form) {
   return (dispatch) => {
     const formData = form;
     if (action === 'emission' || action === 'transfer') {
-      getContractByAbiName('Commitment', address)
+      hett.getContractByName('Commitment', address)
         .then(contract => contract.call('tokenEmission'))
-        .then(token => getContractByAbiName('TokenEmissionACL', token))
+        .then(token => hett.getContractByName('TokenEmissionACL', token))
         .then(contract => contract.call('decimals'))
         .then((result) => {
           let decimals = _.toNumber(result)

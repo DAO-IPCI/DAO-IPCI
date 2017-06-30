@@ -1,58 +1,58 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import { Field } from 'redux-form'
 import _ from 'lodash'
 import { translate } from 'react-i18next'
 import Auto from './auto'
 import Spin from './spin'
 
+const renderField = ({
+  input, type, label, placeholder, disabled, options, meta: { touched, error }
+}) => {
+  if (type === 'hidden') {
+    return <input {...input} type={type} />
+  }
+  if (type === 'checkbox') {
+    return <input {...input} type={type} />
+  }
+  let element;
+  if (type === 'autocomplete') {
+    element = <Auto field={input} placeholder={placeholder} />
+  } else if (type === 'select') {
+    element = (
+      <select className="form-control" {...input}>
+        {options.map((item, i) => <option key={i} value={item.value}>{item.name}</option>)}
+      </select>
+    )
+  } else {
+    element = <input
+      {...input}
+      type={(!_.isEmpty(type)) ? type : 'text'}
+      placeholder={placeholder}
+      disabled={disabled}
+      className="form-control"
+    />
+  }
+  return (
+    <div className="form-group">
+      <span className="control-label">{label}</span>
+      {element}
+      {touched && error && error}
+    </div>
+  )
+}
+
 const Form = (props) => {
-  const {
-    fields,
-    handleSubmit,
-    error,
-    submitting,
-    labels,
-    placeholders,
-    disableds,
-    selects,
-    autocomplete,
-    output
-  } = props
+  const { fields, output, handleSubmit, submitting, error } = props
 
   return (
     <form onSubmit={handleSubmit}>
-      {Object.keys(fields).map((name, index) => {
-        if (name === 'isIpfs') {
+      {fields.map((item, index) => {
+        if (item.name === 'isIpfs') {
           return null;
         }
-        const field = fields[name]
-        return (
-          <div key={index} className="form-group">
-            <span className="control-label">{labels[index]}</span>
-            {_.has(selects, name) ?
-              <select className="form-control" {...field} value={field.value || ''}>
-                {selects[name].map((item, i) =>
-                  <option key={i} value={item.value}>{item.name}</option>)}
-              </select>
-              :
-              <div>
-                {_.has(autocomplete, name) ?
-                  <Auto field={field} placeholder={(_.has(placeholders, index)) ? placeholders[index] : ''} />
-                  :
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder={(_.has(placeholders, index)) ? placeholders[index] : ''}
-                    disabled={(_.has(disableds, index) && disableds[index] === true) ? 'disabled' : ''}
-                    {...field}
-                  />
-                }
-              </div>
-            }
-            {field.touched && field.error ? field.error : ''}
-          </div>
-        )
+        return <Field key={index} component={renderField} {...item} />
       })}
-      {output !== '' &&
+      {output !== '' && !_.isUndefined(output) &&
         <div><b>{props.t('result')}</b>:<div dangerouslySetInnerHTML={{ __html: output }} /></div>
       }
       <div className="row">
@@ -71,7 +71,7 @@ const Form = (props) => {
             </div>
           </div>
         </div>
-        {_.has(fields, 'isIpfs') &&
+        {_.find(fields, { name: 'isIpfs' }) &&
           <div className="col-md-2">
             <div className="checkbox" style={{ textAlign: 'center' }}>
               <span
@@ -84,13 +84,9 @@ const Form = (props) => {
                   maxWidth: '100%'
                 }}
               >
-                <input
-                  type="checkbox"
-                  {...fields.isIpfs}
-                />
+                <Field component={renderField} type="checkbox" {..._.find(fields, { name: 'isIpfs' })} />
                 {props.t('isSaveIpfs')}
               </span>
-              {fields.isIpfs.touched && fields.isIpfs.error ? fields.isIpfs.error : ''}
             </div>
           </div>
         }
@@ -99,17 +95,5 @@ const Form = (props) => {
     </form>
   )
 }
-
-Form.propTypes = {
-  labels: PropTypes.array.isRequired,
-  placeholders: PropTypes.array,
-  disableds: PropTypes.array,
-  autocomplete: PropTypes.object,
-  output: PropTypes.string
-}
-Form.defaultProps = {
-  autocomplete: {},
-  output: ''
-};
 
 export default translate()(Form)

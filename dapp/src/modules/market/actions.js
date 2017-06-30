@@ -1,13 +1,13 @@
 import { startSubmit, stopSubmit, reset } from 'redux-form'
 import _ from 'lodash'
 import Promise from 'bluebird'
+import hett from 'hett'
 import { LOAD_MODULE, ADD_LOT, UPDATE_LOT, SEARCH } from './actionTypes'
-import { getContractByAbiName, loadAbiByName, getContract, blockchain, coinbase, listenAddress } from '../../utils/web3'
 import { promiseFor } from '../../utils/helper'
 import { flashMessage } from '../app/actions'
 
 export function loadLot(address, lotAbi, tokenAbi) {
-  const lot = getContract(lotAbi, address)
+  const lot = hett.getContract(lotAbi, address)
   let item = {}
   return lot.call('closed')
     .then((closed) => {
@@ -44,7 +44,7 @@ export function loadLot(address, lotAbi, tokenAbi) {
               buyCommission = commissionNum
             }
             return {
-              my: (seller === coinbase()),
+              my: (seller === hett.web3h.coinbase()),
               seller,
               buyer,
               sale_quantity: quantitySaleView,
@@ -66,8 +66,8 @@ export function loadLot(address, lotAbi, tokenAbi) {
       if (lotResult) {
         // если данные по лоту получены, то получаем данные по токенам лота
         item = { address, closed, ...lotResult }
-        const tokenSale = getContract(tokenAbi, item.sale_address)
-        const tokenBuy = getContract(tokenAbi, item.buy_address)
+        const tokenSale = hett.getContract(tokenAbi, item.sale_address)
+        const tokenBuy = hett.getContract(tokenAbi, item.buy_address)
         return Promise.join(
           tokenSale.call('name'),
           tokenSale.call('allowance', [item.seller, address]),
@@ -75,8 +75,8 @@ export function loadLot(address, lotAbi, tokenAbi) {
           tokenSale.call('symbol'),
           tokenSale.call('decimals'),
           tokenBuy.call('name'),
-          tokenBuy.call('allowance', [coinbase(), address]),
-          tokenBuy.call('balanceOf', [coinbase()]),
+          tokenBuy.call('allowance', [hett.web3h.coinbase(), address]),
+          tokenBuy.call('balanceOf', [hett.web3h.coinbase()]),
           tokenBuy.call('symbol'),
           tokenBuy.call('decimals'),
           (saleName, saleApprove, saleBalance, saleSymbol, saleDecimals,
@@ -134,10 +134,10 @@ export function updateLotModule(addressModule, address) {
   return (dispatch) => {
     let tokenAbi
     let lotAbi
-    loadAbiByName('TokenEmission')
+    hett.getAbiByName('TokenEmission')
       .then((abi) => {
         tokenAbi = abi
-        return loadAbiByName('Lot')
+        return hett.getAbiByName('Lot')
       })
       .then((abi) => {
         lotAbi = abi
@@ -169,13 +169,13 @@ export function addLotModule(adressModule, address, lotAbi, tokenAbi) {
               lot
             }
           })
-          listenAddress(lot.address, 'loadModule', () => {
+          hett.watcher.addAddress(lot.address, 'loadModule', () => {
             dispatch(loadModule(adressModule)) /* eslint no-use-before-define: 0 */
           })
-          listenAddress(lot.sale_address, 'loadLotMarket' + lot.address, () => {
+          hett.watcher.addAddress(lot.sale_address, 'loadLotMarket' + lot.address, () => {
             dispatch(updateLotModule(adressModule, lot.address))
           })
-          listenAddress(lot.buy_address, 'loadLotMarket' + lot.address, () => {
+          hett.watcher.addAddress(lot.buy_address, 'loadLotMarket' + lot.address, () => {
             dispatch(updateLotModule(adressModule, lot.address))
           })
         }
@@ -188,7 +188,7 @@ export function loadModule(marketAddress) {
     let market
     let tokenAbi
     let lotAbi
-    getContractByAbiName('Market', marketAddress)
+    hett.getContractByName('Market', marketAddress)
       .then((contract) => {
         market = contract
         return Promise.join(
@@ -211,11 +211,11 @@ export function loadModule(marketAddress) {
             lots: []
           }
         })
-        return loadAbiByName('TokenEmission')
+        return hett.getAbiByName('TokenEmission')
       })
       .then((abi) => {
         tokenAbi = abi
-        return loadAbiByName('Lot')
+        return hett.getAbiByName('Lot')
       })
       .then((abi) => {
         lotAbi = abi
@@ -229,7 +229,7 @@ export function loadModule(marketAddress) {
             }, firstAddress)
           ))
           .then(() => {
-            listenAddress(marketAddress, 'loadModule', (address) => {
+            hett.watcher.addAddress(marketAddress, 'loadModule', (address) => {
               dispatch(loadModule(address))
             })
           });
@@ -246,11 +246,11 @@ export function search(form) {
 
 export function dealLot(marketAddress, address) {
   return (dispatch) => {
-    getContractByAbiName('Lot', address)
-      .then(contract => contract.send('deal', [coinbase()]))
+    hett.getContractByName('Lot', address)
+      .then(contract => contract.send('deal', [hett.web3h.coinbase()]))
       .then((txId) => {
         dispatch(flashMessage('tx: ' + txId))
-        return blockchain.subscribeTx(txId)
+        return hett.watcher.addTx(txId)
       })
       .then(() => {
         dispatch(flashMessage('Лот куплен'))
@@ -260,11 +260,11 @@ export function dealLot(marketAddress, address) {
 
 export function removeLot(marketAddress, address) {
   return (dispatch) => {
-    getContractByAbiName('Market', marketAddress)
+    hett.getContractByName('Market', marketAddress)
       .then(contract => contract.send('remove', [address]))
       .then((txId) => {
         dispatch(flashMessage('tx: ' + txId))
-        return blockchain.subscribeTx(txId)
+        return hett.watcher.addTx(txId)
       })
       .then(() => {
         dispatch(flashMessage('Лот удален'))
@@ -275,7 +275,7 @@ export function removeLot(marketAddress, address) {
 export function approveLot(marketAddress, lot, token, value) {
   return (dispatch) => {
     let tokenContract;
-    getContractByAbiName('TokenEmission', token)
+    hett.getContractByName('TokenEmission', token)
       .then((contract) => {
         tokenContract = contract;
         return contract.call('decimals')
@@ -291,7 +291,7 @@ export function approveLot(marketAddress, lot, token, value) {
       })
       .then((txId) => {
         dispatch(flashMessage('tx: ' + txId))
-        return blockchain.subscribeTx(txId)
+        return hett.watcher.addTx(txId)
       })
       .then(() => {
         dispatch(flashMessage('Дан доступ'))
@@ -305,11 +305,11 @@ function run(dispatch, address, func, values) {
     params[0] *= 100 * 2;
   }
 
-  return getContractByAbiName('Market', address)
+  return hett.getContractByName('Market', address)
     .then(contract => contract.send(func, params))
     .then((txId) => {
       dispatch(flashMessage('txId: ' + txId))
-      return blockchain.subscribeTx(txId)
+      return hett.watcher.addTx(txId)
     })
     .then(transaction => transaction.blockNumber)
 }
@@ -334,7 +334,7 @@ export function submit(marketAddress, action, form) {
     if (func) {
       const formData = form;
       if (func === 'append') {
-        getContractByAbiName('TokenEmission', formData.sale)
+        hett.getContractByName('TokenEmission', formData.sale)
           .then(contract => contract.call('decimals'))
           .then((result) => {
             let decimals = _.toNumber(result)
@@ -344,7 +344,7 @@ export function submit(marketAddress, action, form) {
               decimals = 1
             }
             formData.quantity_sale *= decimals
-            return getContractByAbiName('TokenEmission', formData.buy)
+            return hett.getContractByName('TokenEmission', formData.buy)
           })
           .then(contract => contract.call('decimals'))
           .then((result) => {

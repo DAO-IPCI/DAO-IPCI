@@ -1,7 +1,7 @@
 export const IPFS_HOST = '52.166.18.229'
 export const IPFS_PORT = '5001'
 export const IPFS_PROTOCOL = 'http'
-export const BILLING_ADDR = '0x25460227d441b3454f06d1e1fb17491180e6429b'
+export const BILLING_ADDR = '0x4fbD978633737E75F3f9Ea21936F2c37a86bB5ED'
 export const PROGRAMMS = [
   {
     address: '0x0091DeC954D68362608Dc90A606F638FBadf21D4',

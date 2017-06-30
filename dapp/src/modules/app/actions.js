@@ -1,26 +1,31 @@
+import Notifications from 'react-notification-system-redux';
 import i18next from 'i18next'
-import _ from 'lodash'
-import cookie from 'react-cookie'
-import { FLASH_MESSAGE, SET_DAO_ADDRESS, SET_ROLE, SET_LANGUAGE, SET_MY_BALANCE, SET_BILLING_BALANCE, SET_LOCK_APP } from './actionTypes'
-import { add } from '../log/actions'
-import { coinbase, getContractByAbiName, getWeb3 } from '../../utils/web3'
+import { Cookies } from 'react-cookie'
+import hett from 'hett'
+import { SET_DAO_ADDRESS, SET_ROLE, SET_LANGUAGE, SET_MY_BALANCE, SET_BILLING_BALANCE, SET_LOCK_APP } from './actionTypes'
 import { BILLING_ADDR } from '../../config/config'
 import { submit as submitContract } from '../dao/actions'
 
-export function flashMessage(message) {
+const cookies = new Cookies();
+
+export function flashMessage(message, type = 'info') {
   return (dispatch) => {
-    dispatch({
-      type: FLASH_MESSAGE,
-      payload: message
-    })
-    if (!_.isEmpty(message)) {
-      dispatch(add(message))
+    const notificationOpts = {
+      // title: 'Hey, it\'s good to see you!',
+      message,
+      position: 'tr',
+      autoDismiss: 10
+    };
+    if (type === 'error') {
+      dispatch(Notifications.error(notificationOpts))
+    } else {
+      dispatch(Notifications.info(notificationOpts))
     }
   }
 }
 
 export function setDaoAddress(address) {
-  cookie.save('dao_address', address);
+  cookies.set('dao_address', address);
   return {
     type: SET_DAO_ADDRESS,
     payload: address
@@ -57,12 +62,11 @@ export function setMyBalance(info) {
 
 export function updateBalance() {
   return (dispatch) => {
-    const account = coinbase()
-    const web3 = getWeb3();
-    web3.eth.getBalance(account, (e, r) => {
-      const balance = parseFloat(web3.fromWei(r, 'ether').toString())
+    const account = hett.web3h.coinbase()
+    hett.web3.eth.getBalance(account, (e, r) => {
+      const balance = parseFloat(hett.web3.fromWei(r, 'ether').toString())
       dispatch(setMyBalance(balance))
-      getContractByAbiName('Billing', BILLING_ADDR)
+      hett.getContractByName('Billing', BILLING_ADDR)
         .then(contract => contract.call('balances', [account]))
         .then((result) => {
           const decimals = Math.pow(10, 18)
@@ -95,7 +99,7 @@ export function burnBalance(address, action, form) {
 
 export function setLanguage(language) {
   i18next.changeLanguage(language)
-  cookie.save('language', language);
+  cookies.set('language', language);
   return {
     type: SET_LANGUAGE,
     payload: language

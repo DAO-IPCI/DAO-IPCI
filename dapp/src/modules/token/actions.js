@@ -1,18 +1,18 @@
 import _ from 'lodash'
 import Promise from 'bluebird'
+import hett from 'hett'
 import { LOAD_MODULE, CALL_FUNC } from './actionTypes'
-import { getContractByAbiName, coinbase, listenAddress } from '../../utils/web3'
 import { submit as submitContract, send as sendContract, call as callContract } from '../dao/actions'
 
 export function loadModule(tokenAddress) {
   return (dispatch) => {
-    getContractByAbiName('TokenEmission', tokenAddress)
+    hett.getContractByName('TokenEmission', tokenAddress)
       .then(contract => (
         Promise.join(
           contract.call('name'),
           contract.call('decimals'),
           contract.call('symbol'),
-          contract.call('balanceOf', [coinbase()]),
+          contract.call('balanceOf', [hett.web3h.coinbase()]),
           contract.call('totalSupply'),
           (name, decimalsR, symbol, balance, totalSupply) => {
             const decimalsFormat = _.toNumber(decimalsR)
@@ -38,7 +38,7 @@ export function loadModule(tokenAddress) {
             ...token
           }
         })
-        listenAddress(tokenAddress, 'loadModule', (address) => {
+        hett.watcher.addAddress(tokenAddress, 'loadModule', (address) => {
           dispatch(loadModule(address))
         })
       })
@@ -49,7 +49,7 @@ export function submit(address, action, form) {
   return (dispatch) => {
     const formData = form;
     if (action === 'emission' || action === 'transfer' || action === 'approve') {
-      getContractByAbiName('TokenEmission', address)
+      hett.getContractByName('TokenEmission', address)
         .then(contract => contract.call('decimals'))
         .then((result) => {
           let decimals = _.toNumber(result)
@@ -98,7 +98,7 @@ function normalResultCall(contract, action, output) {
 export function call(address, action, form) {
   return (dispatch) => {
     let contract
-    getContractByAbiName('TokenEmission', address)
+    hett.getContractByName('TokenEmission', address)
       .then((result) => {
         contract = result
         return callContract(dispatch, 'FormTokenFunc', contract, action, form)

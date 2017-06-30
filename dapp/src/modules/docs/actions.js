@@ -1,11 +1,13 @@
+import _ from 'lodash'
+import hett from 'hett'
 import { LOAD_MODULE } from './actionTypes'
-import { getContractByAbiName, listenAddress } from '../../utils/web3'
 import { submit as submitContract, send as sendContract } from '../dao/actions'
 import { promiseFor } from '../../utils/helper'
+import { pin as ipfsPin } from '../../utils/ipfsApi'
 
 export function loadModule(docsAddress) {
   return (dispatch) => {
-    getContractByAbiName('Docs', docsAddress)
+    hett.getContractByName('Docs', docsAddress)
       .then((contract) => {
         const docs = [];
         contract.call('count')
@@ -33,7 +35,7 @@ export function loadModule(docsAddress) {
                 docs
               }
             })
-            listenAddress(docsAddress, 'loadModule', (address) => {
+            hett.watcher.addAddress(docsAddress, 'loadModule', (address) => {
               dispatch(loadModule(address))
             })
           });
@@ -43,7 +45,26 @@ export function loadModule(docsAddress) {
 
 export function submit(address, action, form) {
   return (dispatch) => {
-    dispatch(submitContract('FormDocs', address, 'Docs', action, form))
+    let data = form
+    let hash = ''
+    if (action === 'append') {
+      hash = data.hash
+      data = _.omit(data, ['hash']);
+    }
+    dispatch(submitContract('FormDocs', address, 'Docs', action, data))
+      .then(() => {
+        if (action === 'append') {
+          console.log('Pin cluster', hash);
+          ipfsPin(hash, (err, res) => {
+            if (err || !res) {
+              console.error(err)
+              return false;
+            }
+            console.log('Pin cluster', hash, res);
+            return true;
+          })
+        }
+      })
   }
 }
 

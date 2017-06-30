@@ -1,27 +1,24 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import cookie from 'react-cookie'
-import { getWeb3, isAccounts, runListener } from '../../utils/web3'
+import { Cookies } from 'react-cookie'
+import Notifications from 'react-notification-system-redux';
 import { PROGRAMMS } from '../../config/config'
 
 import Header from '../components/app/header'
 import Footer from '../components/app/footer'
-import Notification from '../components/app/notification'
-import Spin from '../components/common/spin'
-import Plugin from '../components/app/plugin'
 import Lock from './lock'
 import { flashMessage, setDaoAddress, setLanguage, updateBalance } from '../../modules/app/actions';
 import { load as loadCore } from '../../modules/dao/actions';
-import { load } from '../../modules/log/actions';
 
 import './style.css'
 
 // @translate(['view', 'nav'], { wait: true })
 class App extends Component {
   componentWillMount() {
-    // this.props.updateBalance()
-    let address = cookie.load('dao_address')
+    this.props.updateBalance()
+    const cookies = new Cookies();
+    let address = cookies.get('dao_address')
     if (!address) {
       address = PROGRAMMS[0].address;
     }
@@ -29,12 +26,10 @@ class App extends Component {
     if (!this.props.isCoreLoad) {
       this.props.loadCore(address);
     }
-    const language = cookie.load('language')
+    const language = cookies.get('language')
     if (language) {
       this.props.setLanguage(language)
     }
-    this.props.loadLog()
-    runListener();
   }
 
   componentWillReceiveProps(next) {
@@ -45,22 +40,23 @@ class App extends Component {
 
   render() {
     let content
-    if (getWeb3()) {
-      if (isAccounts()) {
-        if (this.props.isCoreLoad) {
-          content = <Spin />
-        } else if (this.props.lockApp) {
-          content = <Lock />
-        } else {
-          content = this.props.children
-        }
-      } else {
-        content = <p>нет аккаунтов</p>
-      }
+    if (this.props.lockApp) {
+      content = <Lock />
     } else {
-      content = <Plugin />
+      content = this.props.children
     }
-
+    const style = {
+      Containers: {
+        DefaultStyle: {
+          width: '530px',
+        }
+      },
+      NotificationItem: {
+        DefaultStyle: {
+          margin: '10px 5px 2px 1px'
+        },
+      }
+    };
     return (<div>
       <Header
         title={this.props.title}
@@ -75,7 +71,11 @@ class App extends Component {
         {content}
       </div>
       <Footer />
-      <Notification message={this.props.flash_message} onClose={() => this.props.flashMessage('')} />
+      <Notifications
+        notifications={this.props.notifications}
+        style={style}
+        allowHTML
+      />
     </div>)
   }
 }
@@ -83,13 +83,13 @@ class App extends Component {
 function mapStateToProps(state, props) {
   return {
     title: state.app.title,
-    flash_message: state.app.flash_message,
     dao_address: state.app.dao_address,
     role: state.app.role,
     language: state.app.language,
     lockApp: state.app.lockApp,
     isCoreLoad: (props.location.pathname === '/') ? false : state.dao.load,
-    programms: PROGRAMMS
+    programms: PROGRAMMS,
+    notifications: state.notifications,
   }
 }
 function mapDispatchToProps(dispatch) {
@@ -97,7 +97,6 @@ function mapDispatchToProps(dispatch) {
     flashMessage,
     setDaoAddress,
     setLanguage,
-    load,
     loadCore,
     updateBalance
   }, dispatch)
@@ -105,7 +104,6 @@ function mapDispatchToProps(dispatch) {
     flashMessage: actions.flashMessage,
     setDaoAddress: actions.setDaoAddress,
     setLanguage: actions.setLanguage,
-    loadLog: actions.load,
     loadCore: actions.loadCore,
     updateBalance: actions.updateBalance
   }

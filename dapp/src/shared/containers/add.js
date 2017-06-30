@@ -1,9 +1,8 @@
 import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import Form from '../components/app/add';
 import { setDaoAddress } from '../../modules/app/actions';
-
-export const fields = ['address']
 
 const validate = (values) => {
   const errors = {};
@@ -12,14 +11,26 @@ const validate = (values) => {
   }
   return errors
 }
+
+function mapStateToProps() {
+  return {
+    fields: [
+      {
+        name: 'address'
+      }
+    ],
+  }
+}
 function mapDispatchToProps(dispatch) {
   return {
     onSubmit: bindActionCreators(form => setDaoAddress(form.address), dispatch)
   }
 }
 
-export default reduxForm({
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(reduxForm({
   form: 'StartForm',
-  fields,
-  validate
-}, null, mapDispatchToProps)(Form)
+  validate,
+})(Form))

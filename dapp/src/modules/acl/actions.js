@@ -1,11 +1,11 @@
+import hett from 'hett'
 import { LOAD_MODULE } from './actionTypes'
-import { getContractByAbiName, listenAddress } from '../../utils/web3'
 import { submit as submitContract, send as sendContract } from '../dao/actions'
 import { promiseFor } from '../../utils/helper'
 
 export function loadModule(aclAddress) {
   return (dispatch) => {
-    getContractByAbiName('ACLStorage', aclAddress)
+    hett.getContractByName('ACLStorage', aclAddress)
       .then((acl) => {
         const groups = [];
         acl.call('groupLength')
@@ -42,7 +42,7 @@ export function loadModule(aclAddress) {
                 groups
               }
             })
-            listenAddress(aclAddress, 'loadModule', (address) => {
+            hett.watcher.addAddress(aclAddress, 'loadModule', (address) => {
               dispatch(loadModule(address))
             })
           });

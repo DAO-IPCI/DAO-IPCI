@@ -1,90 +1,210 @@
 import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import i18next from 'i18next'
 import _ from 'lodash'
 import { submitCreateModule } from '../../../../modules/dao/actions';
 import Form from '../../../../shared/components/common/form';
+import { validate } from '../../../../utils/helper';
 
 function mapStateToProps(state, props) {
   if (props.module === 'core') {
-    // return {
-    //   fields: ['name', 'description'],
-    //   selects: {},
-    //   labels: ['Название DAO', 'Описание DAO'],
-    //   placeholders: ['My DAO', 'description']
-    // }
     return {
-      fields: ['dao_name', 'dao_description', 'operator_nam'],
-      labels: [i18next.t('dao:formCoreDaoName'), i18next.t('dao:formCoreDaoDescription'), i18next.t('dao:formCoreOperatorName')]
+      fields: [
+        {
+          name: 'dao_name',
+          label: i18next.t('dao:formCoreDaoName'),
+          validation: 'required'
+        },
+        {
+          name: 'dao_description',
+          label: i18next.t('dao:formCoreDaoDescription'),
+          validation: 'required'
+        },
+        {
+          name: 'operator_nam',
+          label: i18next.t('dao:formCoreOperatorName'),
+          validation: 'uint'
+        }
+      ]
     }
   } else if (props.module === 'issuer') {
+    const fields = [
+      {
+        name: 'name',
+        label: i18next.t('dao:formRegistryName'),
+        validation: 'required'
+      },
+      {
+        name: 'symbol',
+        label: i18next.t('dao:formRegistrySymbol'),
+        validation: 'required'
+      },
+      {
+        name: 'decimalc',
+        label: i18next.t('dao:formRegistryDecimals'),
+        value: 3,
+        validation: 'uint'
+      },
+      {
+        name: 'operator_core',
+        label: i18next.t('dao:formIssuerOperatorCore'),
+        value: state.dao.address,
+        disableds: true,
+        validation: 'address'
+      },
+      {
+        name: 'group',
+        label: i18next.t('dao:formIssuerGroup'),
+        validation: 'required'
+      },
+    ]
     return {
-      fields: ['name', 'symbol', 'decimalc', 'operator_core', 'group'],
-      labels: [i18next.t('dao:formRegistryName'), i18next.t('dao:formRegistrySymbol'), i18next.t('dao:formRegistryDecimals'), i18next.t('dao:formIssuerOperatorCore'), i18next.t('dao:formIssuerGroup')],
-      initialValues: { operator_core: state.dao.address, decimalc: 3 },
-      disableds: [false, false, false, true, false]
+      fields,
+      initialValues: _.zipObject(_.map(fields, 'name'), _.map(fields, 'value'))
     }
   } else if (props.module === 'auditor' || props.module === 'commitment') {
     const operatorAddress = state.dao.owner;
-    return {
-      fields: ['operator', 'token', 'holder'],
-      labels: [i18next.t('dao:formAuditorOperator'), i18next.t('dao:formAuditorToken'), i18next.t('dao:formAuditorHolder')],
-      autocomplete: {
-        token: true,
-        holder: true
+    const fields = [
+      {
+        name: 'operator',
+        label: i18next.t('dao:formAuditorOperator'),
+        value: operatorAddress,
+        disabled: !_.isEmpty(operatorAddress),
+        validation: 'address'
       },
-      initialValues: { operator: operatorAddress },
-      disableds: [(!_.isEmpty(operatorAddress)), false, false]
+      {
+        name: 'token',
+        type: 'autocomplete',
+        label: i18next.t('dao:formAuditorToken'),
+        validation: 'address'
+      },
+      {
+        name: 'holder',
+        type: 'autocomplete',
+        label: i18next.t('dao:formAuditorHolder'),
+        validation: 'address'
+      }
+    ]
+    return {
+      fields,
+      initialValues: _.zipObject(_.map(fields, 'name'), _.map(fields, 'value'))
     }
   } else if (props.module === 'holder') {
     const operatorAddress = state.dao.owner;
-    return {
-      fields: ['operator', 'token'],
-      labels: [i18next.t('dao:formHolderOperator'), i18next.t('dao:formHolderToken')],
-      initialValues: { operator: operatorAddress },
-      autocomplete: {
-        token: true
+    const fields = [
+      {
+        name: 'operator',
+        label: i18next.t('dao:formHolderOperator'),
+        value: operatorAddress,
+        disabled: !_.isEmpty(operatorAddress),
+        validation: 'address'
       },
-      disableds: [(!_.isEmpty(operatorAddress)), false]
+      {
+        name: 'token',
+        type: 'autocomplete',
+        label: i18next.t('dao:formHolderToken'),
+        validation: 'address'
+      }
+    ]
+    return {
+      fields,
+      initialValues: _.zipObject(_.map(fields, 'name'), _.map(fields, 'value'))
     }
   } else if (props.module === 'complier') {
     return {
-      fields: [],
-      labels: []
+      fields: []
     }
   } else if (props.module === 'market') {
     return {
-      fields: [],
-      selects: {},
-      labels: [],
-      placeholders: []
+      fields: []
     }
   } else if (props.module === 'token') {
     return {
-      fields: ['name', 'symbol', 'decimals', 'start_count'],
-      selects: {},
-      labels: [i18next.t('dao:formTokenName'), i18next.t('dao:formTokenSymbol'), i18next.t('dao:formTokenDecimals'), i18next.t('dao:formTokenStartCount')],
-      placeholders: [i18next.t('dao:formTokenName'), 'S', 0, 0]
+      fields: [
+        {
+          name: 'name',
+          label: i18next.t('dao:formTokenName'),
+          placeholder: i18next.t('dao:formTokenName'),
+          validation: 'required'
+        },
+        {
+          name: 'symbol',
+          label: i18next.t('dao:formTokenSymbol'),
+          placeholder: 'S',
+          validation: 'required'
+        },
+        {
+          name: 'decimals',
+          label: i18next.t('dao:formTokenDecimals'),
+          placeholder: 0,
+          validation: 'uint'
+        },
+        {
+          name: 'start_count',
+          label: i18next.t('dao:formTokenStartCount'),
+          placeholder: 0,
+          validation: 'uint'
+        }
+      ]
     }
   } else if (props.module === 'tokenAcl') {
     const operatorAddress = state.dao.owner;
-    return {
-      fields: ['name', 'symbol', 'decimals', 'start_count', 'acl', 'acl_group', 'operator'],
-      selects: {},
-      labels: [i18next.t('dao:formTokenAclName'), i18next.t('dao:formTokenAclSymbol'), i18next.t('dao:formTokenAclDecimals'), i18next.t('dao:formTokenAclStartCount'), i18next.t('dao:formTokenAclAcl'), i18next.t('dao:formTokenAclAclGroup'), i18next.t('dao:formTokenAclAclOperator')],
-      placeholders: [i18next.t('dao:formTokenAclName'), 'S', 0, 0, '0x111111111', 'name', '0x111111111'],
-      initialValues: { operator: operatorAddress },
-      autocomplete: {
-        acl: true
+    const fields = [
+      {
+        name: 'name',
+        label: i18next.t('dao:formTokenAclName'),
+        placeholder: i18next.t('dao:formTokenAclName'),
+        validation: 'required'
       },
-      disableds: [false, false, false, false, false, false, (!_.isEmpty(operatorAddress))]
+      {
+        name: 'symbol',
+        label: i18next.t('dao:formTokenAclSymbol'),
+        placeholder: 'S',
+        validation: 'required'
+      },
+      {
+        name: 'decimals',
+        label: i18next.t('dao:formTokenAclDecimals'),
+        placeholder: 0,
+        validation: 'uint'
+      },
+      {
+        name: 'start_count',
+        label: i18next.t('dao:formTokenAclStartCount'),
+        placeholder: 0,
+        validation: 'uint'
+      },
+      {
+        name: 'acl',
+        type: 'autocomplete',
+        label: i18next.t('dao:formTokenAclAcl'),
+        placeholder: '0x111111111',
+        validation: 'address'
+      },
+      {
+        name: 'acl_group',
+        label: i18next.t('dao:formTokenAclAclGroup'),
+        placeholder: 'name',
+        validation: 'required'
+      },
+      {
+        name: 'operator',
+        type: 'autocomplete',
+        label: i18next.t('dao:formTokenAclAclOperator'),
+        placeholder: '0x111111111',
+        value: operatorAddress,
+        disabled: !_.isEmpty(operatorAddress),
+        validation: 'address'
+      },
+    ]
+    return {
+      fields,
+      initialValues: _.zipObject(_.map(fields, 'name'), _.map(fields, 'value'))
     }
   } else if (props.module === 'acl' || props.module === 'docs') {
     return {
       fields: [],
-      selects: {},
-      labels: [],
-      placeholders: []
     }
   }
   return {}
@@ -94,6 +214,11 @@ function mapDispatchToProps(dispatch, props) {
     onSubmit: bindActionCreators(form => submitCreateModule(form, props.module), dispatch)
   }
 }
-export default reduxForm({
-  form: 'FormCreator'
-}, mapStateToProps, mapDispatchToProps)(Form)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(reduxForm({
+  form: 'FormCreator',
+  validate,
+})(Form))

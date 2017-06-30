@@ -1,8 +1,7 @@
-import { FLASH_MESSAGE, SET_DAO_ADDRESS, SET_ROLE, SET_LANGUAGE, SET_MY_BALANCE, SET_BILLING_BALANCE, SET_LOCK_APP } from './actionTypes'
+import { SET_DAO_ADDRESS, SET_ROLE, SET_LANGUAGE, SET_MY_BALANCE, SET_BILLING_BALANCE, SET_LOCK_APP } from './actionTypes'
 
 const initialState = {
   title: 'dApp DAO IPCI',
-  flash_message: '',
   dao_address: '',
   role: '',
   language: 'en',
@@ -21,9 +20,6 @@ export default function app(state = initialState, action) {
 
     case SET_LOCK_APP:
       return { ...state, lockApp: action.payload }
-
-    case FLASH_MESSAGE:
-      return { ...state, flash_message: action.payload }
 
     case SET_DAO_ADDRESS:
       return { ...state, dao_address: action.payload }

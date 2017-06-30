@@ -2,9 +2,9 @@ import { startSubmit, stopSubmit, reset } from 'redux-form';
 import _ from 'lodash'
 import { hashHistory } from 'react-router';
 import i18next from 'i18next'
+import hett from 'hett'
 import { LOAD_START, LOAD, ADD_MODULE } from './actionTypes'
-import { loadAbiByName, getContract, blockchain, createModule, createModuleWatch, getModuleAddress } from '../../utils/web3'
-import { promiseFor } from '../../utils/helper'
+import { promiseFor, createModule, createModuleWatch } from '../../utils/helper'
 import { flashMessage } from '../app/actions'
 
 export function addModule(type, name, address) {
@@ -25,9 +25,8 @@ export function load(daoAddress) {
       payload: true
     })
     let payload = {}
-    loadAbiByName('Core')
-      .then((abi) => {
-        const core = getContract(abi, daoAddress);
+    hett.getContractByName('Core', daoAddress)
+      .then((core) => {
         const blocks = [
           {
             name: i18next.t('dao:groupAuditors'),
@@ -145,13 +144,13 @@ export function load(daoAddress) {
 export function create(dispatch, module, values) {
   let builderAddress
   let builder
-  return getModuleAddress(module)
+  return hett.getAddressByName(module)
     .then((address) => {
       builderAddress = address;
-      return loadAbiByName(module)
+      return hett.getContractByName(module, builderAddress)
     })
-    .then((abi) => {
-      builder = getContract(abi, builderAddress)
+    .then((contract) => {
+      builder = contract;
       return createModule(builder, values)
     })
     .then((txId) => {
@@ -161,14 +160,13 @@ export function create(dispatch, module, values) {
 }
 
 export function setModule(dispatch, daoAddress, name, address, type) {
-  return loadAbiByName('Core')
-    .then((abi) => {
-      const core = getContract(abi, daoAddress);
-      return core.send('set', [name, address, type, false])
-    })
+  return hett.getContractByName('Core', daoAddress)
+    .then(core => (
+      core.send('set', [name, address, type, false])
+    ))
     .then((txId) => {
       dispatch(flashMessage('txId: ' + txId))
-      return blockchain.subscribeTx(txId)
+      return hett.watcher.addTx(txId)
     })
     .then(transaction => transaction.blockNumber)
 }
@@ -249,14 +247,13 @@ export function submitLinkModule(daoAddress, form) {
 }
 
 function run(dispatch, address, abiName, action, values, txArgs = {}) {
-  return loadAbiByName(abiName)
-    .then((abi) => {
-      const contract = getContract(abi, address);
-      return contract.send(action, values, txArgs)
-    })
+  return hett.getContractByName(abiName, address)
+    .then(contract => (
+      contract.send(action, values, txArgs)
+    ))
     .then((txId) => {
       dispatch(flashMessage('txId: ' + txId))
-      return blockchain.subscribeTx(txId)
+      return hett.watcher.addTx(txId)
     })
     // .then(transaction => transaction.blockNumber)
 }
