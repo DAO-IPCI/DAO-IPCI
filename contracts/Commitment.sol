@@ -59,7 +59,9 @@ contract Commitment is Operated {
     function emissionLimit() constant returns (uint256)
     {
         if (percentage == 0) return 0;
-        return balance() * 100 / percentage;
+        var balance = balance() / (10 ** token.decimals);
+        var limit = balance * 100 / percentage;
+        return limit * (10 ** tokenEmission.decimals);
     }
 
     /**
