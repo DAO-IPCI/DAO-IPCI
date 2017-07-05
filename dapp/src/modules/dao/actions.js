@@ -1,4 +1,5 @@
 import { startSubmit, stopSubmit, reset } from 'redux-form';
+import Promise from 'bluebird'
 import _ from 'lodash'
 import { hashHistory } from 'react-router';
 import i18next from 'i18next'
@@ -18,125 +19,142 @@ export function addModule(type, name, address) {
   }
 }
 
+const getModule = (core, address) => (
+  Promise.join(
+    core.call('abiOf', [address]),
+    core.call('getName', [address]),
+    (...info) => {
+      let type = info[0]
+      if (type === 'https://github.com/airalab/core/blob/master/sol/acl/ACLStorage.sol') {
+        type = 'acl'
+      } else if (type === 'tokenAcl') {
+        type = 'token-acl'
+      } else if (type === '') {
+        type = 'agents'
+      }
+      let name = info[1];
+      if (name === 'ipfs') {
+        name = 'IPFS'
+      }
+      return {
+        address,
+        type,
+        name
+      }
+    }
+  )
+)
+
 export function load(daoAddress) {
   return (dispatch) => {
     dispatch({
       type: LOAD_START,
       payload: true
     })
-    let payload = {}
+    const blocks = [
+      {
+        name: i18next.t('dao:groupAuditors'),
+        type: 'acl',
+        modules: []
+      },
+      {
+        name: i18next.t('dao:holder'),
+        type: 'holder',
+        modules: []
+      },
+      {
+        name: i18next.t('dao:auditor'),
+        type: 'auditor',
+        modules: []
+      },
+      {
+        name: i18next.t('dao:commitment'),
+        type: 'commitment',
+        modules: []
+      },
+      {
+        name: i18next.t('dao:complier'),
+        type: 'complier',
+        modules: []
+      },
+      {
+        name: i18next.t('dao:token'),
+        type: 'token',
+        modules: []
+      },
+      {
+        name: i18next.t('dao:carbonRegistry'),
+        type: 'token-acl',
+        modules: []
+      },
+      {
+        name: i18next.t('dao:market'),
+        type: 'market',
+        modules: []
+      },
+      {
+        name: i18next.t('dao:docs'),
+        type: 'docs',
+        modules: []
+      },
+      {
+        name: i18next.t('dao:agents'),
+        type: 'agents',
+        modules: []
+      }
+    ]
+    let core;
+    const addresses = []
     hett.getContractByName('Core', daoAddress)
-      .then((core) => {
-        const blocks = [
-          {
-            name: i18next.t('dao:groupAuditors'),
-            type: 'acl',
-            modules: []
-          },
-          {
-            name: i18next.t('dao:holder'),
-            type: 'holder',
-            modules: []
-          },
-          {
-            name: i18next.t('dao:auditor'),
-            type: 'auditor',
-            modules: []
-          },
-          {
-            name: i18next.t('dao:commitment'),
-            type: 'commitment',
-            modules: []
-          },
-          {
-            name: i18next.t('dao:complier'),
-            type: 'complier',
-            modules: []
-          },
-          {
-            name: i18next.t('dao:token'),
-            type: 'token',
-            modules: []
-          },
-          {
-            name: i18next.t('dao:carbonRegistry'),
-            type: 'token-acl',
-            modules: []
-          },
-          {
-            name: i18next.t('dao:market'),
-            type: 'market',
-            modules: []
-          },
-          {
-            name: i18next.t('dao:docs'),
-            type: 'docs',
-            modules: []
-          },
-          {
-            name: i18next.t('dao:agents'),
-            type: 'agents',
-            modules: []
-          }
-        ]
-        core.call('first')
-          .then(firstAddress => (
-            promiseFor(address => (address !== '0x0000000000000000000000000000000000000000' && address !== '0x'), (address) => {
-              let block;
-              return core.call('abiOf', [address])
-                .then((type) => {
-                  if (type === 'https://github.com/airalab/core/blob/master/sol/acl/ACLStorage.sol') {
-                    return 'acl'
-                  }
-                  if (type === 'tokenAcl') {
-                    return 'token-acl'
-                  }
-                  if (type === '') {
-                    return 'agents'
-                  }
-                  return type
-                })
-                .then((type) => {
-                  block = _.find(blocks, ['type', type])
-                  if (block) {
-                    return core.call('getName', [address])
-                  }
-                  return false;
-                })
-                .then((name) => {
-                  if (name) {
-                    let nameNew = name;
-                    if (name === 'ipfs') {
-                      nameNew = 'IPFS'
-                    }
-                    block.modules.push({
-                      name: nameNew,
-                      address
-                    })
-                  }
-                })
-                .then(() => core.call('next', [address]))
-            }, firstAddress)
-          ))
-          .then(() => core.call('name'))
-          .then((name) => {
-            payload = {
-              ...payload,
-              address: daoAddress,
-              name,
-              blocks
-            }
-          })
-          .then(() => core.call('owner'))
-          .then((owner) => {
-            dispatch({
-              type: LOAD,
-              payload: {
-                ...payload,
-                owner
-              }
+      .then((contract) => {
+        core = contract;
+        return core.call('first')
+      })
+      .then(first => (
+        promiseFor(address => (address !== '0x0000000000000000000000000000000000000000' && address !== '0x'), (address) => {
+          console.log(address);
+          addresses.push(address)
+          return core.call('next', [address]);
+        }, first)
+      ))
+      .then(() => {
+        const modules = [];
+        _.forEach(addresses, (address) => {
+          modules.push(getModule(core, address));
+        })
+        return Promise.all(modules)
+      })
+      .then((modules) => {
+        console.log(modules);
+        _.forEach(modules, (module) => {
+          const block = _.find(blocks, ['type', module.type])
+          if (block) {
+            block.modules.push({
+              name: module.name,
+              address: module.address
             })
-          });
+          }
+        })
+        return Promise.join(
+          core.call('name'),
+          core.call('owner'),
+          (...info) => (
+            {
+              name: info[0],
+              owner: info[1]
+            }
+          )
+        )
+      })
+      .then((info) => {
+        dispatch({
+          type: LOAD,
+          payload: {
+            address: daoAddress,
+            ...info,
+            blocks
+          }
+        })
       })
   }
 }

@@ -33,7 +33,7 @@ class App extends Component {
   }
 
   componentWillReceiveProps(next) {
-    if (this.props.dao_address !== next.dao_address) {
+    if (this.props.dao_address !== '' && this.props.dao_address !== next.dao_address) {
       this.props.loadCore(next.dao_address);
     }
   }

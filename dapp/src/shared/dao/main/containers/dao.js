@@ -38,7 +38,7 @@ function mapStateToProps(state, props) {
     address: props.address,
     role,
     blocks,
-    isLoad: !_.isEmpty(dao.name)
+    isLoad: dao.load === false
   }
 }
 function mapDispatchToProps(dispatch, props) {
