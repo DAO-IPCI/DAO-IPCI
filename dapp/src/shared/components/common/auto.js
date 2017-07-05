@@ -96,8 +96,8 @@ class Container extends Component {
       <Autosuggest
         multiSection={true}
         suggestions={suggestions}
-        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+        onSuggestionsFetchRequested={v => this.onSuggestionsFetchRequested(v)}
+        onSuggestionsClearRequested={() => this.onSuggestionsClearRequested()}
         getSuggestionValue={getSuggestionValue}
         renderSuggestion={renderSuggestion}
         renderSectionTitle={renderSectionTitle}
