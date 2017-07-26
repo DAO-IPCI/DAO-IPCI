@@ -112,7 +112,6 @@ export function load(daoAddress) {
       })
       .then(first => (
         promiseFor(address => (address !== '0x0000000000000000000000000000000000000000' && address !== '0x'), (address) => {
-          console.log(address);
           addresses.push(address)
           return core.call('next', [address]);
         }, first)
@@ -125,7 +124,6 @@ export function load(daoAddress) {
         return Promise.all(modules)
       })
       .then((modules) => {
-        console.log(modules);
         _.forEach(modules, (module) => {
           const block = _.find(blocks, ['type', module.type])
           if (block) {
