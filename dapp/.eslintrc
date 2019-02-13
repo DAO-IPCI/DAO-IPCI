@@ -17,7 +17,8 @@
     "react/jsx-wrap-multilines": 0,
     "react/no-unescaped-entities": 0,
     "no-restricted-properties": 0,
-    "import/no-named-as-default-member": 0
+    "import/no-named-as-default-member": 0,
+    "jsx-a11y/label-has-for": 0
   },
   "parserOptions": {
     "ecmaVersion": 6,
@@ -35,6 +36,7 @@
   "globals": {
     "Ipfs": true,
     "Web3": true,
-    "web3": true
+    "web3": true,
+    "io": true
   }
 }

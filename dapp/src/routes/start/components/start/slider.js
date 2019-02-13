@@ -20,7 +20,7 @@ const Slider = (props) => {
           }
           return (
             <div key={index} className={index === 0 ? 'item active' : 'item'}>
-              <img src="assets/img/project-bambous-01.jpg" alt="Solar Park in Mauritus" />
+              <img src={'assets/img/' + item.img} alt="Solar Park in Mauritus" />
               <div className="carousel-caption">
                 <h3>{item.name}</h3>
                 <p>Quantity: {item.info.totalSupply}</p>

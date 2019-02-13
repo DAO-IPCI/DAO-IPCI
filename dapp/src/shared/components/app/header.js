@@ -74,6 +74,14 @@ const Header = function Header(props) {
                 </ul>
               </li>
               <li role="presentation"><Link to="/txs">{props.t('txs')}</Link></li>
+              <li className="dropdown">
+                <a className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="">
+                  {props.t('IoT')} <span className="caret" />
+                </a>
+                <ul className="dropdown-menu" role="menu">
+                  <li role="presentation"><Link to="/iot/chile">{props.t('Chile case')}</Link></li>
+                </ul>
+              </li>
             </ul>
           </div>
         </div>

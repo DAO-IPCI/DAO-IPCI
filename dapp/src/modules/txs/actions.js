@@ -1,13 +1,39 @@
 import axios from 'axios'
+import Promise from 'bluebird'
 import _ from 'lodash'
 import hett from 'hett'
 import { ADD, LOAD } from './actionTypes'
+import { ETHERSCAN_API_KEY } from '../../config/config'
 
 export function add(tx) {
   return {
     type: ADD,
     payload: tx
   }
+}
+
+function promiseDebounce(fn, delay, count) {
+  let working = 0
+  const queue = []
+  function work() {
+    if ((queue.length === 0) || (working === count)) return
+    working += 1
+    Promise.delay(delay).tap(() => { working -= 1 }).then(work)
+    const next = queue.shift()
+    next[2](fn.apply(next[0], next[1]))
+  }
+  return function debounced(...args) {
+    return new Promise((resolve) => {
+      queue.push([this, args, resolve])
+      if (working < count) work()
+    })
+  }
+}
+
+axios.get = promiseDebounce(axios.get, 1000, 3)
+
+function api(command) {
+  return axios.get('https://api.etherscan.io/api?' + command + '&apikey=' + ETHERSCAN_API_KEY)
 }
 
 export function load() {
@@ -35,7 +61,7 @@ export function load() {
       })
       let i = 0;
       _.forEach(registry, (name, address) => {
-        axios.get('https://api.etherscan.io/api?module=account&action=txlist&address=' + address + '&startblock=0&endblock=99999999&sort=asc&apikey=M1KX26NG5RF9P7R27XETQEB31IPAYUPVMS')
+        api('module=account&action=txlist&address=' + address + '&startblock=0&endblock=99999999&sort=asc')
           .then((result) => {
             _.forEach(result.data.result, (tx) => {
               dispatch(add(

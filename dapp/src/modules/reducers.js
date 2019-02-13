@@ -9,6 +9,7 @@ import complier from './complier/reducer';
 import market from './market/reducer';
 import docs from './docs/reducer';
 import commitment from './commitment/reducer';
+import chile from './chile/reducer';
 import txs from './txs/reducer';
 
 export {
@@ -23,5 +24,6 @@ export {
   market,
   docs,
   commitment,
+  chile,
   txs
 };

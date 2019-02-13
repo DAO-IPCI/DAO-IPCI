@@ -1,5 +1,4 @@
 import React from 'react'
-import { translate } from 'react-i18next'
 
 const Plugin = function Plugin() {
   return (
@@ -43,4 +42,4 @@ const Plugin = function Plugin() {
   )
 }
 
-export default translate()(Plugin)
+export default Plugin
