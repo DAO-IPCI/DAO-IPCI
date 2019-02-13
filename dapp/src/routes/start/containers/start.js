@@ -75,13 +75,20 @@ Container.contextTypes = {
 }
 
 function mapStateToProps(state) {
-  const market = '0xc6f6426670851374bd975d8eb1b2faee3f88e677';
+  const market = '0x9d4927a4bf922fe1539b07968ea03f20205e53e6';
   let count = 0;
   let load = true;
 
   const tokens = [{
     address: '0x259e4b009a1611f47231975bf9f5a585c70fe591',
     name: 'Aera Group Mauritius VCU',
+    img: 'project-bambous-01.jpg',
+    load: true,
+    info: {}
+  }, {
+    address: '0x51fb304d771468ddb2b52a1e07273a4dd7cf68dc',
+    name: 'TMU Khimprom',
+    img: 'project-himprom-02.jpg',
     load: true,
     info: {}
   }];

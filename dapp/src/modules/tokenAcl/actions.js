@@ -6,18 +6,27 @@ import { submit as submitContract, send as sendContract, call as callContract } 
 
 export function loadModule(tokenAclAddress) {
   return (dispatch) => {
+    let info = {
+      name: '',
+      aclGroup: '',
+      balance: '',
+      totalSupply: '',
+      decimals: 0,
+      timestamp: 0,
+      period: 0
+    }
+    let contract
     hett.getContractByName('TokenWithValidityPeriod', tokenAclAddress)
-      .then(contract => (
-        Promise.join(
+      .then((r) => {
+        contract = r
+        return Promise.join(
           contract.call('name'),
           contract.call('emitentGroup'),
           contract.call('decimals'),
           contract.call('symbol'),
           contract.call('balanceOf', [hett.web3h.coinbase()]),
           contract.call('totalSupply'),
-          contract.call('timestamp'),
-          contract.call('period'),
-          (name, aclGroup, decimalsR, symbolR, balance, totalSupply, timestamp, period) => {
+          (name, aclGroup, decimalsR, symbolR, balance, totalSupply) => {
             const decimalsFormat = _.toNumber(decimalsR)
             let decimals = decimalsFormat
             if (decimals > 0) {
@@ -31,12 +40,32 @@ export function loadModule(tokenAclAddress) {
               aclGroup,
               balance: (_.toNumber(balance) / decimals).toFixed(decimalsFormat) + ' ' + symbol,
               totalSupply: (_.toNumber(totalSupply) / decimals).toFixed(decimalsFormat) + ' ' + symbol,
-              decimals,
-              timestamp: _.toNumber(timestamp),
-              period: _.toNumber(period)
+              decimals
             }
           }
         )
+      })
+      .then((token) => {
+        info = { ...info, ...token }
+        return Promise.join(
+          contract.call('timestamp'),
+          contract.call('period'),
+          (timestamp, period) => (
+            {
+              timestamp: _.toNumber(timestamp),
+              period: _.toNumber(period)
+            }
+          )
+        )
+        .catch(() => (
+          {
+            timestamp: 0,
+            period: 0
+          }
+        ))
+      })
+      .then(period => (
+        { ...info, ...period }
       ))
       .then((token) => {
         dispatch({
@@ -49,6 +78,9 @@ export function loadModule(tokenAclAddress) {
         hett.watcher.addAddress(tokenAclAddress, 'loadModule', (address) => {
           dispatch(loadModule(address))
         })
+      })
+      .catch((e) => {
+        console.log(e);
       })
   }
 }

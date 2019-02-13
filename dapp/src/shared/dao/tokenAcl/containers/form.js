@@ -2,6 +2,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import i18next from 'i18next'
+import _ from 'lodash'
 import { submit } from '../../../../modules/tokenAcl/actions';
 import Form from '../../../components/common/form';
 import { validate } from '../../../../utils/helper';
@@ -29,6 +30,10 @@ function mapStateToProps(state, props) {
       ]
     }
   } else if (props.action === 'emission') {
+    let input = {}
+    if (_.has(props, 'input')) {
+      input = props.input
+    }
     return {
       fields: [
         {
@@ -40,7 +45,8 @@ function mapStateToProps(state, props) {
         {
           name: 'isIpfs'
         }
-      ]
+      ],
+      initialValues: input,
     }
   } else if (props.action === 'setPeriod') {
     return {

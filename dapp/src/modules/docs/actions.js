@@ -2,8 +2,9 @@ import _ from 'lodash'
 import hett from 'hett'
 import { LOAD_MODULE } from './actionTypes'
 import { submit as submitContract, send as sendContract } from '../dao/actions'
+import { flashMessage } from '../app/actions'
 import { promiseFor } from '../../utils/helper'
-import { pin as ipfsPin } from '../../utils/ipfsApi'
+import getIpfs from '../../utils/ipfs'
 
 export function loadModule(docsAddress) {
   return (dispatch) => {
@@ -50,21 +51,22 @@ export function submit(address, action, form) {
     if (action === 'append') {
       hash = data.hash
       data = _.omit(data, ['hash']);
-    }
-    dispatch(submitContract('FormDocs', address, 'Docs', action, data))
-      .then(() => {
-        if (action === 'append') {
-          console.log('Pin cluster', hash);
-          ipfsPin(hash, (err, res) => {
-            if (err || !res) {
-              console.error(err)
-              return false;
-            }
-            console.log('Pin cluster', hash, res);
-            return true;
-          })
-        }
+      console.log('Pinning cluster', hash);
+      getIpfs().then((ipfs) => {
+        ipfs.pin.add(hash, (err, res) => {
+          if (err || !res) {
+            console.error(err)
+            dispatch(flashMessage('File is not pinned to the cluster', 'error'))
+            return false;
+          }
+          console.log('Pin cluster ok', hash, res);
+          dispatch(submitContract('FormDocs', address, 'Docs', action, data))
+          return true;
+        })
       })
+    } else {
+      dispatch(submitContract('FormDocs', address, 'Docs', action, data))
+    }
   }
 }
 

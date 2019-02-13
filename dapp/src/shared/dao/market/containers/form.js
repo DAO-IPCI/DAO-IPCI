@@ -13,7 +13,7 @@ function mapStateToProps(state, props) {
     return {
       fields: [
         {
-          name: 'address',
+          name: '_token',
           type: 'autocomplete',
           label: i18next.t('market:formCommissionToken'),
           placeholder: '0x111111111111111',
@@ -25,7 +25,7 @@ function mapStateToProps(state, props) {
     return {
       fields: [
         {
-          name: 'value',
+          name: '_commission',
           label: i18next.t('market:formCommission'),
           placeholder: '1',
           validation: 'uint'
@@ -35,34 +35,34 @@ function mapStateToProps(state, props) {
   } else if (props.action === 'lot') {
     const fields = [
       {
-        name: 'seller',
+        name: '_seller',
         label: i18next.t('market:formSeller'),
         placeholder: '0x1',
         value: hett.web3h.coinbase(),
         validation: 'address'
       },
       {
-        name: 'sale',
+        name: '_sale',
         type: 'autocomplete',
         label: i18next.t('market:formTokenSale'),
         placeholder: '0x111111111111111',
         validation: 'address'
       },
       {
-        name: 'buy',
+        name: '_buy',
         type: 'autocomplete',
         label: i18next.t('market:formTokenBuy'),
         placeholder: '0x222222222222222',
         validation: 'address'
       },
       {
-        name: 'quantity_sale',
+        name: '_quantity_sale',
         label: i18next.t('market:formAmountSale'),
         placeholder: '1',
         validation: 'uint'
       },
       {
-        name: 'quantity_buy',
+        name: '_quantity_buy',
         label: i18next.t('market:formAmountBuy'),
         placeholder: '1',
         validation: 'uint'

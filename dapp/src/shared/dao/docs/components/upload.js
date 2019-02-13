@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { translate } from 'react-i18next'
 import Dropzone from 'react-dropzone'
 // import IPFS from 'ipfs'
-import hett from 'hett'
+// import hett from 'hett'
+import getIpfs from '../../../../utils/ipfs'
 import styles from './style.css'
 
 let ipfs = null;
@@ -17,20 +18,58 @@ class Upload extends Component {
   }
 
   componentDidMount() {
-    ipfs = new Ipfs({
-      repo: String('ipfs_repo_' + hett.web3h.coinbase())
-    })
-    ipfs.on('ready', () => {
-      console.log('IPFS node is ready')
-      ipfs.id((err) => {
-        if (err) {
-          throw err
-        }
-        this.setState({
-          ready: true
-        })
+    getIpfs().then((r) => {
+      ipfs = r
+      this.setState({
+        ready: true
       })
     })
+    // const coinbase = hett.web3h.coinbase()
+    // const config = {
+    //   repo: 'ipfs-2-' + coinbase,
+    //   config: {
+    //     Addresses: {
+    //       Swarm: [
+    //         '/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star'
+    //       ]
+    //     },
+    //   }
+    // }
+    // ipfs = new Ipfs(config)
+    // ipfs.on('ready', () => {
+    //   console.log('Online status: ', ipfs.isOnline() ? 'online' : 'offline')
+    //   this.setState({
+    //     ready: true
+    //   })
+    // })
+    // ipfs = new Ipfs({
+    //   init: false,
+    //   start: false,
+    //   repo: 'ipfs-' + coinbase
+    // })
+    // ipfs.on('ready', () => {
+    //   ipfs.start(() => {
+    //     console.log('Online status: ', ipfs.isOnline() ? 'online' : 'offline')
+    //     this.setState({
+    //       ready: true
+    //     })
+    //   })
+    // })
+    // ipfs._repo.exists((e, status) => { /* eslint no-underscore-dangle: 0 */
+    //   if (status === false) {
+    //     ipfs.init((err) => {
+    //       if (err) {
+    //         throw err
+    //       }
+    //       ipfs.start(() => {
+    //         console.log('Online status: ', ipfs.isOnline() ? 'online' : 'offline')
+    //         this.setState({
+    //           ready: true
+    //         })
+    //       })
+    //     })
+    //   }
+    // })
   }
 
   onDrop(acceptedFiles) {
@@ -55,7 +94,7 @@ class Upload extends Component {
 
   render() {
     if (ipfs === null || this.state.ready === false) {
-      return <div />
+      return null
     }
     return (<div>
       <div className="panel panel-default">

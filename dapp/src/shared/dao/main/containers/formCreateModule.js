@@ -24,7 +24,7 @@ function mapStateToProps(state, props) {
         {
           name: 'operator_nam',
           label: i18next.t('dao:formCoreOperatorName'),
-          validation: 'uint'
+          validation: 'required'
         }
       ]
     }

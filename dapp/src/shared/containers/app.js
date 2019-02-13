@@ -86,7 +86,7 @@ function mapStateToProps(state, props) {
     dao_address: state.app.dao_address,
     role: state.app.role,
     language: state.app.language,
-    lockApp: state.app.lockApp,
+    lockApp: false, // state.app.lockApp,
     isCoreLoad: (props.location.pathname === '/') ? false : state.dao.load,
     programms: PROGRAMMS,
     notifications: state.notifications,

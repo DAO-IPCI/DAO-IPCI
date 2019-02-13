@@ -9,6 +9,7 @@ import * as Auditor from '../routes/auditor'
 import * as Complier from '../routes/complier'
 import * as User from '../routes/user'
 import * as Txs from '../routes/txs'
+import * as Iot from '../routes/iot'
 import * as Dao from '../routes/dao'
 import { setRole } from '../modules/app/actions'
 
@@ -33,6 +34,10 @@ export const routes = store =>
       </Route>
       <Route path="/txs" component={Txs.Page}>
         <IndexRoute component={Txs.Main} />
+      </Route>
+      <Route path="/iot" component={Iot.Page}>
+        <IndexRoute component={Iot.Chile} />
+        <Route path="chile" component={Iot.Chile} />
       </Route>
       <Route path="/dao">
         <Route path="create/:module" component={Dao.CreateModule} />

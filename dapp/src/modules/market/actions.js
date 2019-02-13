@@ -300,12 +300,23 @@ export function approveLot(marketAddress, lot, token, value) {
 }
 
 function run(dispatch, address, func, values) {
-  const params = values;
-  if (func === 'setCommission') {
-    params[0] *= 100 * 2;
-  }
-
-  return hett.getContractByName('Market', address)
+  let params
+  return hett.getAbiByName('Market')
+    .then((abi) => {
+      if (_.size(values) === 1) {
+        params = _.values(values);
+      } else {
+        const funcAbi = _.find(abi, o => (o.name === func && o.inputs.length === _.size(values)))
+        const names = _.mapValues(funcAbi.inputs, 'name')
+        const v = _.values(values)
+        const k = _.keys(values)
+        params = _.map(names, name => v[_.findIndex(k, o => o === name)])
+      }
+      if (func === 'setCommission') {
+        params[0] *= 100 * 2;
+      }
+      return hett.getContract(abi, address)
+    })
     .then(contract => contract.send(func, params))
     .then((txId) => {
       dispatch(flashMessage('txId: ' + txId))
@@ -334,7 +345,7 @@ export function submit(marketAddress, action, form) {
     if (func) {
       const formData = form;
       if (func === 'append') {
-        hett.getContractByName('TokenEmission', formData.sale)
+        hett.getContractByName('TokenEmission', formData._sale) /* eslint no-underscore-dangle: 0 */
           .then(contract => contract.call('decimals'))
           .then((result) => {
             let decimals = _.toNumber(result)
@@ -343,8 +354,8 @@ export function submit(marketAddress, action, form) {
             } else {
               decimals = 1
             }
-            formData.quantity_sale *= decimals
-            return hett.getContractByName('TokenEmission', formData.buy)
+            formData._quantity_sale *= decimals
+            return hett.getContractByName('TokenEmission', formData._buy)
           })
           .then(contract => contract.call('decimals'))
           .then((result) => {
@@ -354,9 +365,8 @@ export function submit(marketAddress, action, form) {
             } else {
               decimals = 1
             }
-            formData.quantity_buy *= decimals
-            console.log(formData);
-            return run(dispatch, marketAddress, func, _.values(formData))
+            formData._quantity_buy *= decimals
+            return run(dispatch, marketAddress, func, formData)
           })
           .then((blockNumber) => {
             dispatch(stopSubmit('FormMarket'))
@@ -367,7 +377,7 @@ export function submit(marketAddress, action, form) {
             dispatch(stopSubmit('FormMarket'))
           })
       } else {
-        run(dispatch, marketAddress, func, _.values(form))
+        run(dispatch, marketAddress, func, form)
           .then((blockNumber) => {
             dispatch(stopSubmit('FormMarket'))
             dispatch(reset('FormMarket'))

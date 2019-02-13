@@ -43,6 +43,23 @@ const getModule = (core, address) => (
       }
     }
   )
+  .catch(() => {
+    console.log(address, 'skip')
+    // return new Promise((resolve) => {
+    //   setTimeout(() => {
+    //     getModule(core, address)
+    //       .then((r) => {
+    //         console.log(r)
+    //         resolve(r)
+    //       })
+    //   }, 3000);
+    // })
+    return {
+      address,
+      type: 'skip',
+      name: ''
+    }
+  })
 )
 
 export function load(daoAddress) {
@@ -113,7 +130,15 @@ export function load(daoAddress) {
       .then(first => (
         promiseFor(address => (address !== '0x0000000000000000000000000000000000000000' && address !== '0x'), (address) => {
           addresses.push(address)
-          return core.call('next', [address]);
+          console.log(address);
+          return core.call('next', [address])
+            .then((r) => {
+              if (r === '0x') {
+                return core.call('next', [address])
+              }
+              return r
+            })
+            .catch(() => '0x')
         }, first)
       ))
       .then(() => {
@@ -127,8 +152,12 @@ export function load(daoAddress) {
         _.forEach(modules, (module) => {
           const block = _.find(blocks, ['type', module.type])
           if (block) {
+            let name = module.name
+            if (name === 'ACLStorage') {
+              name = 'List of Independent Entities'
+            }
             block.modules.push({
-              name: module.name,
+              name,
               address: module.address
             })
           }
@@ -309,6 +338,7 @@ export function submit(formName, address, abiName, action, form, txArgs = {}) {
             dispatch(flashMessage(i18next.t('common:noSaveDoc')))
           }
         }
+        return transaction;
       })
       .catch(() => {
         dispatch(stopSubmit(formName))
