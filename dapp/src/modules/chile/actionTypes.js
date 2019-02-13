@@ -1,0 +1,6 @@
+export const RUN_LOAD = 'CHILE_RUN_LOAD'
+export const LOAD = 'CHILE_LOAD'
+export const SET_FACTOR_HASH = 'CHILE_SET_FACTOR_HASH'
+export const SET_FACTOR = 'CHILE_SET_FACTOR'
+export const SET_DATA_HASH = 'CHILE_SET_DATA_HASH'
+export const SET_DATA = 'CHILE_SET_DATA'

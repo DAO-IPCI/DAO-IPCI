@@ -1,0 +1,19 @@
+{
+  "yourAccount": "Your account",
+  "errorLoad": "Not found data for your account",
+  "countDevices": "{{count}} IoT devices’ data",
+  "date": "Date from <b>{{from}}</b> to <b>{{to}}</b>",
+  "inMounth": "Generation <b>{{wt}}</b> of power kWh",
+  "emission": "GHG Emission",
+  "from": "from",
+  "to": "to",
+  "MWt": "MWh",
+  "tCO2": "tCO2",
+  "carbonCredit": "Carbon Credit",
+  "factort": "Grid Emission Factor",
+  "fileData": "Doc data",
+  "fileFactor": "Doc Emission Factor",
+  "titleForm": "Emission of the Token",
+  "checkOk": "Emission of the Token for the Period has been completed",
+  "errMin": "The minimum number of tokens for issue should be"
+}
